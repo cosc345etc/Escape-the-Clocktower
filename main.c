@@ -36,7 +36,7 @@ ALLEGRO_TIMER* timer;
 ALLEGRO_DISPLAY* display;
 
 
-player* player_constructer (void)
+player* player_constructor (void)
 {
     struct player* instance = malloc (sizeof(player));
     if(instance != NULL) {
@@ -105,7 +105,7 @@ void init_map(void){
 }
 
 void init_player(void){
-    p = player_constructer();
+    p = player_constructor();
 }
 
 void get_user_input(ALLEGRO_EVENT event){
