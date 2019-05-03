@@ -79,7 +79,7 @@ void player_destruct ( player* this)
 player* p;
 
 void init_map(void){
-    map[0][0].N = al_load_bitmap("/Users/anaruhudson/CLionProjects/EtC-1`/assets/Example_corridor.JPG");
+    map[0][0].N = al_load_bitmap("/Users/anaruhudson/CLionProjects/EtC-1/assets/Example_corridor.JPG");
     map[0][0].E = al_load_bitmap("/Users/anaruhudson/CLionProjects/EtC-1/assets/Grumpy_bureaucrat_draft.JPG");
     map[0][0].S = al_load_bitmap("/Users/anaruhudson/CLionProjects/EtC-1/assets/Example_portrait.JPG");
     map[0][0].W = al_load_bitmap("/Users/anaruhudson/CLionProjects/EtC-1/assets/Grumpy_bureaucrat_draft.JPG");
