@@ -201,13 +201,13 @@ void get_user_input(ALLEGRO_EVENT event){
 void update_graphics(){
     if(key[KEY_RIGHT] || key[KEY_LEFT] || key[KEY_UP]){
         if(player_get_direction_facing(p) == 'N'){
-            al_draw_bitmap(map[p->x][p->y].N,0,0,0);
+            al_draw_bitmap(map[player_get_position_x(p)][player_get_position_y(p)].N,0,0,0);
         }else if(player_get_direction_facing(p) == 'E'){
-            al_draw_bitmap(map[p->x][p->y].E,0,0,0);
+            al_draw_bitmap(map[player_get_position_x(p)][player_get_position_y(p)].E,0,0,0);
         }else if(player_get_direction_facing(p) == 'S'){
-            al_draw_bitmap(map[p->x][p->y].S,0,0,0);
+            al_draw_bitmap(map[player_get_position_x(p)][player_get_position_y(p)].S,0,0,0);
         }else if(player_get_direction_facing(p) == 'W'){
-            al_draw_bitmap(map[p->x][p->y].W,0,0,0);
+            al_draw_bitmap(map[player_get_position_x(p)][player_get_position_y(p)].W,0,0,0);
         }
     }
     al_flip_display();
@@ -242,8 +242,8 @@ void init(void)
         abort_game("Failed to create display");
 
 
+    // Initialise the map with a starting image -- could have a load screen??
     ALLEGRO_BITMAP *image = al_load_bitmap("/Users/anaruhudson/CLionProjects/EtC-1/assets/Example_corridor.JPG");
-
     al_draw_bitmap(image ,0, 0, 0);
     al_flip_display();
 
