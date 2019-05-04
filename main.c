@@ -71,13 +71,17 @@ char player_get_direction_facing(const player* this){
     return this->direction_facing;
 }
 
-void player_destruct ( player* this)
+
+void player_destruct (player* this)
 {
     free(this);
 }
 
 player* p;
 
+/**
+ * Initialises the map. It's hard coded, but will eventually be read in from a file?
+ */
 void init_map(void){
     map[0][0].N = al_load_bitmap("/Users/anaruhudson/CLionProjects/EtC-1/assets/Example_corridor.JPG");
     map[0][0].E = al_load_bitmap("/Users/anaruhudson/CLionProjects/EtC-1/assets/Grumpy_bureaucrat_draft.JPG");
@@ -104,10 +108,20 @@ void init_map(void){
     map[3][0].passsable = true;
 }
 
+/**
+ * Creates the Player.
+ */
 void init_player(void){
     p = player_constructor();
 }
 
+/**
+ * Takes the key press event, and checks if it was either
+ * up, left or right key pressed.
+ * If up arrow key - update the player location either +1 if facing North, or -1 if facing South.
+ * If left or right arrow key, update direction player facing.
+ * @param event ALLEGRO_EVENT ---
+ */
 void get_user_input(ALLEGRO_EVENT event){
     if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
         switch(event.keyboard.keycode) {
@@ -180,30 +194,14 @@ void get_user_input(ALLEGRO_EVENT event){
     }
 }
 
+/**
+ * Check if one of the keys has been pressed,
+ * then update the graphics based on the new direction the player is facing.
+ */
 void update_graphics(){
-    if(key[KEY_RIGHT]){
+    if(key[KEY_RIGHT] || key[KEY_LEFT] || key[KEY_UP]){
         if(player_get_direction_facing(p) == 'N'){
             al_draw_bitmap(map[p->x][p->y].N,0,0,0);
-        }else if(player_get_direction_facing(p) == 'E'){
-            al_draw_bitmap(map[p->x][p->y].E,0,0,0);
-        }else if(player_get_direction_facing(p) == 'S'){
-            al_draw_bitmap(map[p->x][p->y].S,0,0,0);
-        }else if(player_get_direction_facing(p) == 'W'){
-            al_draw_bitmap(map[p->x][p->y].W,0,0,0);
-        }
-    }else if(key[KEY_LEFT]){
-        if(player_get_direction_facing(p) == 'N'){
-            al_draw_bitmap(map[p->x][p->y].N,0,0,0);
-        }else if(player_get_direction_facing(p) == 'E'){
-            al_draw_bitmap(map[p->x][p->y].E,0,0,0);
-        }else if(player_get_direction_facing(p) == 'S'){
-            al_draw_bitmap(map[p->x][p->y].S,0,0,0);
-        }else if(player_get_direction_facing(p) == 'W'){
-            al_draw_bitmap(map[p->x][p->y].W,0,0,0);
-        }
-    }else if(key[KEY_UP]){
-        if(player_get_direction_facing(p) == 'N'){
-            al_draw_bitmap(map[player_get_position_x(p)][player_get_position_y(p)].N,0,0,0);
         }else if(player_get_direction_facing(p) == 'E'){
             al_draw_bitmap(map[p->x][p->y].E,0,0,0);
         }else if(player_get_direction_facing(p) == 'S'){
@@ -212,17 +210,6 @@ void update_graphics(){
             al_draw_bitmap(map[p->x][p->y].W,0,0,0);
         }
     }
-//    else if(key[KEY_DOWN]){
-//        if(player_get_direction_facing(p) == 'N'){
-//            al_draw_bitmap(map[p->x][p->y].N,0,0,0);
-//        }else if(player_get_direction_facing(p) == 'E'){
-//            al_draw_bitmap(map[p->x][p->y].E,0,0,0);
-//        }else if(player_get_direction_facing(p) == 'S'){
-//            al_draw_bitmap(map[p->x][p->y].S,0,0,0);
-//        }else if(player_get_direction_facing(p) == 'W'){
-//            al_draw_bitmap(map[p->x][p->y].W,0,0,0);
-//        }
-//    }
     al_flip_display();
 }
 
