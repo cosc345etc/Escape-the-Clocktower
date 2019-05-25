@@ -77,11 +77,13 @@ int player_get_position_y (const player* this)
     return this->y;
 }
 
-void player_set_direction(player* this, char d){
+void player_set_direction(player* this, char d)
+{
     this->direction_facing = d;
 }
 
-char player_get_direction_facing(const player* this){
+char player_get_direction_facing(const player* this)
+{
     return this->direction_facing;
 }
 
