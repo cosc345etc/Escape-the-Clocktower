@@ -12,7 +12,7 @@ add_executable(etc main.c Player.h)
 INCLUDE_DIRECTORIES(allegro/5.2.4.0/include)
 LINK_DIRECTORIES(allegro/5.2.4.0/lib)
 
-file(GLOB LIBRARIES "allegro/5.2.4.0/lib/*.dylib")
+file(GLOB LIBRARIES "${CMAKE_CURRENT_SOURCE_DIR}/allegro/5.2.4.0/lib/*.dylib")
 message("LIBRARIES = ${LIBRARIES}")
 
 TARGET_LINK_LIBRARIES(etc  ${LIBRARIES})
