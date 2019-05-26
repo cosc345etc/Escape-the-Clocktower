@@ -38,6 +38,14 @@ ALLEGRO_EVENT_QUEUE* event_queue;
 ALLEGRO_TIMER* timer;
 ALLEGRO_DISPLAY* display;
 
+//INCLUDE_DIRECTORIES(/usr/local/Cellar/allegro/5.2.4.0/include )
+//LINK_DIRECTORIES(/usr/local/Cellar/allegro/5.2.1.4.0/lib )
+//
+//file(GLOB LIBRARIES "/usr/local/Cellar/allegro/5.2.4.0/lib/*.dylib")
+//message("LIBRARIES = ${LIBRARIES}")
+//
+//TARGET_LINK_LIBRARIES(etc  ${LIBRARIES})
+
 
 void abort_game(const char* message)
 {
