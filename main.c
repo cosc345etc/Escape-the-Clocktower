@@ -431,4 +431,5 @@ int main(int argc, char* argv[])
     init_player();
     game_loop();
     shutdown();
+    exit(0);
 }

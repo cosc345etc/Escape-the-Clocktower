@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Video streaming addon</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="pandoc.css" type="text/css" />
+  <script type="text/javascript" src="autosuggest.js"></script>
+  <script type="text/javascript" src="search_index.js"></script>
+</head>
+<body>
+<div class="sidebar">
+<div>
+<ul>
+<li><a href="index.html"><strong>Contents</strong></a></li>
+<li><a href="config.html">Configuration files</a></li>
+<li><a href="display.html">Display</a></li>
+<li><a href="events.html">Events</a></li>
+<li><a href="file.html">File I/O</a></li>
+<li><a href="fshook.html">Filesystem</a></li>
+<li><a href="fixed.html">Fixed point math</a></li>
+<li><a href="fullscreen_mode.html">Fullscreen modes</a></li>
+<li><a href="graphics.html">Graphics</a></li>
+<li><a href="haptic.html">Haptic</a></li>
+<li><a href="joystick.html">Joystick</a></li>
+<li><a href="keyboard.html">Keyboard</a></li>
+<li><a href="memory.html">Memory</a></li>
+<li><a href="monitor.html">Monitor</a></li>
+<li><a href="mouse.html">Mouse</a></li>
+<li><a href="path.html">Path</a></li>
+<li><a href="shader.html">Shader</a></li>
+<li><a href="state.html">State</a></li>
+<li><a href="system.html">System</a></li>
+<li><a href="threads.html">Threads</a></li>
+<li><a href="time.html">Time</a></li>
+<li><a href="timer.html">Timer</a></li>
+<li><a href="touch.html">Touch input</a></li>
+<li><a href="transformations.html">Transformations</a></li>
+<li><a href="utf8.html">UTF-8</a></li>
+<li><a href="misc.html">Miscellaneous</a></li>
+<li><a href="platform.html">Platform-specific</a></li>
+<li><a href="direct3d.html">Direct3D</a></li>
+<li><a href="opengl.html">OpenGL</a></li>
+</ul>
+<!-- The preceding blank line forces pandoc to terminate the list -->
+</div>
+<div>
+<ul>
+<li><a href="index.html#addons"><strong>Addons</strong></a></li>
+<li><a href="audio.html">Audio addon</a></li>
+<li><a href="acodec.html">Audio codecs</a></li>
+<li><a href="color.html">Color addon</a></li>
+<li><a href="font.html">Font addons</a></li>
+<li><a href="image.html">Image I/O addon</a></li>
+<li><a href="main.html">Main addon</a></li>
+<li><a href="memfile.html">Memfile addon</a></li>
+<li><a href="native_dialog.html">Native dialogs addon</a></li>
+<li><a href="physfs.html">PhysicsFS addon</a></li>
+<li><a href="primitives.html">Primitives addon</a></li>
+<li><a href="video.html">Video streaming addon</a></li>
+</ul>
+<!-- The preceding blank line forces pandoc to terminate the list -->
+</div>
+<div>
+<ul>
+<li><a href="index_all.html"><strong>Index</strong></a></li>
+</ul>
+<!-- The preceding blank line forces pandoc to terminate the list -->
+</div>
+<div class="searchbox">
+<script type="text/javascript">
+function on_search(index, control) {
+    // Note to self: the less-than sign must NOT converted to an entity!
+    // SCRIPT elements are special.  The HTML validator gives bad advice.
+    for (i = 0; i < search_index.length; i++) {
+        if (search_index[i] == control.keywords[index]) {
+            break;
+        }
+    }
+    location.href = search_urls[i];
+}
+</script>
+Search<br/> <input type="text" name="q" id="q" size="15" autocomplete="off"/><br/>
+<script type="text/javascript"> new autosuggest("q", search_index, null, on_search); </script>
+</div>
+</div>
+<div class="content">
+<div id="header">
+<h1 class="title">Video streaming addon</h1>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#allegro_video_event_type">ALLEGRO_VIDEO_EVENT_TYPE</a><ul>
+<li><a href="#allegro_event_video_frame_show">ALLEGRO_EVENT_VIDEO_FRAME_SHOW</a></li>
+<li><a href="#allegro_event_video_finished">ALLEGRO_EVENT_VIDEO_FINISHED</a></li>
+</ul></li>
+<li><a href="#allegro_video_position_type">ALLEGRO_VIDEO_POSITION_TYPE</a></li>
+<li><a href="#al_init_video_addon">al_init_video_addon</a></li>
+<li><a href="#al_shutdown_video_addon">al_shutdown_video_addon</a></li>
+<li><a href="#al_get_allegro_video_version">al_get_allegro_video_version</a></li>
+<li><a href="#al_open_video">al_open_video</a></li>
+<li><a href="#al_close_video">al_close_video</a></li>
+<li><a href="#al_start_video">al_start_video</a></li>
+<li><a href="#al_start_video_with_voice">al_start_video_with_voice</a></li>
+<li><a href="#al_get_video_event_source">al_get_video_event_source</a></li>
+<li><a href="#al_set_video_playing">al_set_video_playing</a></li>
+<li><a href="#al_is_video_playing">al_is_video_playing</a></li>
+<li><a href="#al_get_video_audio_rate">al_get_video_audio_rate</a></li>
+<li><a href="#al_get_video_fps">al_get_video_fps</a></li>
+<li><a href="#al_get_video_scaled_width">al_get_video_scaled_width</a></li>
+<li><a href="#al_get_video_scaled_height">al_get_video_scaled_height</a></li>
+<li><a href="#al_get_video_frame">al_get_video_frame</a></li>
+<li><a href="#al_get_video_position">al_get_video_position</a></li>
+<li><a href="#al_seek_video">al_seek_video</a></li>
+</ul>
+</div>
+<p>These functions are declared in the following header file. Link with allegro_video.</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"> <span class="ot">#include &lt;allegro5/allegro_video.h&gt;</span></code></pre></div>
+<p>Currently we have an Ogg backend (Theora + Vorbis). See <a href="http://xiph.org/" class="uri">http://xiph.org/</a> for installation instructions, licensing information and supported video formats.</p>
+<h1 id="allegro_video_event_type">ALLEGRO_VIDEO_EVENT_TYPE</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">enum</span> ALLEGRO_VIDEO_EVENT_TYPE</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/allegro5/allegro_video.h#L35">Source Code</a></p>
+<p>Events sent by <a href="video.html#al_get_video_event_source">al_get_video_event_source</a>.</p>
+<h2 id="allegro_event_video_frame_show">ALLEGRO_EVENT_VIDEO_FRAME_SHOW</h2>
+<p>This event is sent when it is time to show a new frame. Once you receive this event, you can draw the current frame (as returned by <a href="video.html#al_get_video_frame">al_get_video_frame</a>). <a href="video.html#al_get_video_frame">al_get_video_frame</a> will continue returning the same frame until the next ALLEGRO_EVENT_VIDEO_FRAME_SHOW is sent.</p>
+<dl>
+<dt>user.data1 (ALLEGRO_VIDEO *)</dt>
+<dd>The video which generated the event.
+</dd>
+</dl>
+<p>Since: 5.1.0</p>
+<h2 id="allegro_event_video_finished">ALLEGRO_EVENT_VIDEO_FINISHED</h2>
+<p>This event is sent when the video is finished. Depending on the backend, it may be possible to seek to an earlier part of the video and set the video to play to resume playback.</p>
+<dl>
+<dt>user.data1 (ALLEGRO_VIDEO *)</dt>
+<dd>The video which generated the event.
+</dd>
+</dl>
+<p>Since: 5.1.0</p>
+<h1 id="allegro_video_position_type">ALLEGRO_VIDEO_POSITION_TYPE</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">typedef</span> <span class="kw">enum</span> ALLEGRO_VIDEO_POSITION_TYPE ALLEGRO_VIDEO_POSITION_TYPE;</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/allegro5/allegro_video.h#L51">Source Code</a></p>
+<p>Used with <a href="video.html#al_get_video_position">al_get_video_position</a> to specify which position to retrieve. If these get out of sync, audio and video may be out of sync in the display of the video.</p>
+<ul>
+<li><p>ALLEGRO_VIDEO_POSITION_ACTUAL - The amount of time the video has been playing. If the video has audio then this value can be ahead of ALLEGRO_VIDEO_POSITION_VIDEO_DECODE when video decoding lags.</p></li>
+<li><p>ALLEGRO_VIDEO_POSITION_VIDEO_DECODE - The amount of video that has been decoded. This may lag behind the &quot;actual&quot; and audio positions if decoding is slower than realtime.</p></li>
+<li><p>ALLEGRO_VIDEO_POSITION_AUDIO_DECODE - The amount of audio that has been decoded. This may be the same as ALLEGRO_VIDEO_POSITION_ACTUAL if audio decode is driving the position, which is common to keep audio and video in sync.</p></li>
+</ul>
+<p>Since: 5.1.11</p>
+<h1 id="al_init_video_addon">al_init_video_addon</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_init_video_addon(<span class="dt">void</span>)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L259">Source Code</a></p>
+<p>Initializes the video addon.</p>
+<p>Since: 5.1.12</p>
+<h1 id="al_shutdown_video_addon">al_shutdown_video_addon</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_shutdown_video_addon(<span class="dt">void</span>)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L281">Source Code</a></p>
+<p>Shut down the video addon. This is done automatically at program exit, but can be called any time the user wishes as well.</p>
+<p>Since: 5.1.12</p>
+<h1 id="al_get_allegro_video_version">al_get_allegro_video_version</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">uint32_t</span> al_get_allegro_video_version(<span class="dt">void</span>)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L299">Source Code</a></p>
+<p>Returns the (compiled) version of the addon, in the same format as <a href="system.html#al_get_allegro_version">al_get_allegro_version</a>.</p>
+<p>Since: 5.1.12</p>
+<h1 id="al_open_video">al_open_video</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_VIDEO *al_open_video(<span class="dt">char</span> <span class="dt">const</span> *filename)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L94">Source Code</a></p>
+<p>Reads a video file. This does not start streaming yet but reads the meta info so you can query e.g. the size or audio rate.</p>
+<p>Since: 5.1.0</p>
+<h1 id="al_close_video">al_close_video</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_close_video(ALLEGRO_VIDEO *video)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L130">Source Code</a></p>
+<p>Closes the video and frees all allocated resources. The video pointer is invalid after the function returns.</p>
+<p>Since: 5.1.0</p>
+<h1 id="al_start_video">al_start_video</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_start_video(ALLEGRO_VIDEO *video, ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L152">Source Code</a></p>
+<p>Starts streaming the video from the beginning.</p>
+<p>Since: 5.1.0</p>
+<h1 id="al_start_video_with_voice">al_start_video_with_voice</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_start_video_with_voice(ALLEGRO_VIDEO *video, ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L163">Source Code</a></p>
+<p>Like <a href="video.html#al_start_video">al_start_video</a> but audio is routed to the provided voice.</p>
+<p>Since: 5.1.0</p>
+<h1 id="al_get_video_event_source">al_get_video_event_source</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_EVENT_SOURCE *al_get_video_event_source(ALLEGRO_VIDEO *video)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L144">Source Code</a></p>
+<p>Get an event source for the video. The possible events are described under <a href="video.html#allegro_video_event_type">ALLEGRO_VIDEO_EVENT_TYPE</a>.</p>
+<p>Since: 5.1.0</p>
+<h1 id="al_set_video_playing">al_set_video_playing</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_set_video_playing(ALLEGRO_VIDEO *video, bool play)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L174">Source Code</a></p>
+<p>Paused or resumes playback.</p>
+<p>Since: 5.1.12</p>
+<h1 id="al_is_video_playing">al_is_video_playing</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_is_video_playing(ALLEGRO_VIDEO *video)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L186">Source Code</a></p>
+<p>Returns true if the video is currently playing.</p>
+<p>Since: 5.1.12</p>
+<h1 id="al_get_video_audio_rate">al_get_video_audio_rate</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">double</span> al_get_video_audio_rate(ALLEGRO_VIDEO *video)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L227">Source Code</a></p>
+<p>Returns the audio rate of the video, in Hz.</p>
+<p>Since: 5.1.0</p>
+<h1 id="al_get_video_fps">al_get_video_fps</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">double</span> al_get_video_fps(ALLEGRO_VIDEO *video)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L235">Source Code</a></p>
+<p>Returns the speed of the video in frames per second. Often this will not be an integer value.</p>
+<p>Since: 5.1.0</p>
+<h1 id="al_get_video_scaled_width">al_get_video_scaled_width</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> al_get_video_scaled_width(ALLEGRO_VIDEO *video)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L243">Source Code</a></p>
+<p>Returns the width with which the video frame should be drawn. Videos often do not use square pixels, so this will may return a value larger than the width of the frame bitmap.</p>
+<p>Since: 5.1.12</p>
+<p>See also: <a href="video.html#al_get_video_frame">al_get_video_frame</a></p>
+<h1 id="al_get_video_scaled_height">al_get_video_scaled_height</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> al_get_video_scaled_height(ALLEGRO_VIDEO *video)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L251">Source Code</a></p>
+<p>Returns the height with which the video frame should be drawn. Videos often do not use square pixels, so this will may return a value larger than the height of the frame bitmap.</p>
+<p>See also: <a href="video.html#al_get_video_frame">al_get_video_frame</a></p>
+<p>Since: 5.1.12</p>
+<h1 id="al_get_video_frame">al_get_video_frame</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_BITMAP *al_get_video_frame(ALLEGRO_VIDEO *video)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L195">Source Code</a></p>
+<p>Returns the current video frame. The bitmap is owned by the video so do not attempt to free it. The bitmap will stay valid until the next call to al_get_video_frame.</p>
+<p>Videos often do not use square pixels so the recommended way to draw a video frame would be using code like this:</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> scale = <span class="fl">1.0</span>; <span class="co">/* Adjust this to fit your target bitmap dimensions. */</span>
+ALLEGRO_BITMAP* frame = al_get_video_frame(video);
+<span class="dt">float</span> sw = al_get_bitmap_width(frame);
+<span class="dt">float</span> sh = al_get_bitmap_height(frame);
+<span class="dt">float</span> dw = scale * al_get_video_scaled_width(video);
+<span class="dt">float</span> dh = scale * al_get_video_scaled_height(video);
+al_draw_scaled_bitmap(frame, <span class="dv">0</span>, <span class="dv">0</span>, sw, sh, <span class="dv">0</span>, <span class="dv">0</span>, dw, dh, <span class="dv">0</span>);</code></pre></div>
+<p>Since: 5.1.0</p>
+<p>See also: <a href="video.html#al_get_video_scaled_width">al_get_video_scaled_width</a>, <a href="video.html#al_get_video_scaled_height">al_get_video_scaled_height</a></p>
+<h1 id="al_get_video_position">al_get_video_position</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">double</span> al_get_video_position(ALLEGRO_VIDEO *video, ALLEGRO_VIDEO_POSITION_TYPE which)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L205">Source Code</a></p>
+<p>Returns the current position of the video stream in seconds since the beginning. The parameter is one of the <a href="video.html#allegro_video_position_type">ALLEGRO_VIDEO_POSITION_TYPE</a> constants.</p>
+<p>Since: 5.1.0</p>
+<h1 id="al_seek_video">al_seek_video</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_seek_video(ALLEGRO_VIDEO *video, <span class="dt">double</span> pos_in_seconds)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/video/video.c#L218">Source Code</a></p>
+<p>Seek to a different position in the video. Currently only seeking to the beginning of the video is supported.</p>
+<p>Since: 5.1.0</p>
+<p class="timestamp">
+Allegro version 5.2.5
+ - Last updated: 2019-02-24 19:11:47 UTC
+</p>
+</div>
+</body>
+</html>

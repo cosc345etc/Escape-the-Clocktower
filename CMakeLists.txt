@@ -9,10 +9,10 @@ file(COPY ETC_5X1_CORRIDOR_GFX DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 add_executable(etc main.c Player.h)
 
-INCLUDE_DIRECTORIES(allegro/5.2.5.0/include)
-LINK_DIRECTORIES(allegro/5.2.5.0/lib)
+INCLUDE_DIRECTORIES(/usr/local/include)
+LINK_DIRECTORIES(/usr/local/lib)
 
-file(GLOB LIBRARIES "allegro/5.2.5.0/lib/*.dylib")
+file(GLOB LIBRARIES "/usr/local/lib/*.dylib")
 message("LIBRARIES = ${LIBRARIES}")
 
-TARGET_LINK_LIBRARIES(etc ${LIBRARIES})
+TARGET_LINK_LIBRARIES(etc  ${LIBRARIES})
