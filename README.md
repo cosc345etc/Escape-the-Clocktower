@@ -14,15 +14,18 @@ This release of Escape The Clocktower requires cmake for installation. It also c
 
 The root directory of “Escape-the-Clocktower” contains an “allegro” folder. This folder contains a cmakelists.txt file which can be used to install Allegro. To install using cmake, navigate to 
 ```
-~/Escape-the-Clocktower/allegro/ 
+~/Escape-the-Clocktower/allegro/build
 ```
-then run cmake.
+then run
+```
+cmake ..
+```
 
 This will configure cmake and create a makefile.mk in the same directory. Execute make from the terminal to compile allegro.
 ```
 make
 ```
-If this process completes with no errors, type:
+If this process completes with no errors, type
 ```
 sudo make install 
 ```
@@ -37,11 +40,11 @@ then run
 cmake -Bbuild -H.
 ```
 
-cmake will create a /build/ directory inside /Escape-the-Clocktower/ containing a makefile. Using Terminal, navigate to /build/, then execute make.
+cmake will create a /build/ directory inside /Escape-the-Clocktower/ containing a makefile. Using Terminal, navigate to /build/, then execute
 ```
 make
 ```
-This will create a .exec file which can be run from the terminal or finder.
+This will create a .exec file (etc.exec) which can be run from the terminal using ./etc or finder.
 
 
 # Data Structures
