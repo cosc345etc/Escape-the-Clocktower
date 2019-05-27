@@ -1,0 +1,1411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Audio addon</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="pandoc.css" type="text/css" />
+  <script type="text/javascript" src="autosuggest.js"></script>
+  <script type="text/javascript" src="search_index.js"></script>
+</head>
+<body>
+<div class="sidebar">
+<div>
+<ul>
+<li><a href="index.html"><strong>Contents</strong></a></li>
+<li><a href="config.html">Configuration files</a></li>
+<li><a href="display.html">Display</a></li>
+<li><a href="events.html">Events</a></li>
+<li><a href="file.html">File I/O</a></li>
+<li><a href="fshook.html">Filesystem</a></li>
+<li><a href="fixed.html">Fixed point math</a></li>
+<li><a href="fullscreen_mode.html">Fullscreen modes</a></li>
+<li><a href="graphics.html">Graphics</a></li>
+<li><a href="haptic.html">Haptic</a></li>
+<li><a href="joystick.html">Joystick</a></li>
+<li><a href="keyboard.html">Keyboard</a></li>
+<li><a href="memory.html">Memory</a></li>
+<li><a href="monitor.html">Monitor</a></li>
+<li><a href="mouse.html">Mouse</a></li>
+<li><a href="path.html">Path</a></li>
+<li><a href="shader.html">Shader</a></li>
+<li><a href="state.html">State</a></li>
+<li><a href="system.html">System</a></li>
+<li><a href="threads.html">Threads</a></li>
+<li><a href="time.html">Time</a></li>
+<li><a href="timer.html">Timer</a></li>
+<li><a href="touch.html">Touch input</a></li>
+<li><a href="transformations.html">Transformations</a></li>
+<li><a href="utf8.html">UTF-8</a></li>
+<li><a href="misc.html">Miscellaneous</a></li>
+<li><a href="platform.html">Platform-specific</a></li>
+<li><a href="direct3d.html">Direct3D</a></li>
+<li><a href="opengl.html">OpenGL</a></li>
+</ul>
+<!-- The preceding blank line forces pandoc to terminate the list -->
+</div>
+<div>
+<ul>
+<li><a href="index.html#addons"><strong>Addons</strong></a></li>
+<li><a href="audio.html">Audio addon</a></li>
+<li><a href="acodec.html">Audio codecs</a></li>
+<li><a href="color.html">Color addon</a></li>
+<li><a href="font.html">Font addons</a></li>
+<li><a href="image.html">Image I/O addon</a></li>
+<li><a href="main.html">Main addon</a></li>
+<li><a href="memfile.html">Memfile addon</a></li>
+<li><a href="native_dialog.html">Native dialogs addon</a></li>
+<li><a href="physfs.html">PhysicsFS addon</a></li>
+<li><a href="primitives.html">Primitives addon</a></li>
+<li><a href="video.html">Video streaming addon</a></li>
+</ul>
+<!-- The preceding blank line forces pandoc to terminate the list -->
+</div>
+<div>
+<ul>
+<li><a href="index_all.html"><strong>Index</strong></a></li>
+</ul>
+<!-- The preceding blank line forces pandoc to terminate the list -->
+</div>
+<div class="searchbox">
+<script type="text/javascript">
+function on_search(index, control) {
+    // Note to self: the less-than sign must NOT converted to an entity!
+    // SCRIPT elements are special.  The HTML validator gives bad advice.
+    for (i = 0; i < search_index.length; i++) {
+        if (search_index[i] == control.keywords[index]) {
+            break;
+        }
+    }
+    location.href = search_urls[i];
+}
+</script>
+Search<br/> <input type="text" name="q" id="q" size="15" autocomplete="off"/><br/>
+<script type="text/javascript"> new autosuggest("q", search_index, null, on_search); </script>
+</div>
+</div>
+<div class="content">
+<div id="header">
+<h1 class="title">Audio addon</h1>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#audio-types">Audio types</a><ul>
+<li><a href="#allegro_audio_event_type">ALLEGRO_AUDIO_EVENT_TYPE</a><ul>
+<li><a href="#allegro_event_audio_stream_fragment">ALLEGRO_EVENT_AUDIO_STREAM_FRAGMENT</a></li>
+<li><a href="#allegro_event_audio_stream_finished">ALLEGRO_EVENT_AUDIO_STREAM_FINISHED</a></li>
+<li><a href="#allegro_event_audio_recorder_fragment">ALLEGRO_EVENT_AUDIO_RECORDER_FRAGMENT</a></li>
+</ul></li>
+<li><a href="#allegro_audio_depth">ALLEGRO_AUDIO_DEPTH</a></li>
+<li><a href="#allegro_audio_pan_none">ALLEGRO_AUDIO_PAN_NONE</a></li>
+<li><a href="#allegro_channel_conf">ALLEGRO_CHANNEL_CONF</a></li>
+<li><a href="#allegro_mixer">ALLEGRO_MIXER</a></li>
+<li><a href="#allegro_mixer_quality">ALLEGRO_MIXER_QUALITY</a></li>
+<li><a href="#allegro_playmode">ALLEGRO_PLAYMODE</a></li>
+<li><a href="#allegro_sample_id">ALLEGRO_SAMPLE_ID</a></li>
+<li><a href="#allegro_sample">ALLEGRO_SAMPLE</a></li>
+<li><a href="#allegro_sample_instance">ALLEGRO_SAMPLE_INSTANCE</a></li>
+<li><a href="#allegro_audio_stream">ALLEGRO_AUDIO_STREAM</a></li>
+<li><a href="#allegro_voice">ALLEGRO_VOICE</a></li>
+</ul></li>
+<li><a href="#setting-up-audio">Setting up audio</a><ul>
+<li><a href="#al_install_audio">al_install_audio</a></li>
+<li><a href="#al_uninstall_audio">al_uninstall_audio</a></li>
+<li><a href="#al_is_audio_installed">al_is_audio_installed</a></li>
+<li><a href="#al_reserve_samples">al_reserve_samples</a></li>
+</ul></li>
+<li><a href="#misc-audio-functions">Misc audio functions</a><ul>
+<li><a href="#al_get_allegro_audio_version">al_get_allegro_audio_version</a></li>
+<li><a href="#al_get_audio_depth_size">al_get_audio_depth_size</a></li>
+<li><a href="#al_get_channel_count">al_get_channel_count</a></li>
+<li><a href="#al_fill_silence">al_fill_silence</a></li>
+</ul></li>
+<li><a href="#voice-functions">Voice functions</a><ul>
+<li><a href="#al_create_voice">al_create_voice</a></li>
+<li><a href="#al_destroy_voice">al_destroy_voice</a></li>
+<li><a href="#al_detach_voice">al_detach_voice</a></li>
+<li><a href="#al_attach_audio_stream_to_voice">al_attach_audio_stream_to_voice</a></li>
+<li><a href="#al_attach_mixer_to_voice">al_attach_mixer_to_voice</a></li>
+<li><a href="#al_attach_sample_instance_to_voice">al_attach_sample_instance_to_voice</a></li>
+<li><a href="#al_get_voice_frequency">al_get_voice_frequency</a></li>
+<li><a href="#al_get_voice_channels">al_get_voice_channels</a></li>
+<li><a href="#al_get_voice_depth">al_get_voice_depth</a></li>
+<li><a href="#al_get_voice_playing">al_get_voice_playing</a></li>
+<li><a href="#al_set_voice_playing">al_set_voice_playing</a></li>
+<li><a href="#al_get_voice_position">al_get_voice_position</a></li>
+<li><a href="#al_set_voice_position">al_set_voice_position</a></li>
+</ul></li>
+<li><a href="#sample-functions">Sample functions</a><ul>
+<li><a href="#al_create_sample">al_create_sample</a></li>
+<li><a href="#al_destroy_sample">al_destroy_sample</a></li>
+<li><a href="#al_play_sample">al_play_sample</a></li>
+<li><a href="#al_stop_sample">al_stop_sample</a></li>
+<li><a href="#al_lock_sample_id">al_lock_sample_id</a></li>
+<li><a href="#al_unlock_sample_id">al_unlock_sample_id</a></li>
+<li><a href="#al_stop_samples">al_stop_samples</a></li>
+<li><a href="#al_get_sample_channels">al_get_sample_channels</a></li>
+<li><a href="#al_get_sample_depth">al_get_sample_depth</a></li>
+<li><a href="#al_get_sample_frequency">al_get_sample_frequency</a></li>
+<li><a href="#al_get_sample_length">al_get_sample_length</a></li>
+<li><a href="#al_get_sample_data">al_get_sample_data</a></li>
+</ul></li>
+<li><a href="#sample-instance-functions">Sample instance functions</a><ul>
+<li><a href="#al_create_sample_instance">al_create_sample_instance</a></li>
+<li><a href="#al_destroy_sample_instance">al_destroy_sample_instance</a></li>
+<li><a href="#al_play_sample_instance">al_play_sample_instance</a></li>
+<li><a href="#al_stop_sample_instance">al_stop_sample_instance</a></li>
+<li><a href="#al_get_sample_instance_channels">al_get_sample_instance_channels</a></li>
+<li><a href="#al_get_sample_instance_depth">al_get_sample_instance_depth</a></li>
+<li><a href="#al_get_sample_instance_frequency">al_get_sample_instance_frequency</a></li>
+<li><a href="#al_get_sample_instance_length">al_get_sample_instance_length</a></li>
+<li><a href="#al_set_sample_instance_length">al_set_sample_instance_length</a></li>
+<li><a href="#al_get_sample_instance_position">al_get_sample_instance_position</a></li>
+<li><a href="#al_set_sample_instance_position">al_set_sample_instance_position</a></li>
+<li><a href="#al_get_sample_instance_speed">al_get_sample_instance_speed</a></li>
+<li><a href="#al_set_sample_instance_speed">al_set_sample_instance_speed</a></li>
+<li><a href="#al_get_sample_instance_gain">al_get_sample_instance_gain</a></li>
+<li><a href="#al_set_sample_instance_gain">al_set_sample_instance_gain</a></li>
+<li><a href="#al_get_sample_instance_pan">al_get_sample_instance_pan</a></li>
+<li><a href="#al_set_sample_instance_pan">al_set_sample_instance_pan</a></li>
+<li><a href="#al_get_sample_instance_time">al_get_sample_instance_time</a></li>
+<li><a href="#al_get_sample_instance_playmode">al_get_sample_instance_playmode</a></li>
+<li><a href="#al_set_sample_instance_playmode">al_set_sample_instance_playmode</a></li>
+<li><a href="#al_get_sample_instance_playing">al_get_sample_instance_playing</a></li>
+<li><a href="#al_set_sample_instance_playing">al_set_sample_instance_playing</a></li>
+<li><a href="#al_get_sample_instance_attached">al_get_sample_instance_attached</a></li>
+<li><a href="#al_detach_sample_instance">al_detach_sample_instance</a></li>
+<li><a href="#al_get_sample">al_get_sample</a></li>
+<li><a href="#al_set_sample">al_set_sample</a></li>
+<li><a href="#al_set_sample_instance_channel_matrix">al_set_sample_instance_channel_matrix</a></li>
+</ul></li>
+<li><a href="#mixer-functions">Mixer functions</a><ul>
+<li><a href="#al_create_mixer">al_create_mixer</a></li>
+<li><a href="#al_destroy_mixer">al_destroy_mixer</a></li>
+<li><a href="#al_get_default_mixer">al_get_default_mixer</a></li>
+<li><a href="#al_set_default_mixer">al_set_default_mixer</a></li>
+<li><a href="#al_restore_default_mixer">al_restore_default_mixer</a></li>
+<li><a href="#al_get_default_voice">al_get_default_voice</a></li>
+<li><a href="#al_set_default_voice">al_set_default_voice</a></li>
+<li><a href="#al_attach_mixer_to_mixer">al_attach_mixer_to_mixer</a></li>
+<li><a href="#al_attach_sample_instance_to_mixer">al_attach_sample_instance_to_mixer</a></li>
+<li><a href="#al_attach_audio_stream_to_mixer">al_attach_audio_stream_to_mixer</a></li>
+<li><a href="#al_get_mixer_frequency">al_get_mixer_frequency</a></li>
+<li><a href="#al_set_mixer_frequency">al_set_mixer_frequency</a></li>
+<li><a href="#al_get_mixer_channels">al_get_mixer_channels</a></li>
+<li><a href="#al_get_mixer_depth">al_get_mixer_depth</a></li>
+<li><a href="#al_get_mixer_gain">al_get_mixer_gain</a></li>
+<li><a href="#al_set_mixer_gain">al_set_mixer_gain</a></li>
+<li><a href="#al_get_mixer_quality">al_get_mixer_quality</a></li>
+<li><a href="#al_set_mixer_quality">al_set_mixer_quality</a></li>
+<li><a href="#al_get_mixer_playing">al_get_mixer_playing</a></li>
+<li><a href="#al_set_mixer_playing">al_set_mixer_playing</a></li>
+<li><a href="#al_get_mixer_attached">al_get_mixer_attached</a></li>
+<li><a href="#al_detach_mixer">al_detach_mixer</a></li>
+<li><a href="#al_set_mixer_postprocess_callback">al_set_mixer_postprocess_callback</a></li>
+</ul></li>
+<li><a href="#stream-functions">Stream functions</a><ul>
+<li><a href="#al_create_audio_stream">al_create_audio_stream</a></li>
+<li><a href="#al_destroy_audio_stream">al_destroy_audio_stream</a></li>
+<li><a href="#al_get_audio_stream_event_source">al_get_audio_stream_event_source</a></li>
+<li><a href="#al_drain_audio_stream">al_drain_audio_stream</a></li>
+<li><a href="#al_rewind_audio_stream">al_rewind_audio_stream</a></li>
+<li><a href="#al_get_audio_stream_frequency">al_get_audio_stream_frequency</a></li>
+<li><a href="#al_get_audio_stream_channels">al_get_audio_stream_channels</a></li>
+<li><a href="#al_get_audio_stream_depth">al_get_audio_stream_depth</a></li>
+<li><a href="#al_get_audio_stream_length">al_get_audio_stream_length</a></li>
+<li><a href="#al_get_audio_stream_speed">al_get_audio_stream_speed</a></li>
+<li><a href="#al_set_audio_stream_speed">al_set_audio_stream_speed</a></li>
+<li><a href="#al_get_audio_stream_gain">al_get_audio_stream_gain</a></li>
+<li><a href="#al_set_audio_stream_gain">al_set_audio_stream_gain</a></li>
+<li><a href="#al_get_audio_stream_pan">al_get_audio_stream_pan</a></li>
+<li><a href="#al_set_audio_stream_pan">al_set_audio_stream_pan</a></li>
+<li><a href="#al_get_audio_stream_playing">al_get_audio_stream_playing</a></li>
+<li><a href="#al_set_audio_stream_playing">al_set_audio_stream_playing</a></li>
+<li><a href="#al_get_audio_stream_playmode">al_get_audio_stream_playmode</a></li>
+<li><a href="#al_set_audio_stream_playmode">al_set_audio_stream_playmode</a></li>
+<li><a href="#al_get_audio_stream_attached">al_get_audio_stream_attached</a></li>
+<li><a href="#al_detach_audio_stream">al_detach_audio_stream</a></li>
+<li><a href="#al_get_audio_stream_played_samples">al_get_audio_stream_played_samples</a></li>
+<li><a href="#al_get_audio_stream_fragment">al_get_audio_stream_fragment</a></li>
+<li><a href="#al_set_audio_stream_fragment">al_set_audio_stream_fragment</a></li>
+<li><a href="#al_get_audio_stream_fragments">al_get_audio_stream_fragments</a></li>
+<li><a href="#al_get_available_audio_stream_fragments">al_get_available_audio_stream_fragments</a></li>
+<li><a href="#al_seek_audio_stream_secs">al_seek_audio_stream_secs</a></li>
+<li><a href="#al_get_audio_stream_position_secs">al_get_audio_stream_position_secs</a></li>
+<li><a href="#al_get_audio_stream_length_secs">al_get_audio_stream_length_secs</a></li>
+<li><a href="#al_set_audio_stream_loop_secs">al_set_audio_stream_loop_secs</a></li>
+<li><a href="#al_set_audio_stream_channel_matrix">al_set_audio_stream_channel_matrix</a></li>
+</ul></li>
+<li><a href="#audio-file-io">Audio file I/O</a><ul>
+<li><a href="#al_register_sample_loader">al_register_sample_loader</a></li>
+<li><a href="#al_register_sample_loader_f">al_register_sample_loader_f</a></li>
+<li><a href="#al_register_sample_saver">al_register_sample_saver</a></li>
+<li><a href="#al_register_sample_saver_f">al_register_sample_saver_f</a></li>
+<li><a href="#al_register_audio_stream_loader">al_register_audio_stream_loader</a></li>
+<li><a href="#al_register_audio_stream_loader_f">al_register_audio_stream_loader_f</a></li>
+<li><a href="#al_load_sample">al_load_sample</a></li>
+<li><a href="#al_load_sample_f">al_load_sample_f</a></li>
+<li><a href="#al_load_audio_stream">al_load_audio_stream</a></li>
+<li><a href="#al_load_audio_stream_f">al_load_audio_stream_f</a></li>
+<li><a href="#al_save_sample">al_save_sample</a></li>
+<li><a href="#al_save_sample_f">al_save_sample_f</a></li>
+</ul></li>
+<li><a href="#audio-recording">Audio recording</a><ul>
+<li><a href="#allegro_audio_recorder">ALLEGRO_AUDIO_RECORDER</a></li>
+<li><a href="#allegro_audio_recorder_event">ALLEGRO_AUDIO_RECORDER_EVENT</a></li>
+<li><a href="#al_create_audio_recorder">al_create_audio_recorder</a></li>
+<li><a href="#al_start_audio_recorder">al_start_audio_recorder</a></li>
+<li><a href="#al_stop_audio_recorder">al_stop_audio_recorder</a></li>
+<li><a href="#al_is_audio_recorder_recording">al_is_audio_recorder_recording</a></li>
+<li><a href="#al_get_audio_recorder_event">al_get_audio_recorder_event</a></li>
+<li><a href="#al_get_audio_recorder_event_source">al_get_audio_recorder_event_source</a></li>
+<li><a href="#al_destroy_audio_recorder">al_destroy_audio_recorder</a></li>
+</ul></li>
+</ul>
+</div>
+<p>These functions are declared in the following header file. Link with allegro_audio.</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"> <span class="ot">#include &lt;allegro5/allegro_audio.h&gt;</span></code></pre></div>
+<p>In order to just play some samples, here's how to quick start with Allegro's audio addon: Call <a href="audio.html#al_reserve_samples">al_reserve_samples</a> with the number of samples you'd like to be able to play simultaneously (don't forget to call <a href="audio.html#al_install_audio">al_install_audio</a> beforehand). If these succeed, you can now call <a href="audio.html#al_play_sample">al_play_sample</a>, with data obtained by <a href="audio.html#al_load_sample">al_load_sample</a>, for example (don't forget to <a href="acodec.html#al_init_acodec_addon">initialize the acodec addon</a>). You don't need to worry about voices, mixers or sample instances when using this approach. In order to stop samples, you can use the <a href="audio.html#allegro_sample_id">ALLEGRO_SAMPLE_ID</a> that al_play_sample returns.</p>
+<p>If you want to play large audio files (e.g. background music) without loading the whole file at once or if you want to output audio generated in real-time, you can use Allegro's audio streams. The easiest way to setup an <a href="audio.html#allegro_audio_stream">audio stream</a> is to attach it to the default mixer (created for you by <a href="audio.html#al_reserve_samples">al_reserve_samples</a>) using <a href="audio.html#al_attach_audio_stream_to_mixer">al_attach_audio_stream_to_mixer</a> on the return value of <a href="audio.html#al_get_default_mixer">al_get_default_mixer</a>. Allegro will feed streams created from files using <a href="audio.html#al_load_audio_stream">al_load_audio_stream</a> automatically. However, you can also stream audio data you generate on the fly. In this case, audio streams will emit an event when it's time to <a href="audio.html#al_get_audio_stream_fragment">provide the next fragment (chunk) of audio data</a>. You can control several playback parameters of audio streams (speed, gain, pan, playmode, played/paused; additionally position and loop points when streaming a file).</p>
+<p>For more fine-grained control over audio output, here's a short description of the basic concepts:</p>
+<p>Voices represent audio devices on the system. Basically, every audio output chain that you want to be heard needs to end up in a voice. As voices are on the hardware/driver side of things, there is only limited control over their parameters (frequency, sample format, channel configuration). The number of available voices is limited as well. Typically, you will only use one voice and attach a mixer to it. Calling <a href="audio.html#al_reserve_samples">al_reserve_samples</a> will do this for you by setting up a default voice and mixer; it can also be achieved by calling <a href="audio.html#al_restore_default_mixer">al_restore_default_mixer</a>. Although you <em>can</em> attach sample instances and audio streams directly to a voice without using a mixer, it is, as of now, not recommended. In contrast to mixers, you can only attach a single object to a voice anyway.</p>
+<p>Mixers mix several sample instances and/or audio streams into a single output buffer, converting sample data with differing formats according to their output parameters (frequency, depth, channels) in the process. In order to play several samples/streams at once reliably, you will need at least one mixer. A mixer that is not (indirectly) attached to a voice will remain silent. For most use cases, one (default) mixer attached to a single voice will be sufficient. You may attach mixers to other mixers in order to create complex audio chains.</p>
+<p>Samples (<a href="audio.html#allegro_sample">ALLEGRO_SAMPLE</a>) just represent &quot;passive&quot; buffers for sample data in memory. In order to play a sample, a sample instance (<a href="audio.html#allegro_sample_instance">ALLEGRO_SAMPLE_INSTANCE</a>) needs to be created and attached to a mixer (or voice). Sample instances control <em>how</em> the underlying samples are played. Several playback parameters (position, speed, gain, pan, playmode, playing/paused) can be adjusted. Particularly, multiple instances may be created from the same sample, e.g. with different parameters.</p>
+<p>Audio streams (see above) are similar to sample instances insofar as they respond to the same playback parameters and have to be attached to mixers or voices. A single audio stream can only be played once simultaneously.</p>
+<p>For example, consider the following configuration of the audio system.</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_VOICE* voice = al_create_voice(<span class="dv">44100</span>, ALLEGRO_AUDIO_DEPTH_INT16,
+    ALLEGRO_CHANNEL_CONF_2);
+
+ALLEGRO_MIXER* mixer_1 = al_create_mixer(<span class="dv">44100</span>, ALLEGRO_AUDIO_DEPTH_FLOAT32,
+    ALLEGRO_CHANNEL_CONF_2);
+ALLEGRO_MIXER* mixer_2 = al_create_mixer(<span class="dv">44100</span>, ALLEGRO_AUDIO_DEPTH_FLOAT32,
+    ALLEGRO_CHANNEL_CONF_2);
+
+<span class="co">/* Load a stream, the stream starts in a playing state and just needs</span>
+<span class="co"> * to be attached to actually output sound. */</span>
+ALLEGRO_AUDIO_STREAM* stream = al_load_audio_stream(<span class="st">&quot;music.ogg&quot;</span>, <span class="dv">4</span>, <span class="dv">2048</span>);
+
+<span class="co">/* The sample needs sample instances to output sound. */</span>
+ALLEGRO_SAMPLE* sample = al_load_sample(<span class="st">&quot;sound.wav&quot;</span>)
+ALLEGRO_SAMPLE_INSTANCE* instance_1 = al_create_sample_instance(sample);
+ALLEGRO_SAMPLE_INSTANCE* instance_2 = al_create_sample_instance(sample);
+
+<span class="co">/* Attach everything up (see diagram). */</span>
+al_attach_mixer_to_voice(mixer_1, voice);
+al_attach_mixer_to_mixer(mixer_2, mixer_1);
+al_attach_audio_stream_to_mixer(stream, mixer_1);
+al_attach_sample_instance_to_mixer(instance_1, mixer_2);
+al_attach_sample_instance_to_mixer(instance_2, mixer_2);
+
+<span class="co">/* Play two copies of the sound simultaneously. */</span>
+al_set_sample_instance_playing(instance_1, true);
+al_set_sample_instance_playing(instance_2, true);</code></pre></div>
+<div class="figure">
+<img src="images/audio.png" alt="An example configuration of the audio system to play music and a sound." />
+<p class="caption"><em>An example configuration of the audio system to play music and a sound.</em></p>
+</div>
+<p>Since we have two mixers, with the sample instances connected to a different mixer than the audio stream, you can control the volume of all the instances independently from the music by setting the gain of the mixer / stream. Having two sample instances lets you play two copies of the sample simultaneously.</p>
+<p>With this in mind, another look at <a href="audio.html#al_reserve_samples">al_reserve_samples</a> and <a href="audio.html#al_play_sample">al_play_sample</a> is due: What the former does internally is to create a specified number of sample instances that are &quot;empty&quot; at first, i.e. with no sample data set. When al_play_sample is called, it'll use one of these internal sample instances that is not currently playing to play the requested sample. All of these sample instances will be attached to the default mixer, which can be changed via <a href="audio.html#al_set_default_mixer">al_set_default_mixer</a>.</p>
+<p>See <a href="audio.html#audio-recording">Audio recording</a> for Allegro's audio recording API, which is, as of now, still unstable and subject to change.</p>
+<h1 id="audio-types">Audio types</h1>
+<p>Events sent by <a href="audio.html#al_get_audio_stream_event_source">al_get_audio_stream_event_source</a> or <a href="audio.html#al_get_audio_recorder_event_source">al_get_audio_recorder_event_source</a>.</p>
+<h2 id="allegro_audio_event_type">ALLEGRO_AUDIO_EVENT_TYPE</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">enum</span> ALLEGRO_AUDIO_EVENT_TYPE</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L43">Source Code</a></p>
+<h3 id="allegro_event_audio_stream_fragment">ALLEGRO_EVENT_AUDIO_STREAM_FRAGMENT</h3>
+<p>Sent when a stream fragment is ready to be filled in. See <a href="audio.html#al_get_audio_stream_fragment">al_get_audio_stream_fragment</a>.</p>
+<h3 id="allegro_event_audio_stream_finished">ALLEGRO_EVENT_AUDIO_STREAM_FINISHED</h3>
+<p>Sent when a stream is finished.</p>
+<h3 id="allegro_event_audio_recorder_fragment">ALLEGRO_EVENT_AUDIO_RECORDER_FRAGMENT</h3>
+<p>Sent after a user-specified number of samples have been recorded. Convert this to <a href="audio.html#allegro_audio_recorder_event">ALLEGRO_AUDIO_RECORDER_EVENT</a> via <a href="audio.html#al_get_audio_recorder_event">al_get_audio_recorder_event</a>.</p>
+<p>You must always check the values for the buffer and samples as they are not guaranteed to be exactly what was originally specified.</p>
+<p>Since: 5.1.1</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> The API may need a slight redesign.</p>
+</blockquote>
+<h2 id="allegro_audio_depth">ALLEGRO_AUDIO_DEPTH</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">enum</span> ALLEGRO_AUDIO_DEPTH</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L71">Source Code</a></p>
+<p>Sample depth and type as well as signedness. Mixers only use 32-bit signed float (-1..+1), or 16-bit signed integers. Signedness is determined by an &quot;unsigned&quot; bit-flag applied to the depth value.</p>
+<ul>
+<li>ALLEGRO_AUDIO_DEPTH_INT8</li>
+<li>ALLEGRO_AUDIO_DEPTH_INT16</li>
+<li>ALLEGRO_AUDIO_DEPTH_INT24</li>
+<li>ALLEGRO_AUDIO_DEPTH_FLOAT32</li>
+<li>ALLEGRO_AUDIO_DEPTH_UNSIGNED</li>
+</ul>
+<p>For convenience:</p>
+<ul>
+<li>ALLEGRO_AUDIO_DEPTH_UINT8</li>
+<li>ALLEGRO_AUDIO_DEPTH_UINT16</li>
+<li>ALLEGRO_AUDIO_DEPTH_UINT24</li>
+</ul>
+<h2 id="allegro_audio_pan_none">ALLEGRO_AUDIO_PAN_NONE</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="ot">#define ALLEGRO_AUDIO_PAN_NONE      (-1000.0f)</span></code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L140">Source Code</a></p>
+<p>A special value for the pan property of sample instances and audio streams. Use this value to disable panning on sample instances and audio streams, and play them without attentuation implied by panning support.</p>
+<p>ALLEGRO_AUDIO_PAN_NONE is different from a pan value of 0.0 (centered) because, when panning is enabled, we try to maintain a constant sound power level as a sample is panned from left to right. A sound coming out of one speaker should sound as loud as it does when split over two speakers. As a consequence, a sample with pan value 0.0 will be 3 dB softer than the original level.</p>
+<p>(Please correct us if this is wrong.)</p>
+<h2 id="allegro_channel_conf">ALLEGRO_CHANNEL_CONF</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">enum</span> ALLEGRO_CHANNEL_CONF</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L96">Source Code</a></p>
+<p>Speaker configuration (mono, stereo, 2.1, etc).</p>
+<ul>
+<li>ALLEGRO_CHANNEL_CONF_1</li>
+<li>ALLEGRO_CHANNEL_CONF_2</li>
+<li>ALLEGRO_CHANNEL_CONF_3</li>
+<li>ALLEGRO_CHANNEL_CONF_4</li>
+<li>ALLEGRO_CHANNEL_CONF_5_1</li>
+<li>ALLEGRO_CHANNEL_CONF_6_1</li>
+<li>ALLEGRO_CHANNEL_CONF_7_1</li>
+</ul>
+<h2 id="allegro_mixer">ALLEGRO_MIXER</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">typedef</span> <span class="kw">struct</span> ALLEGRO_MIXER ALLEGRO_MIXER;</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L169">Source Code</a></p>
+<p>A mixer mixes together attached streams into a single buffer. In the process, it converts channel configurations, sample frequencies and audio depths of the attached sample instances and audio streams accordingly. You can control the quality of this conversion using ALLEGRO_MIXER_QUALITY.</p>
+<p>When going from mono to stereo (and above), the mixer reduces the volume of both channels by <code>sqrt(2)</code>. When going from stereo (and above) to mono, the mixer reduces the volume of the left and right channels by <code>sqrt(2)</code> before adding them to the center channel (if present).</p>
+<h2 id="allegro_mixer_quality">ALLEGRO_MIXER_QUALITY</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">enum</span> ALLEGRO_MIXER_QUALITY</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L130">Source Code</a></p>
+<ul>
+<li>ALLEGRO_MIXER_QUALITY_POINT - point sampling</li>
+<li>ALLEGRO_MIXER_QUALITY_LINEAR - linear interpolation</li>
+<li>ALLEGRO_MIXER_QUALITY_CUBIC - cubic interpolation (since: 5.0.8, 5.1.4)</li>
+</ul>
+<h2 id="allegro_playmode">ALLEGRO_PLAYMODE</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">enum</span> ALLEGRO_PLAYMODE</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L118">Source Code</a></p>
+<p>Sample and stream playback mode.</p>
+<ul>
+<li>ALLEGRO_PLAYMODE_ONCE</li>
+<li>ALLEGRO_PLAYMODE_LOOP</li>
+<li>ALLEGRO_PLAYMODE_BIDIR</li>
+</ul>
+<h2 id="allegro_sample_id">ALLEGRO_SAMPLE_ID</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">typedef</span> <span class="kw">struct</span> ALLEGRO_SAMPLE_ID ALLEGRO_SAMPLE_ID;</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L149">Source Code</a></p>
+<p>An ALLEGRO_SAMPLE_ID represents a sample being played via <a href="audio.html#al_play_sample">al_play_sample</a>. It can be used to later stop the sample with <a href="audio.html#al_stop_sample">al_stop_sample</a>. The underlying ALLEGRO_SAMPLE_INSTANCE can be extracted using <a href="audio.html#al_lock_sample_id">al_lock_sample_id</a>.</p>
+<h2 id="allegro_sample">ALLEGRO_SAMPLE</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">typedef</span> <span class="kw">struct</span> ALLEGRO_SAMPLE ALLEGRO_SAMPLE;</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L144">Source Code</a></p>
+<p>An ALLEGRO_SAMPLE object stores the data necessary for playing pre-defined digital audio. It holds a user-specified PCM data buffer and information about its format (data length, depth, frequency, channel configuration). You can have the same ALLEGRO_SAMPLE playing multiple times simultaneously.</p>
+<p>See also: <a href="audio.html#allegro_sample_instance">ALLEGRO_SAMPLE_INSTANCE</a></p>
+<h2 id="allegro_sample_instance">ALLEGRO_SAMPLE_INSTANCE</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">typedef</span> <span class="kw">struct</span> ALLEGRO_SAMPLE_INSTANCE ALLEGRO_SAMPLE_INSTANCE;</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L159">Source Code</a></p>
+<p>An ALLEGRO_SAMPLE_INSTANCE object represents a playable instance of a predefined sound effect. It holds information about how the effect should be played: These playback parameters consist of the looping mode, loop start/end points, playing position, speed, gain, pan and the playmode. Whether a sample instance is currently playing or paused is also one of its properties.</p>
+<p>An instance uses the data from an <a href="audio.html#allegro_sample">ALLEGRO_SAMPLE</a> object. Multiple instances may be created from the same ALLEGRO_SAMPLE. An ALLEGRO_SAMPLE must not be destroyed while there are instances which reference it.</p>
+<p>To actually produce audio output, an ALLEGRO_SAMPLE_INSTANCE must be attached to an <a href="audio.html#allegro_mixer">ALLEGRO_MIXER</a> which eventually reaches an <a href="audio.html#allegro_voice">ALLEGRO_VOICE</a> object.</p>
+<p>See also: <a href="audio.html#allegro_sample">ALLEGRO_SAMPLE</a></p>
+<h2 id="allegro_audio_stream">ALLEGRO_AUDIO_STREAM</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">typedef</span> <span class="kw">struct</span> ALLEGRO_AUDIO_STREAM ALLEGRO_AUDIO_STREAM;</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L164">Source Code</a></p>
+<p>An ALLEGRO_AUDIO_STREAM object is used to stream generated audio to the sound device, in real-time. This is done by reading from a buffer, which is split into a number of fragments. Whenever a fragment has finished playing, the user can refill it with new data.</p>
+<p>As with <a href="audio.html#allegro_sample_instance">ALLEGRO_SAMPLE_INSTANCE</a> objects, streams store information necessary for playback, so you may not play the same stream multiple times simultaneously. Streams also need to be attached to an <a href="audio.html#allegro_mixer">ALLEGRO_MIXER</a>, which, eventually, reaches an <a href="audio.html#allegro_voice">ALLEGRO_VOICE</a> object.</p>
+<p>While playing, you must periodically fill fragments with new audio data. To know when a new fragment is ready to be filled, you can either directly check with <a href="audio.html#al_get_available_audio_stream_fragments">al_get_available_audio_stream_fragments</a>, or listen to events from the stream.</p>
+<p>You can register an audio stream event source to an event queue; see <a href="audio.html#al_get_audio_stream_event_source">al_get_audio_stream_event_source</a>. An <a href="audio.html#allegro_event_audio_stream_fragment">ALLEGRO_EVENT_AUDIO_STREAM_FRAGMENT</a> event is generated whenever a new fragment is ready. When you receive an event, use <a href="audio.html#al_get_audio_stream_fragment">al_get_audio_stream_fragment</a> to obtain a pointer to the fragment to be filled. The size and format are determined by the parameters passed to <a href="audio.html#al_create_audio_stream">al_create_audio_stream</a>.</p>
+<p>If you're late with supplying new data, the stream will be silent until new data is provided. You must call <a href="audio.html#al_drain_audio_stream">al_drain_audio_stream</a> when you're finished with supplying data to the stream.</p>
+<p>If the stream is created by <a href="audio.html#al_load_audio_stream">al_load_audio_stream</a> then it will also generate an <a href="audio.html#allegro_event_audio_stream_finished">ALLEGRO_EVENT_AUDIO_STREAM_FINISHED</a> event if it reaches the end of the file and is not set to loop.</p>
+<h2 id="allegro_voice">ALLEGRO_VOICE</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">typedef</span> <span class="kw">struct</span> ALLEGRO_VOICE ALLEGRO_VOICE;</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L174">Source Code</a></p>
+<p>A voice represents an audio device on the system, which may be a real device, or an abstract device provided by the operating system. To play back audio, you would attach a mixer, sample instance or audio stream to a voice.</p>
+<p>See also: <a href="audio.html#allegro_mixer">ALLEGRO_MIXER</a>, <a href="audio.html#allegro_sample">ALLEGRO_SAMPLE</a>, <a href="audio.html#allegro_audio_stream">ALLEGRO_AUDIO_STREAM</a></p>
+<h1 id="setting-up-audio">Setting up audio</h1>
+<h2 id="al_install_audio">al_install_audio</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_install_audio(<span class="dt">void</span>)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio.c#L378">Source Code</a></p>
+<p>Install the audio subsystem.</p>
+<p>Returns true on success, false on failure.</p>
+<blockquote>
+<p>Note: most users will call <a href="audio.html#al_reserve_samples">al_reserve_samples</a> and <a href="acodec.html#al_init_acodec_addon">al_init_acodec_addon</a> after this.</p>
+</blockquote>
+<p>See also: <a href="audio.html#al_reserve_samples">al_reserve_samples</a>, <a href="audio.html#al_uninstall_audio">al_uninstall_audio</a>, <a href="audio.html#al_is_audio_installed">al_is_audio_installed</a>, <a href="acodec.html#al_init_acodec_addon">al_init_acodec_addon</a></p>
+<h2 id="al_uninstall_audio">al_uninstall_audio</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_uninstall_audio(<span class="dt">void</span>)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio.c#L397">Source Code</a></p>
+<p>Uninstalls the audio subsystem.</p>
+<p>See also: <a href="audio.html#al_install_audio">al_install_audio</a></p>
+<h2 id="al_is_audio_installed">al_is_audio_installed</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_is_audio_installed(<span class="dt">void</span>)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio.c#L412">Source Code</a></p>
+<p>Returns true if <a href="audio.html#al_install_audio">al_install_audio</a> was called previously and returned successfully.</p>
+<h2 id="al_reserve_samples">al_reserve_samples</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_reserve_samples(<span class="dt">int</span> reserve_samples)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L207">Source Code</a></p>
+<p>Reserves a number of sample instances, attaching them to the default mixer. If no default mixer is set when this function is called, then it will create one and attach it to the default voice. If no default voice has been set, it, too, will be created.</p>
+<p>If you call this function a second time with a smaller number of samples, then the excess internal sample instances will be destroyed causing some sounds to stop and some instances returned by <a href="audio.html#al_lock_sample_id">al_lock_sample_id</a> to be invalidated.</p>
+<p>This diagram illustrates the structures that are set up:</p>
+<pre><code>                                      sample instance 1
+                                    / sample instance 2
+default voice &lt;-- default mixer &lt;---         .
+                                    \        .
+                                      sample instance N</code></pre>
+<p>Returns true on success, false on error. <a href="audio.html#al_install_audio">al_install_audio</a> must have been called first.</p>
+<p>See also: <a href="audio.html#al_set_default_mixer">al_set_default_mixer</a>, <a href="audio.html#al_play_sample">al_play_sample</a></p>
+<h1 id="misc-audio-functions">Misc audio functions</h1>
+<h2 id="al_get_allegro_audio_version">al_get_allegro_audio_version</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">uint32_t</span> al_get_allegro_audio_version(<span class="dt">void</span>)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio.c#L419">Source Code</a></p>
+<p>Returns the (compiled) version of the addon, in the same format as <a href="system.html#al_get_allegro_version">al_get_allegro_version</a>.</p>
+<h2 id="al_get_audio_depth_size">al_get_audio_depth_size</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">size_t al_get_audio_depth_size(ALLEGRO_AUDIO_DEPTH depth)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio.c#L65">Source Code</a></p>
+<p>Return the size of a sample, in bytes, for the given format. The format is one of the values listed under <a href="audio.html#allegro_audio_depth">ALLEGRO_AUDIO_DEPTH</a>.</p>
+<h2 id="al_get_channel_count">al_get_channel_count</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">size_t al_get_channel_count(ALLEGRO_CHANNEL_CONF conf)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio.c#L57">Source Code</a></p>
+<p>Return the number of channels for the given channel configuration, which is one of the values listed under <a href="audio.html#allegro_channel_conf">ALLEGRO_CHANNEL_CONF</a>.</p>
+<h2 id="al_fill_silence">al_fill_silence</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_fill_silence(<span class="dt">void</span> *buf, <span class="dt">unsigned</span> <span class="dt">int</span> samples,
+   ALLEGRO_AUDIO_DEPTH depth, ALLEGRO_CHANNEL_CONF chan_conf)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio.c#L127">Source Code</a></p>
+<p>Fill a buffer with silence, for the given format and channel configuration. The buffer must have enough space for the given number of samples, and be properly aligned.</p>
+<p>Since: 5.1.8</p>
+<h1 id="voice-functions">Voice functions</h1>
+<h2 id="al_create_voice">al_create_voice</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_VOICE *al_create_voice(<span class="dt">unsigned</span> <span class="dt">int</span> freq,
+   ALLEGRO_AUDIO_DEPTH depth, ALLEGRO_CHANNEL_CONF chan_conf)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L65">Source Code</a></p>
+<p>Creates a voice structure and allocates a voice from the digital sound driver. The passed frequency (in Hz), sample format and channel configuration are used as a hint to what kind of data will be sent to the voice. However, the underlying sound driver is free to use non-matching values. For example, it may be the native format of the sound hardware.</p>
+<p>If a mixer is attached to the voice, the mixer will handle the conversion of all its input streams to the voice format and care does not have to be taken for this. However if you access the voice directly, make sure to not rely on the parameters passed to this function, but instead query the returned voice for the actual settings.</p>
+<p>See also: <a href="audio.html#al_destroy_voice">al_destroy_voice</a></p>
+<h2 id="al_destroy_voice">al_destroy_voice</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_destroy_voice(ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L106">Source Code</a></p>
+<p>Destroys the voice and deallocates it from the digital driver. Does nothing if the voice is NULL.</p>
+<p>See also: <a href="audio.html#al_create_voice">al_create_voice</a></p>
+<h2 id="al_detach_voice">al_detach_voice</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_detach_voice(ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L368">Source Code</a></p>
+<p>Detaches the mixer, sample instance or audio stream from the voice.</p>
+<p>See also: <a href="audio.html#al_attach_mixer_to_voice">al_attach_mixer_to_voice</a>, <a href="audio.html#al_attach_sample_instance_to_voice">al_attach_sample_instance_to_voice</a>, <a href="audio.html#al_attach_audio_stream_to_voice">al_attach_audio_stream_to_voice</a></p>
+<h2 id="al_attach_audio_stream_to_voice">al_attach_audio_stream_to_voice</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_attach_audio_stream_to_voice(ALLEGRO_AUDIO_STREAM *stream,
+   ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L249">Source Code</a></p>
+<p>Attaches an audio stream to a voice. The same rules as <a href="audio.html#al_attach_sample_instance_to_voice">al_attach_sample_instance_to_voice</a> apply. This may fail if the driver can't create a voice with the buffer count and buffer size the stream uses.</p>
+<p>An audio stream attached directly to a voice has a number of limitations: The audio stream plays immediately and cannot be stopped. The stream position, speed, gain and panning cannot be changed. At this time, we don't recommend attaching audio streams directly to voices. Use a mixer inbetween.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_detach_voice">al_detach_voice</a></p>
+<h2 id="al_attach_mixer_to_voice">al_attach_mixer_to_voice</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_attach_mixer_to_voice(ALLEGRO_MIXER *mixer, ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L317">Source Code</a></p>
+<p>Attaches a mixer to a voice. It must have the same frequency and channel configuration, but the depth may be different.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_detach_voice">al_detach_voice</a></p>
+<h2 id="al_attach_sample_instance_to_voice">al_attach_sample_instance_to_voice</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_attach_sample_instance_to_voice(ALLEGRO_SAMPLE_INSTANCE *spl,
+   ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L126">Source Code</a></p>
+<p>Attaches a sample instance to a voice, and allows it to play. The instance's gain and loop mode will be ignored, and it must have the same frequency, channel configuration and depth (including signed-ness) as the voice. This function may fail if the selected driver doesn't support preloading sample data.</p>
+<p>At this time, we don't recommend attaching sample instances directly to voices. Use a mixer inbetween.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_detach_voice">al_detach_voice</a></p>
+<h2 id="al_get_voice_frequency">al_get_voice_frequency</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_voice_frequency(<span class="dt">const</span> ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L402">Source Code</a></p>
+<p>Return the frequency of the voice (in Hz), e.g. 44100.</p>
+<h2 id="al_get_voice_channels">al_get_voice_channels</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_CHANNEL_CONF al_get_voice_channels(<span class="dt">const</span> ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L430">Source Code</a></p>
+<p>Return the channel configuration of the voice.</p>
+<p>See also: <a href="audio.html#allegro_channel_conf">ALLEGRO_CHANNEL_CONF</a>.</p>
+<h2 id="al_get_voice_depth">al_get_voice_depth</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_AUDIO_DEPTH al_get_voice_depth(<span class="dt">const</span> ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L440">Source Code</a></p>
+<p>Return the audio depth of the voice.</p>
+<p>See also: <a href="audio.html#allegro_audio_depth">ALLEGRO_AUDIO_DEPTH</a>.</p>
+<h2 id="al_get_voice_playing">al_get_voice_playing</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_get_voice_playing(<span class="dt">const</span> ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L450">Source Code</a></p>
+<p>Return true if the voice is currently playing.</p>
+<p>See also: <a href="audio.html#al_set_voice_playing">al_set_voice_playing</a></p>
+<h2 id="al_set_voice_playing">al_set_voice_playing</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_voice_playing(ALLEGRO_VOICE *voice, bool val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L487">Source Code</a></p>
+<p>Change whether a voice is playing or not. This can only work if the voice has a non-streaming object attached to it, e.g. a sample instance. On success the voice's current sample position is reset.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_get_voice_playing">al_get_voice_playing</a></p>
+<h2 id="al_get_voice_position">al_get_voice_position</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_voice_position(<span class="dt">const</span> ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L412">Source Code</a></p>
+<p>When the voice has a non-streaming object attached to it, e.g. a sample, returns the voice's current sample position. Otherwise, returns zero.</p>
+<p>See also: <a href="audio.html#al_set_voice_position">al_set_voice_position</a>.</p>
+<h2 id="al_set_voice_position">al_set_voice_position</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_voice_position(ALLEGRO_VOICE *voice, <span class="dt">unsigned</span> <span class="dt">int</span> val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_voice.c#L468">Source Code</a></p>
+<p>Set the voice position. This can only work if the voice has a non-streaming object attached to it, e.g. a sample instance.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_get_voice_position">al_get_voice_position</a>.</p>
+<h1 id="sample-functions">Sample functions</h1>
+<h2 id="al_create_sample">al_create_sample</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_SAMPLE *al_create_sample(<span class="dt">void</span> *buf, <span class="dt">unsigned</span> <span class="dt">int</span> samples,
+   <span class="dt">unsigned</span> <span class="dt">int</span> freq, ALLEGRO_AUDIO_DEPTH depth,
+   ALLEGRO_CHANNEL_CONF chan_conf, bool free_buf)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L135">Source Code</a></p>
+<p>Create a sample data structure from the supplied buffer. If <code>free_buf</code> is true then the buffer will be freed with <a href="memory.html#al_free">al_free</a> when the sample data structure is destroyed. For portability (especially Windows), the buffer should have been allocated with <a href="memory.html#al_malloc">al_malloc</a>. Otherwise you should free the sample data yourself.</p>
+<p>A sample that is referred to by the <code>samples</code> parameter refers to a sequence channel intensities. E.g. if you're making a stereo sample with the <code>samples</code> set to 4, then the layout of the data in <code>buf</code> will be:</p>
+<pre><code>LRLRLRLR</code></pre>
+<p>Where L and R are the intensities for the left and right channels respectively. A single sample, then, refers to the LR pair in this example.</p>
+<p>To allocate a buffer of the correct size, you can use something like this:</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span> sample_size = al_get_channel_count(chan_conf)
+                  * al_get_audio_depth_size(depth);
+<span class="dt">int</span> bytes = samples * sample_size;
+<span class="dt">void</span> *buffer = al_malloc(bytes);</code></pre></div>
+<p>See also: <a href="audio.html#al_destroy_sample">al_destroy_sample</a>, <a href="audio.html#allegro_audio_depth">ALLEGRO_AUDIO_DEPTH</a>, <a href="audio.html#allegro_channel_conf">ALLEGRO_CHANNEL_CONF</a></p>
+<h2 id="al_destroy_sample">al_destroy_sample</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_destroy_sample(ALLEGRO_SAMPLE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L188">Source Code</a></p>
+<p>Free the sample data structure. If it was created with the <code>free_buf</code> parameter set to true, then the buffer will be freed with <a href="memory.html#al_free">al_free</a>.</p>
+<p>This function will stop any sample instances which may be playing the buffer referenced by the <a href="audio.html#allegro_sample">ALLEGRO_SAMPLE</a>.</p>
+<p>See also: <a href="audio.html#al_destroy_sample_instance">al_destroy_sample_instance</a>, <a href="audio.html#al_stop_sample">al_stop_sample</a>, <a href="audio.html#al_stop_samples">al_stop_samples</a></p>
+<h2 id="al_play_sample">al_play_sample</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_play_sample(ALLEGRO_SAMPLE *spl, <span class="dt">float</span> gain, <span class="dt">float</span> pan, <span class="dt">float</span> speed,
+   ALLEGRO_PLAYMODE loop, ALLEGRO_SAMPLE_ID *ret_id)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L342">Source Code</a></p>
+<p>Plays a sample on one of the sample instances created by <a href="audio.html#al_reserve_samples">al_reserve_samples</a>. Returns true on success, false on failure. Playback may fail because all the reserved sample instances are currently used.</p>
+<p>Parameters:</p>
+<ul>
+<li>gain - relative volume at which the sample is played; 1.0 is normal.</li>
+<li>pan - 0.0 is centred, -1.0 is left, 1.0 is right, or ALLEGRO_AUDIO_PAN_NONE.</li>
+<li>speed - relative speed at which the sample is played; 1.0 is normal.</li>
+<li>loop - ALLEGRO_PLAYMODE_ONCE, ALLEGRO_PLAYMODE_LOOP, or ALLEGRO_PLAYMODE_BIDIR</li>
+<li>ret_id - if non-NULL the variable which this points to will be assigned an id representing the sample being played. If <a href="audio.html#al_play_sample">al_play_sample</a> returns <code>false</code>, then the contents of ret_id are invalid and must not be used as argument to other functions.</li>
+</ul>
+<p>See also: <a href="audio.html#allegro_playmode">ALLEGRO_PLAYMODE</a>, <a href="audio.html#allegro_audio_pan_none">ALLEGRO_AUDIO_PAN_NONE</a>, <a href="audio.html#allegro_sample_id">ALLEGRO_SAMPLE_ID</a>, <a href="audio.html#al_stop_sample">al_stop_sample</a>, <a href="audio.html#al_stop_samples">al_stop_samples</a>, <a href="audio.html#al_lock_sample_id">al_lock_sample_id</a>.</p>
+<h2 id="al_stop_sample">al_stop_sample</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_stop_sample(ALLEGRO_SAMPLE_ID *spl_id)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L401">Source Code</a></p>
+<p>Stop the sample started by <a href="audio.html#al_play_sample">al_play_sample</a>.</p>
+<p>See also: <a href="audio.html#al_stop_samples">al_stop_samples</a></p>
+<h2 id="al_lock_sample_id">al_lock_sample_id</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_SAMPLE_INSTANCE* al_lock_sample_id(ALLEGRO_SAMPLE_ID *spl_id)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L417">Source Code</a></p>
+<p>Locks a <a href="audio.html#allegro_sample_id">ALLEGRO_SAMPLE_ID</a>, returning the underlying <a href="audio.html#allegro_sample_instance">ALLEGRO_SAMPLE_INSTANCE</a>. This allows you to adjust the various properties of the instance (such as volume, pan, etc) while the sound is playing.</p>
+<p>This function will return <code>NULL</code> if the sound corresponding to the id is no longer playing.</p>
+<p>While locked, <code>ALLEGRO_SAMPLE_ID</code> will be unavailable to additional calls to <a href="audio.html#al_play_sample">al_play_sample</a>, even if the sound stops while locked. To put the <code>ALLEGRO_SAMPLE_ID</code> back into the pool for reuse, make sure to call <code>al_unlock_sample_id</code> when you're done with the instance.</p>
+<p>See also: <a href="audio.html#al_play_sample">al_play_sample</a>, <a href="audio.html#al_unlock_sample_id">al_unlock_sample_id</a></p>
+<p>Since: 5.2.3</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> New API.</p>
+</blockquote>
+<h2 id="al_unlock_sample_id">al_unlock_sample_id</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_unlock_sample_id(ALLEGRO_SAMPLE_ID *spl_id)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L435">Source Code</a></p>
+<p>Unlocks a <a href="audio.html#allegro_sample_id">ALLEGRO_SAMPLE_ID</a>, allowing future calls to <a href="audio.html#al_play_sample">al_play_sample</a> to reuse it if possible. Note that after the id is unlocked, the <a href="audio.html#allegro_sample_instance">ALLEGRO_SAMPLE_INSTANCE</a> that was previously returned by <a href="audio.html#al_lock_sample_id">al_lock_sample_id</a> will possibly be playing a different sound, so you should only use it after locking the id again.</p>
+<p>See also: <a href="audio.html#al_play_sample">al_play_sample</a>, <a href="audio.html#al_lock_sample_id">al_lock_sample_id</a></p>
+<p>Since: 5.2.3</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> New API.</p>
+</blockquote>
+<h2 id="al_stop_samples">al_stop_samples</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_stop_samples(<span class="dt">void</span>)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L451">Source Code</a></p>
+<p>Stop all samples started by <a href="audio.html#al_play_sample">al_play_sample</a>.</p>
+<p>See also: <a href="audio.html#al_stop_sample">al_stop_sample</a></p>
+<h2 id="al_get_sample_channels">al_get_sample_channels</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_CHANNEL_CONF al_get_sample_channels(<span class="dt">const</span> ALLEGRO_SAMPLE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L494">Source Code</a></p>
+<p>Return the channel configuration of the sample.</p>
+<p>See also: <a href="audio.html#allegro_channel_conf">ALLEGRO_CHANNEL_CONF</a>, <a href="audio.html#al_get_sample_depth">al_get_sample_depth</a>, <a href="audio.html#al_get_sample_frequency">al_get_sample_frequency</a>, <a href="audio.html#al_get_sample_length">al_get_sample_length</a>, <a href="audio.html#al_get_sample_data">al_get_sample_data</a></p>
+<h2 id="al_get_sample_depth">al_get_sample_depth</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_AUDIO_DEPTH al_get_sample_depth(<span class="dt">const</span> ALLEGRO_SAMPLE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L484">Source Code</a></p>
+<p>Return the audio depth of the sample.</p>
+<p>See also: <a href="audio.html#allegro_audio_depth">ALLEGRO_AUDIO_DEPTH</a>, <a href="audio.html#al_get_sample_channels">al_get_sample_channels</a>, <a href="audio.html#al_get_sample_frequency">al_get_sample_frequency</a>, <a href="audio.html#al_get_sample_length">al_get_sample_length</a>, <a href="audio.html#al_get_sample_data">al_get_sample_data</a></p>
+<h2 id="al_get_sample_frequency">al_get_sample_frequency</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_sample_frequency(<span class="dt">const</span> ALLEGRO_SAMPLE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L464">Source Code</a></p>
+<p>Return the frequency (in Hz) of the sample.</p>
+<p>See also: <a href="audio.html#al_get_sample_channels">al_get_sample_channels</a>, <a href="audio.html#al_get_sample_depth">al_get_sample_depth</a>, <a href="audio.html#al_get_sample_length">al_get_sample_length</a>, <a href="audio.html#al_get_sample_data">al_get_sample_data</a></p>
+<h2 id="al_get_sample_length">al_get_sample_length</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_sample_length(<span class="dt">const</span> ALLEGRO_SAMPLE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L474">Source Code</a></p>
+<p>Return the length of the sample in sample values.</p>
+<p>See also: <a href="audio.html#al_get_sample_channels">al_get_sample_channels</a>, <a href="audio.html#al_get_sample_depth">al_get_sample_depth</a>, <a href="audio.html#al_get_sample_frequency">al_get_sample_frequency</a>, <a href="audio.html#al_get_sample_data">al_get_sample_data</a></p>
+<h2 id="al_get_sample_data">al_get_sample_data</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> *al_get_sample_data(<span class="dt">const</span> ALLEGRO_SAMPLE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L504">Source Code</a></p>
+<p>Return a pointer to the raw sample data.</p>
+<p>See also: <a href="audio.html#al_get_sample_channels">al_get_sample_channels</a>, <a href="audio.html#al_get_sample_depth">al_get_sample_depth</a>, <a href="audio.html#al_get_sample_frequency">al_get_sample_frequency</a>, <a href="audio.html#al_get_sample_length">al_get_sample_length</a></p>
+<h1 id="sample-instance-functions">Sample instance functions</h1>
+<h2 id="al_create_sample_instance">al_create_sample_instance</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_SAMPLE_INSTANCE *al_create_sample_instance(ALLEGRO_SAMPLE *sample_data)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L152">Source Code</a></p>
+<p>Creates a sample instance, using the supplied sample data. The instance must be attached to a mixer (or voice) in order to actually produce output.</p>
+<p>The argument may be NULL. You can then set the sample data later with <a href="audio.html#al_set_sample">al_set_sample</a>.</p>
+<p>See also: <a href="audio.html#al_destroy_sample_instance">al_destroy_sample_instance</a></p>
+<h2 id="al_destroy_sample_instance">al_destroy_sample_instance</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_destroy_sample_instance(ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L195">Source Code</a></p>
+<p>Detaches the sample instance from anything it may be attached to and frees it (the sample data, i.e. its ALLEGRO_SAMPLE, is <em>not</em> freed!).</p>
+<p>See also: <a href="audio.html#al_create_sample_instance">al_create_sample_instance</a></p>
+<h2 id="al_play_sample_instance">al_play_sample_instance</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_play_sample_instance(ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L218">Source Code</a></p>
+<p>Play the sample instance. Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_stop_sample_instance">al_stop_sample_instance</a></p>
+<h2 id="al_stop_sample_instance">al_stop_sample_instance</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_stop_sample_instance(ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L228">Source Code</a></p>
+<p>Stop an sample instance playing.</p>
+<p>See also: <a href="audio.html#al_play_sample_instance">al_play_sample_instance</a></p>
+<h2 id="al_get_sample_instance_channels">al_get_sample_instance_channels</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_CHANNEL_CONF al_get_sample_instance_channels(
+   <span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L324">Source Code</a></p>
+<p>Return the channel configuration of the sample instance's sample data.</p>
+<p>See also: <a href="audio.html#allegro_channel_conf">ALLEGRO_CHANNEL_CONF</a>.</p>
+<h2 id="al_get_sample_instance_depth">al_get_sample_instance_depth</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_AUDIO_DEPTH al_get_sample_instance_depth(<span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L314">Source Code</a></p>
+<p>Return the audio depth of the sample instance's sample data.</p>
+<p>See also: <a href="audio.html#allegro_audio_depth">ALLEGRO_AUDIO_DEPTH</a>.</p>
+<h2 id="al_get_sample_instance_frequency">al_get_sample_instance_frequency</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_sample_instance_frequency(<span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L238">Source Code</a></p>
+<p>Return the frequency (in Hz) of the sample instance's sample data.</p>
+<h2 id="al_get_sample_instance_length">al_get_sample_instance_length</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_sample_instance_length(<span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L248">Source Code</a></p>
+<p>Return the length of the sample instance in sample values. This property may differ from the length of the instance's sample data.</p>
+<p>See also: <a href="audio.html#al_set_sample_instance_length">al_set_sample_instance_length</a>, <a href="audio.html#al_get_sample_instance_time">al_get_sample_instance_time</a></p>
+<h2 id="al_set_sample_instance_length">al_set_sample_instance_length</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_sample_instance_length(ALLEGRO_SAMPLE_INSTANCE *spl,
+   <span class="dt">unsigned</span> <span class="dt">int</span> val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L392">Source Code</a></p>
+<p>Set the length of the sample instance in sample values. This can be used to play only parts of the underlying sample. Be careful not to exceed the actual length of the sample data, though.</p>
+<p>Return true on success, false on failure. Will fail if the sample instance is currently playing.</p>
+<p>See also: <a href="audio.html#al_get_sample_instance_length">al_get_sample_instance_length</a></p>
+<h2 id="al_get_sample_instance_position">al_get_sample_instance_position</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_sample_instance_position(<span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L258">Source Code</a></p>
+<p>Get the playback position of a sample instance.</p>
+<p>See also: <a href="audio.html#al_set_sample_instance_position">al_set_sample_instance_position</a></p>
+<h2 id="al_set_sample_instance_position">al_set_sample_instance_position</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_sample_instance_position(ALLEGRO_SAMPLE_INSTANCE *spl,
+   <span class="dt">unsigned</span> <span class="dt">int</span> val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L370">Source Code</a></p>
+<p>Set the playback position of a sample instance.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_get_sample_instance_position">al_get_sample_instance_position</a></p>
+<h2 id="al_get_sample_instance_speed">al_get_sample_instance_speed</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> al_get_sample_instance_speed(<span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L273">Source Code</a></p>
+<p>Return the relative playback speed of the sample instance.</p>
+<p>See also: <a href="audio.html#al_set_sample_instance_speed">al_set_sample_instance_speed</a></p>
+<h2 id="al_set_sample_instance_speed">al_set_sample_instance_speed</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_sample_instance_speed(ALLEGRO_SAMPLE_INSTANCE *spl, <span class="dt">float</span> val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L411">Source Code</a></p>
+<p>Set the relative playback speed of the sample instance. 1.0 means normal speed.</p>
+<p>Return true on success, false on failure. Will fail if the sample instance is attached directly to a voice.</p>
+<p>See also: <a href="audio.html#al_get_sample_instance_speed">al_get_sample_instance_speed</a></p>
+<h2 id="al_get_sample_instance_gain">al_get_sample_instance_gain</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> al_get_sample_instance_gain(<span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L283">Source Code</a></p>
+<p>Return the playback gain of the sample instance.</p>
+<p>See also: <a href="audio.html#al_set_sample_instance_gain">al_set_sample_instance_gain</a></p>
+<h2 id="al_set_sample_instance_gain">al_set_sample_instance_gain</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_sample_instance_gain(ALLEGRO_SAMPLE_INSTANCE *spl, <span class="dt">float</span> val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L452">Source Code</a></p>
+<p>Set the playback gain of the sample instance.</p>
+<p>Returns true on success, false on failure. Will fail if the sample instance is attached directly to a voice.</p>
+<p>See also: <a href="audio.html#al_get_sample_instance_gain">al_get_sample_instance_gain</a></p>
+<h2 id="al_get_sample_instance_pan">al_get_sample_instance_pan</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> al_get_sample_instance_pan(<span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L293">Source Code</a></p>
+<p>Get the pan value of the sample instance.</p>
+<p>See also: <a href="audio.html#al_set_sample_instance_pan">al_set_sample_instance_pan</a>.</p>
+<h2 id="al_set_sample_instance_pan">al_set_sample_instance_pan</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_sample_instance_pan(ALLEGRO_SAMPLE_INSTANCE *spl, <span class="dt">float</span> val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L483">Source Code</a></p>
+<p>Set the pan value on a sample instance. A value of -1.0 means to play the sample only through the left speaker; +1.0 means only through the right speaker; 0.0 means the sample is centre balanced. A special value <a href="audio.html#allegro_audio_pan_none">ALLEGRO_AUDIO_PAN_NONE</a> disables panning and plays the sample at its original level. This will be louder than a pan value of 0.0.</p>
+<blockquote>
+<p>Note: panning samples with more than two channels doesn't work yet.</p>
+</blockquote>
+<p>Returns true on success, false on failure. Will fail if the sample instance is attached directly to a voice.</p>
+<p>See also: <a href="audio.html#al_get_sample_instance_pan">al_get_sample_instance_pan</a>, <a href="audio.html#allegro_audio_pan_none">ALLEGRO_AUDIO_PAN_NONE</a></p>
+<h2 id="al_get_sample_instance_time">al_get_sample_instance_time</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> al_get_sample_instance_time(<span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L303">Source Code</a></p>
+<p>Return the length of the sample instance in seconds, assuming a playback speed of 1.0.</p>
+<p>See also: <a href="audio.html#al_get_sample_instance_length">al_get_sample_instance_length</a></p>
+<h2 id="al_get_sample_instance_playmode">al_get_sample_instance_playmode</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_PLAYMODE al_get_sample_instance_playmode(<span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L335">Source Code</a></p>
+<p>Return the playback mode of the sample instance.</p>
+<p>See also: <a href="audio.html#allegro_playmode">ALLEGRO_PLAYMODE</a>, <a href="audio.html#al_set_sample_instance_playmode">al_set_sample_instance_playmode</a></p>
+<h2 id="al_set_sample_instance_playmode">al_set_sample_instance_playmode</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_sample_instance_playmode(ALLEGRO_SAMPLE_INSTANCE *spl,
+   ALLEGRO_PLAYMODE val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L518">Source Code</a></p>
+<p>Set the playback mode of the sample instance.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#allegro_playmode">ALLEGRO_PLAYMODE</a>, <a href="audio.html#al_get_sample_instance_playmode">al_get_sample_instance_playmode</a></p>
+<h2 id="al_get_sample_instance_playing">al_get_sample_instance_playing</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_get_sample_instance_playing(<span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L345">Source Code</a></p>
+<p>Return true if the sample instance is in the playing state. This may be true even if the instance is not attached to anything.</p>
+<p>See also: <a href="audio.html#al_set_sample_instance_playing">al_set_sample_instance_playing</a></p>
+<h2 id="al_set_sample_instance_playing">al_set_sample_instance_playing</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_sample_instance_playing(ALLEGRO_SAMPLE_INSTANCE *spl, bool val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L547">Source Code</a></p>
+<p>Change whether the sample instance is playing.</p>
+<p>The instance does not need to be attached to anything (since: 5.1.8).</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_get_sample_instance_playing">al_get_sample_instance_playing</a></p>
+<h2 id="al_get_sample_instance_attached">al_get_sample_instance_attached</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_get_sample_instance_attached(<span class="dt">const</span> ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L360">Source Code</a></p>
+<p>Return whether the sample instance is attached to something.</p>
+<p>See also: <a href="audio.html#al_attach_sample_instance_to_mixer">al_attach_sample_instance_to_mixer</a>, <a href="audio.html#al_attach_sample_instance_to_voice">al_attach_sample_instance_to_voice</a>, <a href="audio.html#al_detach_sample_instance">al_detach_sample_instance</a></p>
+<h2 id="al_detach_sample_instance">al_detach_sample_instance</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_detach_sample_instance(ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L575">Source Code</a></p>
+<p>Detach the sample instance from whatever it's attached to, if anything.</p>
+<p>Returns true on success.</p>
+<p>See also: <a href="audio.html#al_attach_sample_instance_to_mixer">al_attach_sample_instance_to_mixer</a>, <a href="audio.html#al_attach_sample_instance_to_voice">al_attach_sample_instance_to_voice</a>, <a href="audio.html#al_get_sample_instance_attached">al_get_sample_instance_attached</a></p>
+<h2 id="al_get_sample">al_get_sample</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_SAMPLE *al_get_sample(ALLEGRO_SAMPLE_INSTANCE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L652">Source Code</a></p>
+<p>Return the sample data that the sample instance plays.</p>
+<p>Note this returns a pointer to an internal structure, <em>not</em> the <a href="audio.html#allegro_sample">ALLEGRO_SAMPLE</a> that you may have passed to <a href="audio.html#al_set_sample">al_set_sample</a>. However, the sample buffer of the returned ALLEGRO_SAMPLE will be the same as the one that was used to create the sample (passed to <a href="audio.html#al_create_sample">al_create_sample</a>). You can use <a href="audio.html#al_get_sample_data">al_get_sample_data</a> on the return value to retrieve and compare it.</p>
+<p>See also: <a href="audio.html#al_set_sample">al_set_sample</a></p>
+<h2 id="al_set_sample">al_set_sample</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_sample(ALLEGRO_SAMPLE_INSTANCE *spl, ALLEGRO_SAMPLE *data)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L587">Source Code</a></p>
+<p>Change the sample data that a sample instance plays. This can be quite an involved process.</p>
+<p>First, the sample is stopped if it is not already.</p>
+<p>Next, if data is NULL, the sample is detached from its parent (if any).</p>
+<p>If data is not NULL, the sample may be detached and reattached to its parent (if any). This is not necessary if the old sample data and new sample data have the same frequency, depth and channel configuration. Reattaching may not always succeed.</p>
+<p>On success, the sample remains stopped. The playback position and loop end points are reset to their default values. The loop mode remains unchanged.</p>
+<p>Returns true on success, false on failure. On failure, the sample will be stopped and detached from its parent.</p>
+<p>See also: <a href="audio.html#al_get_sample">al_get_sample</a></p>
+<h2 id="al_set_sample_instance_channel_matrix">al_set_sample_instance_channel_matrix</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_sample_instance_channel_matrix(ALLEGRO_SAMPLE_INSTANCE *spl, <span class="dt">const</span> <span class="dt">float</span> *matrix)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_instance.c#L662">Source Code</a></p>
+<p>Set the matrix used to mix the channels coming from this instance into the mixer it is attached to. Normally Allegro derives the values of this matrix from the gain and pan settings, as well as the channel configurations of this instance and the mixer it is attached to, but this allows you override that default value. Note that if you do set gain or pan of this instance or the mixer it is attached to, you'll need to call this function again.</p>
+<p>The matrix has mixer channel rows and sample channel columns, and is row major. For example, if you have a stereo sample instance and want to mix it to a 5.1 mixer you could use this code:</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> matrix[] = {
+    <span class="fl">0.5</span>, <span class="fl">0.0</span>, <span class="co">/* Half left to front left */</span>
+    <span class="fl">0.0</span>, <span class="fl">0.5</span>, <span class="co">/* Half right to front right */</span>
+    <span class="fl">0.5</span>, <span class="fl">0.0</span>, <span class="co">/* Half left to rear left */</span>
+    <span class="fl">0.0</span>, <span class="fl">0.5</span>, <span class="co">/* Half right to rear right */</span>
+    <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="co">/* Mix left and right for center */</span>
+    <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="co">/* Mix left and right for center */</span>
+};
+
+al_set_sample_instance_channel_matrix(instance, matrix);</code></pre></div>
+<p>Returns true on success, false on failure (e.g. if this is not attached to a mixer).</p>
+<p>Since: 5.2.3</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> New API.</p>
+</blockquote>
+<h1 id="mixer-functions">Mixer functions</h1>
+<h2 id="al_create_mixer">al_create_mixer</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_MIXER *al_create_mixer(<span class="dt">unsigned</span> <span class="dt">int</span> freq,
+   ALLEGRO_AUDIO_DEPTH depth, ALLEGRO_CHANNEL_CONF chan_conf)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L609">Source Code</a></p>
+<p>Creates a mixer to attach sample instances, audio streams, or other mixers to. It will mix into a buffer at the requested frequency (in Hz) and channel count.</p>
+<p>The only supported audio depths are ALLEGRO_AUDIO_DEPTH_FLOAT32 and ALLEGRO_AUDIO_DEPTH_INT16 (not yet complete).</p>
+<p>To actually produce any output, the mixer will have to be attached to a voice.</p>
+<p>Returns true on success, false on error.</p>
+<p>See also: <a href="audio.html#al_destroy_mixer">al_destroy_mixer</a>, <a href="audio.html#allegro_audio_depth">ALLEGRO_AUDIO_DEPTH</a>, <a href="audio.html#allegro_channel_conf">ALLEGRO_CHANNEL_CONF</a></p>
+<h2 id="al_destroy_mixer">al_destroy_mixer</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_destroy_mixer(ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L678">Source Code</a></p>
+<p>Destroys the mixer.</p>
+<p>See also: <a href="audio.html#al_create_mixer">al_create_mixer</a></p>
+<h2 id="al_get_default_mixer">al_get_default_mixer</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_MIXER *al_get_default_mixer(<span class="dt">void</span>)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L260">Source Code</a></p>
+<p>Return the default mixer, or NULL if one has not been set. Although different configurations of mixers and voices can be used, in most cases a single mixer attached to a voice is what you want. The default mixer is used by <a href="audio.html#al_play_sample">al_play_sample</a>.</p>
+<p>See also: <a href="audio.html#al_reserve_samples">al_reserve_samples</a>, <a href="audio.html#al_play_sample">al_play_sample</a>, <a href="audio.html#al_set_default_mixer">al_set_default_mixer</a>, <a href="audio.html#al_restore_default_mixer">al_restore_default_mixer</a></p>
+<h2 id="al_set_default_mixer">al_set_default_mixer</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_default_mixer(ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L268">Source Code</a></p>
+<p>Sets the default mixer. All samples started with <a href="audio.html#al_play_sample">al_play_sample</a> will be stopped and all sample instances returned by <a href="audio.html#al_lock_sample_id">al_lock_sample_id</a> will be invalidated. If you are using your own mixer, this should be called before <a href="audio.html#al_reserve_samples">al_reserve_samples</a>.</p>
+<p>Returns true on success, false on error.</p>
+<p>See also: <a href="audio.html#al_reserve_samples">al_reserve_samples</a>, <a href="audio.html#al_play_sample">al_play_sample</a>, <a href="audio.html#al_get_default_mixer">al_get_default_mixer</a>, <a href="audio.html#al_restore_default_mixer">al_restore_default_mixer</a></p>
+<h2 id="al_restore_default_mixer">al_restore_default_mixer</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_restore_default_mixer(<span class="dt">void</span>)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L309">Source Code</a></p>
+<p>Restores Allegro's default mixer and attaches it to the default voice. If the default mixer hasn't been created before, it will be created. If the default voice hasn't been set via <a href="audio.html#al_set_default_voice">al_set_default_voice</a> or created before, it will also be created. All samples started with <a href="audio.html#al_play_sample">al_play_sample</a> will be stopped and all sample instances returned by <a href="audio.html#al_lock_sample_id">al_lock_sample_id</a> will be invalidated.</p>
+<p>Returns true on success, false on error.</p>
+<p>See also: <a href="audio.html#al_get_default_mixer">al_get_default_mixer</a>, <a href="audio.html#al_set_default_mixer">al_set_default_mixer</a>, <a href="audio.html#al_reserve_samples">al_reserve_samples</a>.</p>
+<h2 id="al_get_default_voice">al_get_default_voice</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_VOICE *al_get_default_voice(<span class="dt">void</span>)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L323">Source Code</a></p>
+<p>Returns the default voice or NULL if there is none.</p>
+<p>Since: 5.1.13</p>
+<p>See also: <a href="audio.html#al_get_default_mixer">al_get_default_mixer</a></p>
+<h2 id="al_set_default_voice">al_set_default_voice</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_set_default_voice(ALLEGRO_VOICE *voice)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_sample.c#L331">Source Code</a></p>
+<p>You can call this before calling al_restore_default_mixer to provide the voice which should be used. Any previous voice will be destroyed. You can also pass NULL to destroy the current default voice.</p>
+<p>Since: 5.1.13</p>
+<p>See also: <a href="audio.html#al_get_default_mixer">al_get_default_mixer</a></p>
+<h2 id="al_attach_mixer_to_mixer">al_attach_mixer_to_mixer</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_attach_mixer_to_mixer(ALLEGRO_MIXER *stream, ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L800">Source Code</a></p>
+<p>Attaches the mixer passed as the first argument onto the mixer passed as the second argument. The first mixer (that is going to be attached) must not already be attached to anything. Both mixers must use the same frequency, audio depth and channel configuration.</p>
+<p>Returns true on success, false on error.</p>
+<p>It is invalid to attach a mixer to itself.</p>
+<p>See also: <a href="audio.html#al_detach_mixer">al_detach_mixer</a>.</p>
+<h2 id="al_attach_sample_instance_to_mixer">al_attach_sample_instance_to_mixer</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_attach_sample_instance_to_mixer(ALLEGRO_SAMPLE_INSTANCE *spl,
+   ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L690">Source Code</a></p>
+<p>Attach a sample instance to a mixer. The instance must not already be attached to anything.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_detach_sample_instance">al_detach_sample_instance</a>.</p>
+<h2 id="al_attach_audio_stream_to_mixer">al_attach_audio_stream_to_mixer</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_attach_audio_stream_to_mixer(ALLEGRO_AUDIO_STREAM *stream, ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L789">Source Code</a></p>
+<p>Attach an audio stream to a mixer. The stream must not already be attached to anything.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_detach_audio_stream">al_detach_audio_stream</a>.</p>
+<h2 id="al_get_mixer_frequency">al_get_mixer_frequency</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_mixer_frequency(<span class="dt">const</span> ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L849">Source Code</a></p>
+<p>Return the mixer frequency (in Hz).</p>
+<p>See also: <a href="audio.html#al_set_mixer_frequency">al_set_mixer_frequency</a></p>
+<h2 id="al_set_mixer_frequency">al_set_mixer_frequency</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_mixer_frequency(ALLEGRO_MIXER *mixer, <span class="dt">unsigned</span> <span class="dt">int</span> val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L919">Source Code</a></p>
+<p>Set the mixer frequency (in Hz). This will only work if the mixer is not attached to anything.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_get_mixer_frequency">al_get_mixer_frequency</a></p>
+<h2 id="al_get_mixer_channels">al_get_mixer_channels</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_CHANNEL_CONF al_get_mixer_channels(<span class="dt">const</span> ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L859">Source Code</a></p>
+<p>Return the mixer channel configuration.</p>
+<p>See also: <a href="audio.html#allegro_channel_conf">ALLEGRO_CHANNEL_CONF</a>.</p>
+<h2 id="al_get_mixer_depth">al_get_mixer_depth</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_AUDIO_DEPTH al_get_mixer_depth(<span class="dt">const</span> ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L869">Source Code</a></p>
+<p>Return the mixer audio depth.</p>
+<p>See also: <a href="audio.html#allegro_audio_depth">ALLEGRO_AUDIO_DEPTH</a>.</p>
+<h2 id="al_get_mixer_gain">al_get_mixer_gain</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> al_get_mixer_gain(<span class="dt">const</span> ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L889">Source Code</a></p>
+<p>Return the mixer gain (amplification factor). The default is 1.0.</p>
+<p>Since: 5.0.6, 5.1.0</p>
+<p>See also: <a href="audio.html#al_set_mixer_gain">al_set_mixer_gain</a>.</p>
+<h2 id="al_set_mixer_gain">al_set_mixer_gain</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_mixer_gain(ALLEGRO_MIXER *mixer, <span class="dt">float</span> new_gain)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L967">Source Code</a></p>
+<p>Set the mixer gain (amplification factor).</p>
+<p>Returns true on success, false on failure.</p>
+<p>Since: 5.0.6, 5.1.0</p>
+<p>See also: <a href="audio.html#al_get_mixer_gain">al_get_mixer_gain</a></p>
+<h2 id="al_get_mixer_quality">al_get_mixer_quality</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_MIXER_QUALITY al_get_mixer_quality(<span class="dt">const</span> ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L879">Source Code</a></p>
+<p>Return the mixer quality.</p>
+<p>See also: <a href="audio.html#allegro_mixer_quality">ALLEGRO_MIXER_QUALITY</a>, <a href="audio.html#al_set_mixer_quality">al_set_mixer_quality</a></p>
+<h2 id="al_set_mixer_quality">al_set_mixer_quality</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_mixer_quality(ALLEGRO_MIXER *mixer, ALLEGRO_MIXER_QUALITY new_quality)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L939">Source Code</a></p>
+<p>Set the mixer quality. This can only succeed if the mixer does not have anything attached to it.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#allegro_mixer_quality">ALLEGRO_MIXER_QUALITY</a>, <a href="audio.html#al_get_mixer_quality">al_get_mixer_quality</a></p>
+<h2 id="al_get_mixer_playing">al_get_mixer_playing</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_get_mixer_playing(<span class="dt">const</span> ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L899">Source Code</a></p>
+<p>Return true if the mixer is playing.</p>
+<p>See also: <a href="audio.html#al_set_mixer_playing">al_set_mixer_playing</a>.</p>
+<h2 id="al_set_mixer_playing">al_set_mixer_playing</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_mixer_playing(ALLEGRO_MIXER *mixer, bool val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L991">Source Code</a></p>
+<p>Change whether the mixer is playing.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_get_mixer_playing">al_get_mixer_playing</a>.</p>
+<h2 id="al_get_mixer_attached">al_get_mixer_attached</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_get_mixer_attached(<span class="dt">const</span> ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L909">Source Code</a></p>
+<p>Return true if the mixer is attached to something.</p>
+<p>See also: <a href="audio.html#al_attach_sample_instance_to_mixer">al_attach_sample_instance_to_mixer</a>, <a href="audio.html#al_attach_audio_stream_to_mixer">al_attach_audio_stream_to_mixer</a>, <a href="audio.html#al_attach_mixer_to_mixer">al_attach_mixer_to_mixer</a>, <a href="audio.html#al_detach_mixer">al_detach_mixer</a></p>
+<h2 id="al_detach_mixer">al_detach_mixer</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_detach_mixer(ALLEGRO_MIXER *mixer)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L1002">Source Code</a></p>
+<p>Detach the mixer from whatever it is attached to, if anything.</p>
+<p>See also: <a href="audio.html#al_attach_mixer_to_mixer">al_attach_mixer_to_mixer</a>.</p>
+<h2 id="al_set_mixer_postprocess_callback">al_set_mixer_postprocess_callback</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_mixer_postprocess_callback(ALLEGRO_MIXER *mixer,
+   <span class="dt">void</span> (*pp_callback)(<span class="dt">void</span> *buf, <span class="dt">unsigned</span> <span class="dt">int</span> samples, <span class="dt">void</span> *data),
+   <span class="dt">void</span> *pp_callback_userdata)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_mixer.c#L830">Source Code</a></p>
+<p>Sets a post-processing filter function that's called after the attached streams have been mixed. The buffer's format will be whatever the mixer was created with. The sample count and user-data pointer is also passed.</p>
+<blockquote>
+<p><em>Note:</em> The callback is called from a dedicated audio thread.</p>
+</blockquote>
+<h1 id="stream-functions">Stream functions</h1>
+<h2 id="al_create_audio_stream">al_create_audio_stream</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_AUDIO_STREAM *al_create_audio_stream(size_t fragment_count,
+   <span class="dt">unsigned</span> <span class="dt">int</span> frag_samples, <span class="dt">unsigned</span> <span class="dt">int</span> freq, ALLEGRO_AUDIO_DEPTH depth,
+   ALLEGRO_CHANNEL_CONF chan_conf)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L50">Source Code</a></p>
+<p>Creates an <a href="audio.html#allegro_audio_stream">ALLEGRO_AUDIO_STREAM</a>. The stream will be set to play by default. It will feed audio data from a buffer, which is split into a number of fragments.</p>
+<p>Parameters:</p>
+<ul>
+<li><p>fragment_count - How many fragments to use for the audio stream. Usually only two fragments are required - splitting the audio buffer in two halves. But it means that the only time when new data can be supplied is whenever one half has finished playing. When using many fragments, you usually will use fewer samples for one, so there always will be (small) fragments available to be filled with new data.</p></li>
+<li><p>frag_samples - The size of a fragment in samples. See note and explanation below.</p></li>
+<li><p>freq - The frequency, in Hertz.</p></li>
+<li><p>depth - Must be one of the values listed for <a href="audio.html#allegro_audio_depth">ALLEGRO_AUDIO_DEPTH</a>.</p></li>
+<li><p>chan_conf - Must be one of the values listed for <a href="audio.html#allegro_channel_conf">ALLEGRO_CHANNEL_CONF</a>.</p></li>
+</ul>
+<p>A sample that is referred to by the <em>frag_samples</em> parameter refers to a sequence channel intensities. E.g. if you're making a stereo stream with the <em>frag_samples</em> set to 4, then the layout of the data in the fragment will be:</p>
+<pre><code>LRLRLRLR</code></pre>
+<p>Where L and R are the intensities for the left and right channels respectively. A single sample, then, refers to the LR pair in this example.</p>
+<p>The choice of <em>fragment_count</em>, <em>frag_samples</em> and <em>freq</em> directly influences the audio delay. The delay in seconds can be expressed as:</p>
+<pre><code>delay = fragment_count * frag_samples / freq</code></pre>
+<p>This is only the delay due to Allegro's streaming, there may be additional delay caused by sound drivers and/or hardware.</p>
+<blockquote>
+<p><em>Note:</em> If you know the fragment size in bytes, you can get the size in samples like this:</p>
+<pre><code>sample_size = al_get_channel_count(chan_conf) * al_get_audio_depth_size(depth);
+samples = bytes_per_fragment / sample_size;</code></pre>
+<p>The size of the complete buffer is:</p>
+<pre><code>buffer_size = bytes_per_fragment * fragment_count</code></pre>
+</blockquote>
+<blockquote>
+<p><em>Note:</em> Unlike many Allegro objects, audio streams are not implicitly destroyed when Allegro is shut down. You must destroy them manually with <a href="audio.html#al_destroy_audio_stream">al_destroy_audio_stream</a> before the audio system is shut down.</p>
+</blockquote>
+<h2 id="al_destroy_audio_stream">al_destroy_audio_stream</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_destroy_audio_stream(ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L146">Source Code</a></p>
+<p>Destroy an audio stream which was created with <a href="audio.html#al_create_audio_stream">al_create_audio_stream</a> or <a href="audio.html#al_load_audio_stream">al_load_audio_stream</a>.</p>
+<blockquote>
+<p><em>Note:</em> If the stream is still attached to a mixer or voice, <a href="audio.html#al_detach_audio_stream">al_detach_audio_stream</a> is automatically called on it first.</p>
+</blockquote>
+<p>See also: <a href="audio.html#al_drain_audio_stream">al_drain_audio_stream</a>.</p>
+<h2 id="al_get_audio_stream_event_source">al_get_audio_stream_event_source</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_EVENT_SOURCE *al_get_audio_stream_event_source(
+   ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L893">Source Code</a></p>
+<p>Retrieve the associated event source.</p>
+<p>See <a href="audio.html#al_get_audio_stream_fragment">al_get_audio_stream_fragment</a> for a description of the <a href="audio.html#allegro_event_audio_stream_fragment">ALLEGRO_EVENT_AUDIO_STREAM_FRAGMENT</a> event that audio streams emit.</p>
+<h2 id="al_drain_audio_stream">al_drain_audio_stream</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_drain_audio_stream(ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L166">Source Code</a></p>
+<p>You should call this to finalise an audio stream that you will no longer be feeding, to wait for all pending buffers to finish playing. The stream's playing state will change to false.</p>
+<p>See also: <a href="audio.html#al_destroy_audio_stream">al_destroy_audio_stream</a></p>
+<h2 id="al_rewind_audio_stream">al_rewind_audio_stream</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_rewind_audio_stream(ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L804">Source Code</a></p>
+<p>Set the streaming file playing position to the beginning. Returns true on success. Currently this can only be called on streams created with <a href="audio.html#al_load_audio_stream">al_load_audio_stream</a>, <a href="audio.html#al_load_audio_stream_f">al_load_audio_stream_f</a> and the format-specific functions underlying those functions.</p>
+<h2 id="al_get_audio_stream_frequency">al_get_audio_stream_frequency</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_audio_stream_frequency(<span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L186">Source Code</a></p>
+<p>Return the stream frequency (in Hz).</p>
+<h2 id="al_get_audio_stream_channels">al_get_audio_stream_channels</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_CHANNEL_CONF al_get_audio_stream_channels(
+   <span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L260">Source Code</a></p>
+<p>Return the stream channel configuration.</p>
+<p>See also: <a href="audio.html#allegro_channel_conf">ALLEGRO_CHANNEL_CONF</a>.</p>
+<h2 id="al_get_audio_stream_depth">al_get_audio_stream_depth</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_AUDIO_DEPTH al_get_audio_stream_depth(
+   <span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L271">Source Code</a></p>
+<p>Return the stream audio depth.</p>
+<p>See also: <a href="audio.html#allegro_audio_depth">ALLEGRO_AUDIO_DEPTH</a>.</p>
+<h2 id="al_get_audio_stream_length">al_get_audio_stream_length</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_audio_stream_length(<span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L196">Source Code</a></p>
+<p>Return the stream length in samples.</p>
+<h2 id="al_get_audio_stream_speed">al_get_audio_stream_speed</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> al_get_audio_stream_speed(<span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L230">Source Code</a></p>
+<p>Return the relative playback speed of the stream.</p>
+<p>See also: <a href="audio.html#al_set_audio_stream_speed">al_set_audio_stream_speed</a>.</p>
+<h2 id="al_set_audio_stream_speed">al_set_audio_stream_speed</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_audio_stream_speed(ALLEGRO_AUDIO_STREAM *stream, <span class="dt">float</span> val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L362">Source Code</a></p>
+<p>Set the relative playback speed of the stream. 1.0 means normal speed.</p>
+<p>Return true on success, false on failure. Will fail if the audio stream is attached directly to a voice.</p>
+<p>See also: <a href="audio.html#al_get_audio_stream_speed">al_get_audio_stream_speed</a>.</p>
+<h2 id="al_get_audio_stream_gain">al_get_audio_stream_gain</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> al_get_audio_stream_gain(<span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L240">Source Code</a></p>
+<p>Return the playback gain of the stream.</p>
+<p>See also: <a href="audio.html#al_set_audio_stream_gain">al_set_audio_stream_gain</a>.</p>
+<h2 id="al_set_audio_stream_gain">al_set_audio_stream_gain</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_audio_stream_gain(ALLEGRO_AUDIO_STREAM *stream, <span class="dt">float</span> val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L399">Source Code</a></p>
+<p>Set the playback gain of the stream.</p>
+<p>Returns true on success, false on failure. Will fail if the audio stream is attached directly to a voice.</p>
+<p>See also: <a href="audio.html#al_get_audio_stream_gain">al_get_audio_stream_gain</a>.</p>
+<h2 id="al_get_audio_stream_pan">al_get_audio_stream_pan</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> al_get_audio_stream_pan(<span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L250">Source Code</a></p>
+<p>Get the pan value of the stream.</p>
+<p>See also: <a href="audio.html#al_set_audio_stream_pan">al_set_audio_stream_pan</a>.</p>
+<h2 id="al_set_audio_stream_pan">al_set_audio_stream_pan</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_audio_stream_pan(ALLEGRO_AUDIO_STREAM *stream, <span class="dt">float</span> val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L429">Source Code</a></p>
+<p>Set the pan value on an audio stream. A value of -1.0 means to play the stream only through the left speaker; +1.0 means only through the right speaker; 0.0 means the sample is centre balanced. A special value <a href="audio.html#allegro_audio_pan_none">ALLEGRO_AUDIO_PAN_NONE</a> disables panning and plays the stream at its original level. This will be louder than a pan value of 0.0.</p>
+<p>Returns true on success, false on failure. Will fail if the audio stream is attached directly to a voice.</p>
+<p>See also: <a href="audio.html#al_get_audio_stream_pan">al_get_audio_stream_pan</a>, <a href="audio.html#allegro_audio_pan_none">ALLEGRO_AUDIO_PAN_NONE</a></p>
+<h2 id="al_get_audio_stream_playing">al_get_audio_stream_playing</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_get_audio_stream_playing(<span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L293">Source Code</a></p>
+<p>Return true if the stream is playing.</p>
+<p>See also: <a href="audio.html#al_set_audio_stream_playing">al_set_audio_stream_playing</a>.</p>
+<h2 id="al_set_audio_stream_playing">al_set_audio_stream_playing</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_audio_stream_playing(ALLEGRO_AUDIO_STREAM *stream, bool val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L534">Source Code</a></p>
+<p>Change whether the stream is playing.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#al_get_audio_stream_playing">al_get_audio_stream_playing</a></p>
+<h2 id="al_get_audio_stream_playmode">al_get_audio_stream_playmode</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_PLAYMODE al_get_audio_stream_playmode(
+   <span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L282">Source Code</a></p>
+<p>Return the playback mode of the stream.</p>
+<p>See also: <a href="audio.html#allegro_playmode">ALLEGRO_PLAYMODE</a>, <a href="audio.html#al_set_audio_stream_playmode">al_set_audio_stream_playmode</a>.</p>
+<h2 id="al_set_audio_stream_playmode">al_set_audio_stream_playmode</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_audio_stream_playmode(ALLEGRO_AUDIO_STREAM *stream,
+   ALLEGRO_PLAYMODE val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L463">Source Code</a></p>
+<p>Set the playback mode of the stream.</p>
+<p>Returns true on success, false on failure.</p>
+<p>See also: <a href="audio.html#allegro_playmode">ALLEGRO_PLAYMODE</a>, <a href="audio.html#al_get_audio_stream_playmode">al_get_audio_stream_playmode</a>.</p>
+<h2 id="al_get_audio_stream_attached">al_get_audio_stream_attached</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_get_audio_stream_attached(<span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L303">Source Code</a></p>
+<p>Return whether the stream is attached to something.</p>
+<p>See also: <a href="audio.html#al_attach_audio_stream_to_mixer">al_attach_audio_stream_to_mixer</a>, <a href="audio.html#al_attach_audio_stream_to_voice">al_attach_audio_stream_to_voice</a>, <a href="audio.html#al_detach_audio_stream">al_detach_audio_stream</a>.</p>
+<h2 id="al_detach_audio_stream">al_detach_audio_stream</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_detach_audio_stream(ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L570">Source Code</a></p>
+<p>Detach the stream from whatever it's attached to, if anything.</p>
+<p>See also: <a href="audio.html#al_attach_audio_stream_to_mixer">al_attach_audio_stream_to_mixer</a>, <a href="audio.html#al_attach_audio_stream_to_voice">al_attach_audio_stream_to_voice</a>, <a href="audio.html#al_get_audio_stream_attached">al_get_audio_stream_attached</a>.</p>
+<h2 id="al_get_audio_stream_played_samples">al_get_audio_stream_played_samples</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">uint64_t</span> al_get_audio_stream_played_samples(<span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L312">Source Code</a></p>
+<p>Get the number of samples consumed by the parent since the audio stream was started.</p>
+<p>Since: 5.1.8</p>
+<h2 id="al_get_audio_stream_fragment">al_get_audio_stream_fragment</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> *al_get_audio_stream_fragment(<span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L333">Source Code</a></p>
+<p>When using Allegro's audio streaming, you will use this function to continuously provide new sample data to a stream.</p>
+<p>If the stream is ready for new data, the function will return the address of an internal buffer to be filled with audio data. The length and format of the buffer are specified with <a href="audio.html#al_create_audio_stream">al_create_audio_stream</a> or can be queried with the various functions described here. Once the buffer is filled, you must signal this to Allegro by passing the buffer to <a href="audio.html#al_set_audio_stream_fragment">al_set_audio_stream_fragment</a>.</p>
+<p>If the stream is not ready for new data, the function will return NULL.</p>
+<blockquote>
+<p><em>Note:</em> If you listen to events from the stream, an <a href="audio.html#allegro_event_audio_stream_fragment">ALLEGRO_EVENT_AUDIO_STREAM_FRAGMENT</a> event will be generated whenever a new fragment is ready. However, getting an event is <em>not</em> a guarantee that <a href="audio.html#al_get_audio_stream_fragment">al_get_audio_stream_fragment</a> will not return NULL, so you still must check for it.</p>
+</blockquote>
+<p>See also: <a href="audio.html#al_set_audio_stream_fragment">al_set_audio_stream_fragment</a>, <a href="audio.html#al_get_audio_stream_event_source">al_get_audio_stream_event_source</a>, <a href="audio.html#al_get_audio_stream_frequency">al_get_audio_stream_frequency</a>, <a href="audio.html#al_get_audio_stream_channels">al_get_audio_stream_channels</a>, <a href="audio.html#al_get_audio_stream_depth">al_get_audio_stream_depth</a>, <a href="audio.html#al_get_audio_stream_length">al_get_audio_stream_length</a></p>
+<h2 id="al_set_audio_stream_fragment">al_set_audio_stream_fragment</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_audio_stream_fragment(ALLEGRO_AUDIO_STREAM *stream, <span class="dt">void</span> *val)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L582">Source Code</a></p>
+<p>This function needs to be called for every successful call of <a href="audio.html#al_get_audio_stream_fragment">al_get_audio_stream_fragment</a> to indicate that the buffer (pointed to by <code>val</code>) is filled with new data.</p>
+<p>See also: <a href="audio.html#al_get_audio_stream_fragment">al_get_audio_stream_fragment</a></p>
+<h2 id="al_get_audio_stream_fragments">al_get_audio_stream_fragments</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_audio_stream_fragments(<span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L206">Source Code</a></p>
+<p>Returns the number of fragments this stream uses. This is the same value as passed to <a href="audio.html#al_create_audio_stream">al_create_audio_stream</a> when a new stream is created.</p>
+<p>See also: <a href="audio.html#al_get_available_audio_stream_fragments">al_get_available_audio_stream_fragments</a></p>
+<h2 id="al_get_available_audio_stream_fragments">al_get_available_audio_stream_fragments</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">unsigned</span> <span class="dt">int</span> al_get_available_audio_stream_fragments(
+   <span class="dt">const</span> ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L216">Source Code</a></p>
+<p>Returns the number of available fragments in the stream, that is, fragments which are not currently filled with data for playback.</p>
+<p>See also: <a href="audio.html#al_get_audio_stream_fragment">al_get_audio_stream_fragment</a>, <a href="audio.html#al_get_audio_stream_fragments">al_get_audio_stream_fragments</a></p>
+<h2 id="al_seek_audio_stream_secs">al_seek_audio_stream_secs</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_seek_audio_stream_secs(ALLEGRO_AUDIO_STREAM *stream, <span class="dt">double</span> time)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L821">Source Code</a></p>
+<p>Set the streaming file playing position to time. Returns true on success. Currently this can only be called on streams created with <a href="audio.html#al_load_audio_stream">al_load_audio_stream</a>, <a href="audio.html#al_load_audio_stream_f">al_load_audio_stream_f</a> and the format-specific functions underlying those functions.</p>
+<p>See also: <a href="audio.html#al_get_audio_stream_position_secs">al_get_audio_stream_position_secs</a>, <a href="audio.html#al_get_audio_stream_length_secs">al_get_audio_stream_length_secs</a></p>
+<h2 id="al_get_audio_stream_position_secs">al_get_audio_stream_position_secs</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">double</span> al_get_audio_stream_position_secs(ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L838">Source Code</a></p>
+<p>Return the position of the stream in seconds. Currently this can only be called on streams created with <a href="audio.html#al_load_audio_stream">al_load_audio_stream</a>.</p>
+<p>See also: <a href="audio.html#al_get_audio_stream_length_secs">al_get_audio_stream_length_secs</a></p>
+<h2 id="al_get_audio_stream_length_secs">al_get_audio_stream_length_secs</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">double</span> al_get_audio_stream_length_secs(ALLEGRO_AUDIO_STREAM *stream)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L855">Source Code</a></p>
+<p>Return the length of the stream in seconds, if known. Otherwise returns zero.</p>
+<p>Currently this can only be called on streams created with <a href="audio.html#al_load_audio_stream">al_load_audio_stream</a>, <a href="audio.html#al_load_audio_stream_f">al_load_audio_stream_f</a> and the format-specific functions underlying those functions.</p>
+<p>See also: <a href="audio.html#al_get_audio_stream_position_secs">al_get_audio_stream_position_secs</a></p>
+<h2 id="al_set_audio_stream_loop_secs">al_set_audio_stream_loop_secs</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_set_audio_stream_loop_secs(ALLEGRO_AUDIO_STREAM *stream,
+   <span class="dt">double</span> start, <span class="dt">double</span> end)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/kcm_stream.c#L872">Source Code</a></p>
+<p>Sets the loop points for the stream in seconds. Currently this can only be called on streams created with <a href="audio.html#al_load_audio_stream">al_load_audio_stream</a>, <a href="audio.html#al_load_audio_stream_f">al_load_audio_stream_f</a> and the format-specific functions underlying those functions.</p>
+<h2 id="al_set_audio_stream_channel_matrix">al_set_audio_stream_channel_matrix</h2>
+<p><a href="">Source Code</a></p>
+<p>Like <a href="audio.html#al_set_sample_instance_channel_matrix">al_set_sample_instance_channel_matrix</a> but for streams.</p>
+<p>Since: 5.2.3</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> New API.</p>
+</blockquote>
+<h1 id="audio-file-io">Audio file I/O</h1>
+<h2 id="al_register_sample_loader">al_register_sample_loader</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_register_sample_loader(<span class="dt">const</span> <span class="dt">char</span> *ext,
+   ALLEGRO_SAMPLE *(*loader)(<span class="dt">const</span> <span class="dt">char</span> *filename))</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L88">Source Code</a></p>
+<p>Register a handler for <a href="audio.html#al_load_sample">al_load_sample</a>. The given function will be used to handle the loading of sample files with the given extension.</p>
+<p>The extension should include the leading dot ('.') character. It will be matched case-insensitively.</p>
+<p>The <code>loader</code> argument may be NULL to unregister an entry.</p>
+<p>Returns true on success, false on error. Returns false if unregistering an entry that doesn't exist.</p>
+<p>See also: <a href="audio.html#al_register_sample_loader_f">al_register_sample_loader_f</a>, <a href="audio.html#al_register_sample_saver">al_register_sample_saver</a></p>
+<h2 id="al_register_sample_loader_f">al_register_sample_loader_f</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_register_sample_loader_f(<span class="dt">const</span> <span class="dt">char</span> *ext,
+   ALLEGRO_SAMPLE *(*loader)(ALLEGRO_FILE* fp))</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L115">Source Code</a></p>
+<p>Register a handler for <a href="audio.html#al_load_sample_f">al_load_sample_f</a>. The given function will be used to handle the loading of sample files with the given extension.</p>
+<p>The extension should include the leading dot ('.') character. It will be matched case-insensitively.</p>
+<p>The <code>loader</code> argument may be NULL to unregister an entry.</p>
+<p>Returns true on success, false on error. Returns false if unregistering an entry that doesn't exist.</p>
+<p>See also: <a href="audio.html#al_register_sample_loader">al_register_sample_loader</a></p>
+<h2 id="al_register_sample_saver">al_register_sample_saver</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_register_sample_saver(<span class="dt">const</span> <span class="dt">char</span> *ext,
+   bool (*saver)(<span class="dt">const</span> <span class="dt">char</span> *filename, ALLEGRO_SAMPLE *spl))</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L142">Source Code</a></p>
+<p>Register a handler for <a href="audio.html#al_save_sample">al_save_sample</a>. The given function will be used to handle the saving of sample files with the given extension.</p>
+<p>The extension should include the leading dot ('.') character. It will be matched case-insensitively.</p>
+<p>The <code>saver</code> argument may be NULL to unregister an entry.</p>
+<p>Returns true on success, false on error. Returns false if unregistering an entry that doesn't exist.</p>
+<p>See also: <a href="audio.html#al_register_sample_saver_f">al_register_sample_saver_f</a>, <a href="audio.html#al_register_sample_loader">al_register_sample_loader</a></p>
+<h2 id="al_register_sample_saver_f">al_register_sample_saver_f</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_register_sample_saver_f(<span class="dt">const</span> <span class="dt">char</span> *ext,
+   bool (*saver)(ALLEGRO_FILE* fp, ALLEGRO_SAMPLE *spl))</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L169">Source Code</a></p>
+<p>Register a handler for <a href="audio.html#al_save_sample_f">al_save_sample_f</a>. The given function will be used to handle the saving of sample files with the given extension.</p>
+<p>The extension should include the leading dot ('.') character. It will be matched case-insensitively.</p>
+<p>The <code>saver</code> argument may be NULL to unregister an entry.</p>
+<p>Returns true on success, false on error. Returns false if unregistering an entry that doesn't exist.</p>
+<p>See also: <a href="audio.html#al_register_sample_saver">al_register_sample_saver</a></p>
+<h2 id="al_register_audio_stream_loader">al_register_audio_stream_loader</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_register_audio_stream_loader(<span class="dt">const</span> <span class="dt">char</span> *ext,
+   ALLEGRO_AUDIO_STREAM *(*stream_loader)(<span class="dt">const</span> <span class="dt">char</span> *filename,
+      size_t buffer_count, <span class="dt">unsigned</span> <span class="dt">int</span> samples))</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L196">Source Code</a></p>
+<p>Register a handler for <a href="audio.html#al_load_audio_stream">al_load_audio_stream</a>. The given function will be used to open streams from files with the given extension.</p>
+<p>The extension should include the leading dot ('.') character. It will be matched case-insensitively.</p>
+<p>The <code>stream_loader</code> argument may be NULL to unregister an entry.</p>
+<p>Returns true on success, false on error. Returns false if unregistering an entry that doesn't exist.</p>
+<p>See also: <a href="audio.html#al_register_audio_stream_loader_f">al_register_audio_stream_loader_f</a></p>
+<h2 id="al_register_audio_stream_loader_f">al_register_audio_stream_loader_f</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_register_audio_stream_loader_f(<span class="dt">const</span> <span class="dt">char</span> *ext,
+   ALLEGRO_AUDIO_STREAM *(*stream_loader)(ALLEGRO_FILE* fp,
+      size_t buffer_count, <span class="dt">unsigned</span> <span class="dt">int</span> samples))</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L224">Source Code</a></p>
+<p>Register a handler for <a href="audio.html#al_load_audio_stream_f">al_load_audio_stream_f</a>. The given function will be used to open streams from files with the given extension.</p>
+<p>The extension should include the leading dot ('.') character. It will be matched case-insensitively.</p>
+<p>The <code>stream_loader</code> argument may be NULL to unregister an entry.</p>
+<p>Returns true on success, false on error. Returns false if unregistering an entry that doesn't exist.</p>
+<p>See also: <a href="audio.html#al_register_audio_stream_loader">al_register_audio_stream_loader</a></p>
+<h2 id="al_load_sample">al_load_sample</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_SAMPLE *al_load_sample(<span class="dt">const</span> <span class="dt">char</span> *filename)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L252">Source Code</a></p>
+<p>Loads a few different audio file formats based on their extension.</p>
+<p>Note that this stores the entire file in memory at once, which may be time consuming. To read the file as it is needed, use <a href="audio.html#al_load_audio_stream">al_load_audio_stream</a>.</p>
+<p>Returns the sample on success, NULL on failure.</p>
+<blockquote>
+<p><em>Note:</em> the allegro_audio library does not support any audio file formats by default. You must use the allegro_acodec addon, or register your own format handler.</p>
+</blockquote>
+<p>See also: <a href="audio.html#al_register_sample_loader">al_register_sample_loader</a>, <a href="acodec.html#al_init_acodec_addon">al_init_acodec_addon</a></p>
+<h2 id="al_load_sample_f">al_load_sample_f</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_SAMPLE *al_load_sample_f(ALLEGRO_FILE* fp, <span class="dt">const</span> <span class="dt">char</span> *ident)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L279">Source Code</a></p>
+<p>Loads an audio file from an <a href="file.html#allegro_file">ALLEGRO_FILE</a> stream into an <a href="audio.html#allegro_sample">ALLEGRO_SAMPLE</a>. The file type is determined by the passed 'ident' parameter, which is a file name extension including the leading dot.</p>
+<p>Note that this stores the entire file in memory at once, which may be time consuming. To read the file as it is needed, use <a href="audio.html#al_load_audio_stream_f">al_load_audio_stream_f</a>.</p>
+<p>Returns the sample on success, NULL on failure. The file remains open afterwards.</p>
+<blockquote>
+<p><em>Note:</em> the allegro_audio library does not support any audio file formats by default. You must use the allegro_acodec addon, or register your own format handler.</p>
+</blockquote>
+<p>See also: <a href="audio.html#al_register_sample_loader_f">al_register_sample_loader_f</a>, <a href="acodec.html#al_init_acodec_addon">al_init_acodec_addon</a></p>
+<h2 id="al_load_audio_stream">al_load_audio_stream</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_AUDIO_STREAM *al_load_audio_stream(<span class="dt">const</span> <span class="dt">char</span> *filename,
+   size_t buffer_count, <span class="dt">unsigned</span> <span class="dt">int</span> samples)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L300">Source Code</a></p>
+<p>Loads an audio file from disk as it is needed.</p>
+<p>Unlike regular streams, the one returned by this function need not be fed by the user; the library will automatically read more of the file as it is needed. The stream will contain <em>buffer_count</em> buffers with <em>samples</em> samples.</p>
+<p>The audio stream will start in the playing state. It should be attached to a voice or mixer to generate any output. See <a href="audio.html#allegro_audio_stream">ALLEGRO_AUDIO_STREAM</a> for more details.</p>
+<p>Returns the stream on success, NULL on failure.</p>
+<blockquote>
+<p><em>Note:</em> the allegro_audio library does not support any audio file formats by default. You must use the allegro_acodec addon, or register your own format handler.</p>
+</blockquote>
+<p>See also: <a href="audio.html#al_load_audio_stream_f">al_load_audio_stream_f</a>, <a href="audio.html#al_register_audio_stream_loader">al_register_audio_stream_loader</a>, <a href="acodec.html#al_init_acodec_addon">al_init_acodec_addon</a></p>
+<h2 id="al_load_audio_stream_f">al_load_audio_stream_f</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_AUDIO_STREAM *al_load_audio_stream_f(ALLEGRO_FILE* fp, <span class="dt">const</span> <span class="dt">char</span> *ident,
+   size_t buffer_count, <span class="dt">unsigned</span> <span class="dt">int</span> samples)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L328">Source Code</a></p>
+<p>Loads an audio file from <a href="file.html#allegro_file">ALLEGRO_FILE</a> stream as it is needed.</p>
+<p>Unlike regular streams, the one returned by this function need not be fed by the user; the library will automatically read more of the file as it is needed. The stream will contain <em>buffer_count</em> buffers with <em>samples</em> samples.</p>
+<p>The file type is determined by the passed 'ident' parameter, which is a file name extension including the leading dot.</p>
+<p>The audio stream will start in the playing state. It should be attached to a voice or mixer to generate any output. See <a href="audio.html#allegro_audio_stream">ALLEGRO_AUDIO_STREAM</a> for more details.</p>
+<p>Returns the stream on success, NULL on failure. On success the file should be considered owned by the audio stream, and will be closed when the audio stream is destroyed. On failure the file will be closed.</p>
+<blockquote>
+<p><em>Note:</em> the allegro_audio library does not support any audio file formats by default. You must use the allegro_acodec addon, or register your own format handler.</p>
+</blockquote>
+<p>See also: <a href="audio.html#al_load_audio_stream">al_load_audio_stream</a>, <a href="audio.html#al_register_audio_stream_loader_f">al_register_audio_stream_loader_f</a>, <a href="acodec.html#al_init_acodec_addon">al_init_acodec_addon</a></p>
+<h2 id="al_save_sample">al_save_sample</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_save_sample(<span class="dt">const</span> <span class="dt">char</span> *filename, ALLEGRO_SAMPLE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L350">Source Code</a></p>
+<p>Writes a sample into a file. Currently, wav is the only supported format, and the extension must be &quot;.wav&quot;.</p>
+<p>Returns true on success, false on error.</p>
+<blockquote>
+<p><em>Note:</em> the allegro_audio library does not support any audio file formats by default. You must use the allegro_acodec addon, or register your own format handler.</p>
+</blockquote>
+<p>See also: <a href="audio.html#al_save_sample_f">al_save_sample_f</a>, <a href="audio.html#al_register_sample_saver">al_register_sample_saver</a>, <a href="acodec.html#al_init_acodec_addon">al_init_acodec_addon</a></p>
+<h2 id="al_save_sample_f">al_save_sample_f</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_save_sample_f(ALLEGRO_FILE *fp, <span class="dt">const</span> <span class="dt">char</span> *ident, ALLEGRO_SAMPLE *spl)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/audio_io.c#L377">Source Code</a></p>
+<p>Writes a sample into a <a href="file.html#allegro_file">ALLEGRO_FILE</a> filestream. Currently, wav is the only supported format, and the extension must be &quot;.wav&quot;.</p>
+<p>Returns true on success, false on error. The file remains open afterwards.</p>
+<blockquote>
+<p><em>Note:</em> the allegro_audio library does not support any audio file formats by default. You must use the allegro_acodec addon, or register your own format handler.</p>
+</blockquote>
+<p>See also: <a href="audio.html#al_save_sample">al_save_sample</a>, <a href="audio.html#al_register_sample_saver_f">al_register_sample_saver_f</a>, <a href="acodec.html#al_init_acodec_addon">al_init_acodec_addon</a></p>
+<h1 id="audio-recording">Audio recording</h1>
+<p>Allegro's audio recording routines give you real-time access to raw, uncompressed audio input streams. Since Allegro hides all of the platform specific implementation details with its own buffering, it will add a small amount of latency. However, for most applications that small overhead will not adversely affect performance.</p>
+<p>Recording is supported by the ALSA, AudioQueue, DirectSound8, and PulseAudio drivers. Enumerating or choosing other recording devices is not yet supported.</p>
+<h2 id="allegro_audio_recorder">ALLEGRO_AUDIO_RECORDER</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">typedef</span> <span class="kw">struct</span> ALLEGRO_AUDIO_RECORDER ALLEGRO_AUDIO_RECORDER;</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L180">Source Code</a></p>
+<p>An opaque datatype that represents a recording device.</p>
+<p>Since: 5.1.1</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> The API may need a slight redesign.</p>
+</blockquote>
+<h2 id="allegro_audio_recorder_event">ALLEGRO_AUDIO_RECORDER_EVENT</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">typedef</span> <span class="kw">struct</span> ALLEGRO_AUDIO_RECORDER_EVENT ALLEGRO_AUDIO_RECORDER_EVENT;</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/allegro5/allegro_audio.h#L58">Source Code</a></p>
+<p>Structure that holds the audio recorder event data. Every event type will contain:</p>
+<ul>
+<li>.source: pointer to the audio recorder</li>
+</ul>
+<p>The following will be available depending on the event type:</p>
+<ul>
+<li>.buffer: pointer to buffer containing the audio samples</li>
+<li>.samples: number of samples (not bytes) that are available</li>
+</ul>
+<p>Since 5.1.1</p>
+<p>See also: <a href="audio.html#al_get_audio_recorder_event">al_get_audio_recorder_event</a></p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> The API may need a slight redesign.</p>
+</blockquote>
+<h2 id="al_create_audio_recorder">al_create_audio_recorder</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_AUDIO_RECORDER *al_create_audio_recorder(size_t fragment_count,
+   <span class="dt">unsigned</span> <span class="dt">int</span> samples, <span class="dt">unsigned</span> <span class="dt">int</span> frequency,
+   ALLEGRO_AUDIO_DEPTH depth, ALLEGRO_CHANNEL_CONF chan_conf)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/recorder.c#L18">Source Code</a></p>
+<p>Creates an audio recorder using the system's default recording device. (So if the returned device does not work, try updating the system's default recording device.)</p>
+<p>Allegro will internally buffer several seconds of captured audio with minimal latency. (XXX: These settings need to be exposed via config or API calls.) Audio will be copied out of that private buffer into a fragment buffer of the size specified by the samples parameter. Whenever a new fragment is ready an event will be generated.</p>
+<p>The total size of the fragment buffer is fragment_count * samples * bytes_per_sample. It is treated as a circular, never ending buffer. If you do not process the information fast enough, it will be overrun. Because of that, even if you only ever need to process one small fragment at a time, you should still use a large enough value for fragment_count to hold a few seconds of audio.</p>
+<p>frequency is the number of samples per second to record. Common values are:</p>
+<ul>
+<li>8000 - telephone quality speech</li>
+<li>11025</li>
+<li>22050</li>
+<li>44100 - CD quality music (if 16-bit, stereo)</li>
+</ul>
+<p>For maximum compatibility, use a depth of ALLEGRO_AUDIO_DEPTH_UINT8 or ALLEGRO_AUDIO_DEPTH_INT16, and a single (mono) channel.</p>
+<p>The recorder will not record until you start it with <a href="audio.html#al_start_audio_recorder">al_start_audio_recorder</a>.</p>
+<p>On failure, returns NULL.</p>
+<p>Since: 5.1.1</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> The API may need a slight redesign.</p>
+</blockquote>
+<h2 id="al_start_audio_recorder">al_start_audio_recorder</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_start_audio_recorder(ALLEGRO_AUDIO_RECORDER *r)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/recorder.c#L89">Source Code</a></p>
+<p>Begin recording into the fragment buffer. Once a complete fragment has been captured (as specified in <a href="audio.html#al_create_audio_recorder">al_create_audio_recorder</a>), an <a href="audio.html#allegro_event_audio_recorder_fragment">ALLEGRO_EVENT_AUDIO_RECORDER_FRAGMENT</a> event will be triggered.</p>
+<p>Returns true if it was able to begin recording.</p>
+<p>Since: 5.1.1</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> The API may need a slight redesign.</p>
+</blockquote>
+<h2 id="al_stop_audio_recorder">al_stop_audio_recorder</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_stop_audio_recorder(ALLEGRO_AUDIO_RECORDER *r)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/recorder.c#L103">Source Code</a></p>
+<p>Stop capturing audio data. Note that the audio recorder is still active and consuming resources, so if you are finished recording you should destroy it with <a href="audio.html#al_destroy_audio_recorder">al_destroy_audio_recorder</a>.</p>
+<p>You may still receive a few events after you call this function as the device flushes the buffer.</p>
+<p>If you restart the recorder, it will begin recording at the beginning of the next fragment buffer.</p>
+<p>Since: 5.1.1</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> The API may need a slight redesign.</p>
+</blockquote>
+<h2 id="al_is_audio_recorder_recording">al_is_audio_recorder_recording</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">bool al_is_audio_recorder_recording(ALLEGRO_AUDIO_RECORDER *r)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/recorder.c#L115">Source Code</a></p>
+<p>Returns true if the audio recorder is currently capturing data and generating events.</p>
+<p>Since: 5.1.1</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> The API may need a slight redesign.</p>
+</blockquote>
+<h2 id="al_get_audio_recorder_event">al_get_audio_recorder_event</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_AUDIO_RECORDER_EVENT *al_get_audio_recorder_event(ALLEGRO_EVENT *event)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/recorder.c#L128">Source Code</a></p>
+<p>Returns the event as an <a href="audio.html#allegro_audio_recorder_event">ALLEGRO_AUDIO_RECORDER_EVENT</a>.</p>
+<p>Since: 5.1.1</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> The API may need a slight redesign.</p>
+</blockquote>
+<h2 id="al_get_audio_recorder_event_source">al_get_audio_recorder_event_source</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_EVENT_SOURCE *al_get_audio_recorder_event_source(ALLEGRO_AUDIO_RECORDER *r)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/recorder.c#L136">Source Code</a></p>
+<p>Returns the event source for the recorder that generates the various recording events.</p>
+<p>Since: 5.1.1</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> The API may need a slight redesign.</p>
+</blockquote>
+<h2 id="al_destroy_audio_recorder">al_destroy_audio_recorder</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_destroy_audio_recorder(ALLEGRO_AUDIO_RECORDER *r)</code></pre></div>
+<p><a href="https://github.com/liballeg/allegro5/blob/master/addons/audio/recorder.c#L143">Source Code</a></p>
+<p>Destroys the audio recorder and frees all resources associated with it. It is safe to destroy a recorder that is recording.</p>
+<p>You may receive events after the recorder has been destroyed. They must be ignored, as the fragment buffer will no longer be valid.</p>
+<p>Since: 5.1.1</p>
+<blockquote>
+<p><em><a href="getting_started.html#unstable-api">Unstable API</a>:</em> The API may need a slight redesign.</p>
+</blockquote>
+<p class="timestamp">
+Allegro version 5.2.5
+ - Last updated: 2019-02-24 19:11:46 UTC
+</p>
+</div>
+</body>
+</html>
