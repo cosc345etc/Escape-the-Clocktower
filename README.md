@@ -12,13 +12,20 @@ Our coding standards are Allman layout, self-explanatory variable and method nam
 # Installing EtC
 This release of Escape The Clocktower requires cmake for installation. It also comes bundled with the Allegro library, which must be installed prior to installing the game itself. Cmake can be downloaded freely from https://cmake.org/download/.
 
-The root directory of “Escape-the-clocktower-alpha” contains an “allegro-5.2.5.0” folder. This folder contains a cmakelists.txt file which can be used to install Allegro. To install using cmake, navigate to 
+The root directory of “Escape-the-Clocktower” contains an “allegro” folder. This folder contains a cmakelists.txt file which can be used to install Allegro. To install using cmake, navigate to 
 ```
-~/Escape-the-clocktower-alpha/allegro-5.2.5.0/ 
+~/Escape-the-Clocktower/allegro/build
 ```
-then run cmake.
+then run
+```
+cmake ..
+```
 
-This will configure cmake and create a makefile.mk in the same directory. Execute make from the terminal to compile allegro. If this process completes with no errors, type:
+This will configure cmake and create a makefile.mk in the same directory. Execute make from the terminal to compile allegro.
+```
+make
+```
+If this process completes with no errors, type
 ```
 sudo make install 
 ```
@@ -26,11 +33,18 @@ to complete installation.
 
 Once Allegro is installed, the game can be compiled using the “CMakeLists.txt” file in the root directory. To install using terminal, navigate to 
 ```
-~/Escape-the-clocktower-alpha/ 
+~/Escape-the-Clocktower/ 
 ```
-then run cmake.
+then run
+```
+cmake -Bbuild -H.
+```
 
-cmake will create a /build/ directory inside /Escape-the-clocktower-alpha/ containing a makefile. Using Terminal, navigate to /build/, then execute make. This will create a .exec file which can be run from the terminal or finder.
+cmake will create a /build/ directory inside /Escape-the-Clocktower/ containing a makefile. Using Terminal, navigate to /build/, then execute
+```
+make
+```
+This will create a .exec file (etc.exec) which can be run from the terminal using ./etc or finder.
 
 
 # Data Structures
