@@ -1,11 +1,10 @@
+#define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0]))
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <SDL.h>
 #include "Player.h"
-
-#define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0]))
-
 
 enum MYKEYS
 {
@@ -29,7 +28,9 @@ typedef struct
     bool passable_from_E;
     bool passable_from_S;
     bool passable_from_W;
-
+    SDL_Surface *interact_image;
+    bool is_interactive;
+    char dir_need_to_face;
 } MapTile;
 
 static const int width = 240;
@@ -104,104 +105,101 @@ void player_destruct (player* this)
 
 player* p;
 
+void read_line_to_map(char *s, int x, int y)
+{
+    char delim[] = " ";
+
+    char *ptr = strtok(s, delim);
+    int counter = 0;
+    while(ptr != NULL)
+    {
+        if(counter == 0){
+            map[x][y].N = SDL_LoadBMP(ptr);
+        }else if(counter == 1){
+            map[x][y].E = SDL_LoadBMP(ptr);
+        }else if(counter == 2){
+            map[x][y].S = SDL_LoadBMP(ptr);
+        }else if(counter == 3){
+            map[x][y].W = SDL_LoadBMP(ptr);
+        }else if(counter == 4){
+            bool b;
+            if(strcmp(ptr,"true") == 0 )
+                b = true;
+            else
+                b = false;
+            map[x][y].passable_from_N = b;
+        }else if(counter == 5){
+            bool b;
+            if(strcmp(ptr,"true") == 0 )
+                b = true;
+            else
+                b = false;
+            map[x][y].passable_from_E = b;
+        }else if(counter == 6){
+            bool b;
+            if(strcmp(ptr,"true") == 0 )
+                b = true;
+            else
+                b = false;
+            map[x][y].passable_from_S = b;
+        }else if(counter == 7){
+            bool b;
+            if(strcmp(ptr,"true") == 0 )
+                b = true;
+            else
+                b = false;
+            map[x][y].passable_from_W = b;
+        }else if(counter == 8){
+            bool b;
+            if(strcmp(ptr,"true") == 0 )
+                b = true;
+            else
+                b = false;
+            map[x][y].is_interactive = b;
+        }else if(counter == 9){
+            if(strcmp(ptr,"NULL") == 0){
+                map[x][y].interact_image = NULL;
+            }else{
+                map[x][y].interact_image = SDL_LoadBMP(ptr);
+            }
+        }else{
+            if(strcmp(ptr, "(char)0\n") == 0){
+                map[x][y].dir_need_to_face = (char)0;
+            }else{
+                map[x][y].dir_need_to_face = *ptr;
+            }
+        }
+        ptr = strtok(NULL, delim);
+        counter++;
+    }
+
+}
+
+void load_map_file(char *fname)
+{
+    FILE* file = fopen(fname, "r");
+    if(file == NULL)
+    {
+        abort_game("Failed to load map .txt file");
+    }
+    char line[256];
+    int i, j;
+    for(i = 0; i < columns; i++)
+    {
+        for(j = 0; j < rows; j++)
+        {
+            fgets(line, sizeof(line), file);
+            read_line_to_map(line, i, j);
+        }
+    }
+    fclose(file);
+}
+
 void init_map(void)
 {
-
-    map[0][0].N = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/1_N.bmp");
-//    map[0][0].E = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/1_E.bmp");
-    map[0][0].E = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/5_N.bmp");
-    map[0][0].S = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/1_S.bmp");
-    map[0][0].W = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/1_W.bmp");
-    map[0][0].passable_from_N = true;
-    map[0][0].passable_from_E = false;
-    map[0][0].passable_from_S = false;
-    map[0][0].passable_from_W = true;
-
-    map[0][1].N = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/1_S.bmp");
-    map[0][1].E = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/1_S.bmp");
-    map[0][1].S = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/1_S.bmp");
-    map[0][1].W = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/5_N.bmp");
-    map[0][1].passable_from_N = true;
-    map[0][1].passable_from_E = true;
-    map[0][1].passable_from_S = true;
-    map[0][1].passable_from_W = false;
-
-    map[1][0].N = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/2_N.bmp");
-    map[1][0].E = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/2_E.bmp");
-    map[1][0].S = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/2_S.bmp");
-    map[1][0].W = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/2_W.bmp");
-    map[1][0].passable_from_N = true;
-    map[1][0].passable_from_E = false;
-    map[1][0].passable_from_S = true;
-    map[1][0].passable_from_W = false;
-
-    map[1][1].N = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/2_N.bmp");
-    map[1][1].E = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/2_E.bmp");
-    map[1][1].S = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/2_S.bmp");
-    map[1][1].W = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/2_W.bmp");
-    map[1][1].passable_from_N = true;
-    map[1][1].passable_from_E = false;
-    map[1][1].passable_from_S = true;
-    map[1][1].passable_from_W = false;
-
-    map[2][0].N = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/3_N.bmp");
-    map[2][0].E = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/3_E.bmp");
-    map[2][0].S = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/3_S.bmp");
-    map[2][0].W = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/3_W.bmp");
-    map[2][0].passable_from_N = true;
-    map[2][0].passable_from_E = false;
-    map[2][0].passable_from_S = true;
-    map[2][0].passable_from_W = false;
-
-    map[2][1].N = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/3_N.bmp");
-    map[2][1].E = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/3_E.bmp");
-    map[2][1].S = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/3_S.bmp");
-    map[2][1].W = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/3_W.bmp");
-    map[2][1].passable_from_N = true;
-    map[2][1].passable_from_E = false;
-    map[2][1].passable_from_S = true;
-    map[2][1].passable_from_W = false;
-
-    map[3][0].N = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/4_N.bmp");
-    map[3][0].E = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/4_E.bmp");
-    map[3][0].S = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/4_S.bmp");
-    map[3][0].W = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/4_W.bmp");
-    map[3][0].passable_from_N = true;
-    map[3][0].passable_from_E = false;
-    map[3][0].passable_from_S = true;
-    map[3][0].passable_from_W = false;
-
-    map[3][1].N = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/4_N.bmp");
-    map[3][1].E = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/4_E.bmp");
-    map[3][1].S = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/4_S.bmp");
-    map[3][1].W = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/4_W.bmp");
-    map[3][1].passable_from_N = true;
-    map[3][1].passable_from_E = false;
-    map[3][1].passable_from_S = true;
-    map[3][1].passable_from_W = false;
-
-    map[4][0].N = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/5_N.bmp");
-    map[4][0].E = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/5_E.bmp");
-    map[4][0].S = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/5_S.bmp");
-    map[4][0].W = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/5_W.bmp");
-    map[4][0].passable_from_N = false;
-    map[4][0].passable_from_E = false;
-    map[4][0].passable_from_S = true;
-    map[4][0].passable_from_W = false;
-
-    map[4][1].N = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/5_N.bmp");
-    map[4][1].E = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/5_E.bmp");
-    map[4][1].S = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/5_S.bmp");
-    map[4][1].W = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/5_W.bmp");
-    map[4][1].passable_from_N = false;
-    map[4][1].passable_from_E = false;
-    map[4][1].passable_from_S = true;
-    map[4][1].passable_from_W = false;
-
-    printf("Number of rows: %d\n", LEN(map));
     columns = LEN(map);
-    printf("Number of columns: %d\n", LEN(map[0]));
     rows = LEN(map[0]);
+    load_map_file("map-beta.txt");
 }
 
 void print_pos(player* p){
@@ -212,9 +210,6 @@ void print_pos(player* p){
 void init_player(void)
 {
     p = player_constructor();
-    printf("Just to double check\n");
-    printf("columns: %d\n", columns);
-    printf("rows: %d\n", rows);
 }
 
 void get_user_input(SDL_Event event)
@@ -237,7 +232,6 @@ void get_user_input(SDL_Event event)
                         print_pos(p);
                         printf("-------\n");
                         key[KEY_UP] = true;
-//                        printf("Key up pressed\n");
                         redraw = true;
                     }
                     else if (player_get_direction_facing(p) == 'S' && map[player_get_position_x(p) - 1][player_get_position_y(p)].passable_from_N && (player_get_position_x(p) - 1 ) >= 0)
@@ -247,7 +241,6 @@ void get_user_input(SDL_Event event)
                         print_pos(p);
                         printf("-------\n");
                         key[KEY_UP] = true;
-//                        printf("Key up pressed\n");
                         redraw = true;
                     }
                     else if(player_get_direction_facing(p) == 'E' && map[player_get_position_x(p)][player_get_position_y(p) + 1].passable_from_E && (player_get_position_y(p) + 1) < rows)
@@ -257,7 +250,6 @@ void get_user_input(SDL_Event event)
                         print_pos(p);
                         printf("-------\n");
                         key[KEY_UP] = true;
-//                        printf("Key up pressed\n");
                         redraw = true;
                     }
                     else if(player_get_direction_facing(p) == 'W' && map[player_get_position_x(p)][player_get_position_y(p) - 1].passable_from_W && (player_get_position_y(p) - 1) >= 0){
@@ -266,7 +258,6 @@ void get_user_input(SDL_Event event)
                         print_pos(p);
                         printf("-------\n");
                         key[KEY_UP] = true;
-//                        printf("Key up pressed\n");
                         redraw = true;
                     }
                     else
@@ -300,7 +291,6 @@ void get_user_input(SDL_Event event)
                         player_set_direction(p, 'S');
                     }
                     key[KEY_LEFT] = true;
-//                    printf("Key left pressed\n");
                     redraw = true;
                     break;
                 }
@@ -329,26 +319,19 @@ void get_user_input(SDL_Event event)
                         player_set_direction(p, 'N');
                     }
                     key[KEY_RIGHT] = true;
-//                    printf("Key right pressed\n");
                     redraw = true;
                     break;
                 }
 
             case SDLK_ESCAPE:
+
                 break;
 
             case SDLK_SPACE:
-                if(first)
-                {
-                    key[KEY_SPACE] = true;
-                    redraw = true;
-                    break;
-                }
-                else
-                {
-                    break;
-                }
-
+                printf("Space pressed!\n");
+                key[KEY_SPACE] = true;
+                redraw = true;
+                break;
             default:
                 if (first)
                 {
@@ -356,7 +339,6 @@ void get_user_input(SDL_Event event)
                 }
                 else
                 {
-//                    printf("Key was pressed - it wasn't an arrow key..\n");
                     redraw = false;
                     break;
                 }
@@ -369,7 +351,9 @@ void update_graphics()
     if(first && key[KEY_SPACE])
     {
         first = false;
-        if(player_get_direction_facing(p) == 'N') {
+        key[KEY_SPACE] = false;
+        if(player_get_direction_facing(p) == 'N')
+        {
             texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].N);
         }
         else if(player_get_direction_facing(p) == 'E')
@@ -384,9 +368,24 @@ void update_graphics()
         {
             texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].W);
         }
+
+    }
+    else if(key[KEY_SPACE])
+    {
+        key[KEY_SPACE] = false;
+        if(map[player_get_position_x(p)][player_get_position_y(p)].is_interactive && player_get_direction_facing(p) == map[player_get_position_x(p)][player_get_position_y(p)].dir_need_to_face)
+        {
+            texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].interact_image);
+            map[player_get_position_x(p)][player_get_position_y(p)].is_interactive = false;
+            map[player_get_position_x(p)][player_get_position_y(p)].N = map[player_get_position_x(p)][player_get_position_y(p)].interact_image;
+
+        }
     }
     else if(key[KEY_RIGHT] || key[KEY_LEFT] || key[KEY_UP])
     {
+        key[KEY_RIGHT] = false;
+        key[KEY_LEFT] = false;
+        key[KEY_DOWN] = false;
         if(player_get_direction_facing(p) == 'N')
         {
             texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].N);
@@ -411,23 +410,28 @@ void update_graphics()
 void shutdown(void)
 {
 
-    if(p){
+    if(p)
+    {
         player_destruct(p);
     }
 
-    if(texture){
+    if(texture)
+    {
         SDL_DestroyTexture(texture);
     }
 
-    if(loadImage){
+    if(loadImage)
+    {
         SDL_FreeSurface(loadImage);
     }
 
-    if(renderer){
+    if(renderer)
+    {
         SDL_DestroyRenderer(renderer);
     }
 
-    if(window){
+    if(window)
+    {
         SDL_DestroyWindow(window);
     }
 
@@ -436,24 +440,29 @@ void shutdown(void)
 
 void init(void)
 {
-
     SDL_Init(SDL_INIT_VIDEO);
 
     window = SDL_CreateWindow("Escape the Clocktower", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
-    if(!window){
+    if(!window)
+    {
         abort_game("Failed to create window");
     }
+
     renderer = SDL_CreateRenderer(window, -1, 0);
-    if(!renderer){
+    if(!renderer)
+    {
         abort_game("Failed to create renderer");
     }
+
     loadImage = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/EtC_Alpha_Titlescreen.bmp");
-    if(!loadImage){
+    if(!loadImage)
+    {
         abort_game("Failed to load starting image");
     }
 
     texture = SDL_CreateTextureFromSurface(renderer, loadImage);
-    if(!texture){
+    if(!texture)
+    {
         abort_game("Failed to load texture");
     }
 
@@ -464,14 +473,10 @@ void init(void)
 void game_loop(void)
 {
     redraw = true;
-
-
     while (!done)
     {
         SDL_Event event;
         SDL_WaitEvent(&event);
-
-
         if (event.type == SDL_QUIT)
         {
             printf("Exit Pressed\n");
@@ -479,7 +484,6 @@ void game_loop(void)
         }
         else if (event.type == SDL_KEYDOWN)
         {
-            // Game ends if escape key pressed
             if (event.key.keysym.sym == SDLK_ESCAPE)
             {
                 printf("Escaped Pressed\n");
@@ -487,8 +491,7 @@ void game_loop(void)
             }
             get_user_input(event);
         }
-
-        if (redraw) // TODO: possibly figure out event queue?
+        if (redraw)
         {
             redraw = false;
             update_graphics();
