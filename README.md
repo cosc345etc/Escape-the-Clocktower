@@ -63,7 +63,9 @@ first distinguishes the first keypress from the user. It is a boolean value, ini
 
 p is the pointer to the player struct. It is initialised by the method init_player.
 
-# Changed/Updated Methods
+# Methods
+
+## Changed/Updated Methods
  
 * **init(void)** - No longer using Allegro 
 * **init_map(void)** - No longer hard coded
@@ -72,15 +74,14 @@ p is the pointer to the player struct. It is initialised by the method init_play
 * **get_user_input** - Down is fixed and moving east & west fixed
 * **update_graphics** - No longer using Allegro
 
-# New Methods
+## New Methods
 
-* **player_destruct** (player* this) -  
-* **graphics_show_direction_facing** - Shows players current direction and calls DL_CreateTextureFromSurface (SDL function to create a texture from an existing surface) and calls _player_get_position_
-* **check_true_or_false(char* ptr)** -  checks conditions of N,E,S,W and returns boolean value 
-* **read_line_to_map(char *s, int x, int y)**  - reads the .bmp files and calls check_true_or_false
-* **load_map_file(char *fname)** - loads a .bmp map file and then calls read_line_to_map
+*  **player_destruct** (player* this) -  
+*  **graphics_show_direction_facing** - Shows players current direction and calls DL_CreateTextureFromSurface (SDL function to create a texture from an existing surface) and calls _player_get_position_
+*  **check_true_or_false(char* ptr)** -  checks conditions of N,E,S,W and returns boolean value 
+*  **read_line_to_map(char *s, int x, int y)**  - reads the .bmp files and calls check_true_or_false
+*  **load_map_file(char *fname)** - loads a .bmp map file and then calls read_line_to_map
 
-# Methods
 **abort_game** 
 ends the game in case of error. It takes an error message as a parameter, prints that message, and exits the program.
 
@@ -132,12 +133,6 @@ changes the graphics to reflect the player's actions. It is called by the gamepl
 
 If 'space' was pressed and it's the first keypress, or if it's not the first keypress and 'up', 'left' or 'right' was pressed, then the method checks the current location and direction of the player and feeds the relevant image into SDL2 bitmap and display functions to make it show up.
 
-# New Methods
 
-* **player_destruct** (player* this) - frees allocated memory 
-* **graphics_show_direction_facing** - Shows players current direction and calls DL_CreateTextureFromSurface (SDL function to create a texture from an existing surface) and calls _player_get_position_
-* **check_true_or_false(char* ptr)** -  checks conditions of N,E,S,W and returns boolean value 
-* **read_line_to_map(char *s, int x, int y)**  - reads the .bmp files and calls check_true_or_false
-* **load_map_file(char *fname)** - loads a .bmp map file and then calls read_line_to_map
 
 
