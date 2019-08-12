@@ -82,6 +82,8 @@ p is the pointer to the player struct. It is initialised by the method init_play
 *  ***read_line_to_map(char *s, int x, int y)*** - reads the .bmp files and calls check_true_or_false
 *  ***load_map_file(char *fname)*** - loads a .bmp map file and then calls read_line_to_map
 
+## Exisitng Methods
+
 **abort_game** 
 ends the game in case of error. It takes an error message as a parameter, prints that message, and exits the program.
 
