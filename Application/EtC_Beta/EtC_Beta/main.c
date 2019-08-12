@@ -45,7 +45,8 @@ bool done = false;
 bool redraw;
 bool key[5] = { false, false, false, false, false };
 bool first = true;
-MapTile map[5][2];
+bool second = true;
+MapTile map[9][8];
 int columns;
 int rows;
 
@@ -65,8 +66,8 @@ player* player_constructor (void)
     struct player* instance = malloc (sizeof(player));
     if(instance != NULL)
     {
-        instance->x = 0;
-        instance->y = 0;
+        instance->x = 7;
+        instance->y = 1;
         instance->direction_facing = 'N';
     }
     else
@@ -204,7 +205,7 @@ void init_map(void)
 {
     columns = LEN(map);
     rows = LEN(map[0]);
-    load_map_file("map-beta.txt");
+    load_map_file("BIG_LEVEL.txt");
 }
 
 void print_pos(player* p){
@@ -248,7 +249,7 @@ void get_user_input(SDL_Event event)
                         key[KEY_UP] = true;
                         redraw = true;
                     }
-                    else if(player_get_direction_facing(p) == 'E' && map[player_get_position_x(p)][player_get_position_y(p) + 1].passable_from_E && (player_get_position_y(p) + 1) < rows)
+                    else if(player_get_direction_facing(p) == 'E' && map[player_get_position_x(p)][player_get_position_y(p) + 1].passable_from_W && (player_get_position_y(p) + 1) < rows)
                     {
                         print_pos(p);
                         player_set_position(p, p->x, p->y+1);
@@ -257,7 +258,7 @@ void get_user_input(SDL_Event event)
                         key[KEY_UP] = true;
                         redraw = true;
                     }
-                    else if(player_get_direction_facing(p) == 'W' && map[player_get_position_x(p)][player_get_position_y(p) - 1].passable_from_W && (player_get_position_y(p) - 1) >= 0){
+                    else if(player_get_direction_facing(p) == 'W' && map[player_get_position_x(p)][player_get_position_y(p) - 1].passable_from_E && (player_get_position_y(p) - 1) >= 0){
                         print_pos(p);
                         player_set_position(p, p->x, p->y-1);
                         print_pos(p);
@@ -333,6 +334,15 @@ void get_user_input(SDL_Event event)
                 break;
                 
             case SDLK_SPACE:
+                if(player_get_position_x(p) == 4 && player_get_position_y(p) == 2)
+                {
+                    print_pos(p);
+                    player_set_position(p, 2, 3);
+                    player_set_direction(p, 'N');
+                    print_pos(p);
+                    key[KEY_SPACE] = true;
+                    redraw = true;
+                }
                 printf("Space pressed!\n");
                 key[KEY_SPACE] = true;
                 redraw = true;
@@ -351,29 +361,39 @@ void get_user_input(SDL_Event event)
     }
 }
 
+void graphics_show_direction_facing(){
+    if(player_get_direction_facing(p) == 'N')
+    {
+        texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].N);
+    }
+    else if(player_get_direction_facing(p) == 'E')
+    {
+        texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].E);
+    }
+    else if(player_get_direction_facing(p) == 'S')
+    {
+        texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].S);
+    }
+    else if(player_get_direction_facing(p) == 'W')
+    {
+        texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].W);
+    }
+}
+
 void update_graphics()
 {
     if(first && key[KEY_SPACE])
     {
         first = false;
         key[KEY_SPACE] = false;
-        if(player_get_direction_facing(p) == 'N')
-        {
-            texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].N);
-        }
-        else if(player_get_direction_facing(p) == 'E')
-        {
-            texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].E);
-        }
-        else if(player_get_direction_facing(p) == 'S')
-        {
-            texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].S);
-        }
-        else if(player_get_direction_facing(p) == 'W')
-        {
-            texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].W);
-        }
-        
+        SDL_Surface * second_image = SDL_LoadBMP("INTRO_TEXT.bmp");
+        texture = SDL_CreateTextureFromSurface(renderer, second_image);
+    }
+    else if(second && key[KEY_SPACE])
+    {
+        second = false;
+        key[KEY_SPACE] = false;
+        graphics_show_direction_facing();
     }
     else if(key[KEY_SPACE])
     {
@@ -382,8 +402,26 @@ void update_graphics()
         {
             texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].interact_image);
             map[player_get_position_x(p)][player_get_position_y(p)].is_interactive = false;
-            map[player_get_position_x(p)][player_get_position_y(p)].N = map[player_get_position_x(p)][player_get_position_y(p)].interact_image;
-            
+            //            map[player_get_position_x(p)][player_get_position_y(p)].dir_need_to_face = map[player_get_position_x(p)][player_get_position_y(p)].interact_image;
+            switch(player_get_direction_facing(p)){
+                case 'N':
+                    map[player_get_position_x(p)][player_get_position_y(p)].N = map[player_get_position_x(p)][player_get_position_y(p)].interact_image;
+                    break;
+                case 'E':
+                    map[player_get_position_x(p)][player_get_position_y(p)].E = map[player_get_position_x(p)][player_get_position_y(p)].interact_image;
+                    break;
+                case 'S':
+                    map[player_get_position_x(p)][player_get_position_y(p)].S = map[player_get_position_x(p)][player_get_position_y(p)].interact_image;
+                    break;
+                case 'W':
+                    map[player_get_position_x(p)][player_get_position_y(p)].W = map[player_get_position_x(p)][player_get_position_y(p)].interact_image;
+                    break;
+                default:break;
+            }
+        }
+        else
+        {
+            graphics_show_direction_facing();
         }
     }
     else if(key[KEY_RIGHT] || key[KEY_LEFT] || key[KEY_UP])
@@ -391,22 +429,7 @@ void update_graphics()
         key[KEY_RIGHT] = false;
         key[KEY_LEFT] = false;
         key[KEY_DOWN] = false;
-        if(player_get_direction_facing(p) == 'N')
-        {
-            texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].N);
-        }
-        else if(player_get_direction_facing(p) == 'E')
-        {
-            texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].E);
-        }
-        else if(player_get_direction_facing(p) == 'S')
-        {
-            texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].S);
-        }
-        else if(player_get_direction_facing(p) == 'W')
-        {
-            texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].W);
-        }
+        graphics_show_direction_facing();
     }
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
@@ -459,7 +482,7 @@ void init(void)
         abort_game("Failed to create renderer");
     }
     
-    loadImage = SDL_LoadBMP("ETC_5X1_CORRIDOR_GFX/EtC_Alpha_Titlescreen.bmp");
+    loadImage = SDL_LoadBMP("BETA_TITLE.bmp");
     if(!loadImage)
     {
         abort_game("Failed to load starting image");
@@ -503,8 +526,6 @@ void game_loop(void)
         }
     }
 }
-
-
 
 int main(int argc, char ** argv)
 {
