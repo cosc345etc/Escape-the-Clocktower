@@ -10,13 +10,13 @@ Escape the Clocktower is a first-person dungeon crawler/escape the room game, wi
 Our coding standards are Allman layout, self-explanatory variable and method names, sensible structuring. 
 
 # Installing EtC
-Clone repository https://github.com/cosc345etc/Escape-the-Clocktower.git
-Open xcode file /Application/EtC_Beta/EtC_Beta.xcodeproj/._project.xcworkspace 
-Run Build
-Run 
+* Clone repository https://github.com/cosc345etc/Escape-the-Clocktower.git
+* Open xcode file /Application/EtC_Beta/EtC_Beta.xcodeproj
+* Run Build (command B)
+* Run (command R)
 
 
-# Changelog
+# Changelog For Beta Release
 
 * main.c re-written completely from the ground up
 * Now useing the SDL2 as opposed to the Allegro library for image display and keyboard input
@@ -40,12 +40,11 @@ Run
 
 # Data Structures
 The two main data structures we've created are the map and the player.
+
 ## Map
-The map is a two dimensional arrays of MapTile structs. Right now there's exactly one; when we add more levels to our 'tower', we might make them separate arrays or replace its contents when the player changes levels.
+The map is a two dimensional arrays of MapTile structs.
 
-A MapTile struct contains pointers *N, *E, *S, *W to the images that are displayed when the player is facing north, east, south and west. The same images can be used by multiple tiles, and can be NULL. 
-
-A MapTile struct contains a boolean value passable to indicate whether the player can enter that tile or not. Impassable tiles will usually have null image pointers, but when we implement unlocking new areas we intend to initialise the tile with the images it will use, and only alter the passable value from false to true.
+A MapTile struct contains pointers *N, *E, *S, *W to the images that are displayed when the player is facing north, east, south and west. The same images can be used by multiple tiles, and can be NULL. A MapTile struct also contains a boolean value passable to indicate whether the player can enter that tile or not. Impassable tiles will usually have null image pointers, but when we implement unlocking new areas we intend to initialise the tile with the images it will use, and only alter the passable value from false to true.
 
 We intend to implement items and NPCs as a separate data type that will contain the necessary information within itself; the only change to the map tiles is expected to be adding a single pointer to the object contained in that tile, or nothing.
 
@@ -66,13 +65,12 @@ p is the pointer to the player struct. It is initialised by the method init_play
 
 # Changed/Updated Methods
  
-**init(void)** - No longer using Allegro 
-**init_map(void)** - No longer hard coded
-**game_loop(void)** - No longer using Allegro 
-**shutdown == game_shutdown** - No longer using Allegro
-**get_user_input** - Down is fixed and moving east & west fixed
-**update_graphics** - No longer using Allegro
-
+* **init(void)** - No longer using Allegro 
+* **init_map(void)** - No longer hard coded
+* **game_loop(void)** - No longer using Allegro 
+* **shutdown == game_shutdown** - No longer using Allegro
+* **get_user_input** - Down is fixed and moving east & west fixed
+* **update_graphics** - No longer using Allegro
 
 # New Methods
 
@@ -81,7 +79,6 @@ p is the pointer to the player struct. It is initialised by the method init_play
 * **check_true_or_false(char* ptr)** -  checks conditions of N,E,S,W and returns boolean value 
 * **read_line_to_map(char *s, int x, int y)**  - reads the .bmp files and calls check_true_or_false
 * **load_map_file(char *fname)** - loads a .bmp map file and then calls read_line_to_map
-
 
 # Methods
 **abort_game** 
@@ -94,7 +91,7 @@ The main method has the standard C parameters. It calls five methods, none of wh
 sets up SDL2 for the session. It initialises the assets from SDSL2: the library itself, keyboard, timer, image display, a bitmap of our title screen and event queue. It checks that these have succeeded, and calls abort_game if not.
 
 **init_map** 
-creates the map. Currently this is hardcoded to set the images and passability of each map tile; we intend to replace this with reading in data from an external file later.
+creates the map from Reading in data from an .bmp file
 
 **init_player** 
 initialises the pointer p. It calls player_constructor to create the player struct, and sets the global variable p to point to that struct.
@@ -137,7 +134,7 @@ If 'space' was pressed and it's the first keypress, or if it's not the first key
 
 # New Methods
 
-* **player_destruct** (player* this) -  
+* **player_destruct** (player* this) - frees allocated memory 
 * **graphics_show_direction_facing** - Shows players current direction and calls DL_CreateTextureFromSurface (SDL function to create a texture from an existing surface) and calls _player_get_position_
 * **check_true_or_false(char* ptr)** -  checks conditions of N,E,S,W and returns boolean value 
 * **read_line_to_map(char *s, int x, int y)**  - reads the .bmp files and calls check_true_or_false
