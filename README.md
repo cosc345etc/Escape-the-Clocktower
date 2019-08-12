@@ -77,10 +77,10 @@ p is the pointer to the player struct. It is initialised by the method init_play
 ## New Methods
 
 *  **player_destruct** (player* this) -  
-*  **graphics_show_direction_facing** - Shows players current direction and calls DL_CreateTextureFromSurface (SDL function to create a texture from an existing surface) and calls _player_get_position_
-*  **check_true_or_false(char* ptr)** -  checks conditions of N,E,S,W and returns boolean value 
-*  **read_line_to_map(char *s, int x, int y)**  - reads the .bmp files and calls check_true_or_false
-*  **load_map_file(char *fname)** - loads a .bmp map file and then calls read_line_to_map
+*  **graphics_show_direction_facing** - Shows players current direction and calls DL_CreateTextureFromSurface (SDL function to create a texture from an existing surface) and calls player_get_position
+*  ***check_true_or_false(char* ptr)*** - checks conditions of N,E,S,W and returns boolean value 
+*  ***read_line_to_map(char *s, int x, int y)*** - reads the .bmp files and calls check_true_or_false
+*  ***load_map_file(char *fname)*** - loads a .bmp map file and then calls read_line_to_map
 
 **abort_game** 
 ends the game in case of error. It takes an error message as a parameter, prints that message, and exits the program.
