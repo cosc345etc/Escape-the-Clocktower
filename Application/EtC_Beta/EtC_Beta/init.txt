@@ -1,0 +1,5 @@
+BIG_LEVEL.txt
+BETA_TITLE.bmp INTRO_TEXT.bmp
+7
+1
+N

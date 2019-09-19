@@ -3,13 +3,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include "Player.h"
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
-
 #include <SDL2/SDL.h>
-
 #pragma clang diagnostic pop
-#include "Player.h"
 
 enum MYKEYS
 {
@@ -38,22 +36,42 @@ typedef struct
     char dir_need_to_face;
 } MapTile;
 
+typedef struct varray_t
+{
+    void **memory;
+    size_t allocated;
+    size_t used;
+    int index;
+    int num_used;
+} varray;
+
 static const int width = 480;
 static const int height = 480;
 
 bool done = false;
 bool redraw;
 bool key[5] = { false, false, false, false, false };
-bool first = true;
-bool second = true;
-MapTile map[9][8];
+
+int num_intro_screens;
+int array_pos = 0;
+char *map_filename;
 int columns;
 int rows;
 
+MapTile map[9][8];
+
+SDL_Rect view_rect = {0, 0, 320, 320};
+SDL_Rect text_rect = {0, 320, 480, 160};
 SDL_Window * window;
+
 SDL_Renderer * renderer;
-SDL_Surface * loadImage;
 SDL_Texture * texture;
+
+SDL_Surface * border_surface;
+SDL_Texture * border_texture;
+
+SDL_Surface * text_surface;
+SDL_Texture * text_texture;
 
 void abort_game(const char* message)
 {
@@ -61,14 +79,121 @@ void abort_game(const char* message)
     exit(1);
 }
 
-player* player_constructor (void)
+varray *garray;
+
+void varray_init(varray **array)
+{
+    *array = (varray*)malloc(sizeof(varray));
+    (*array)->memory = NULL;
+    (*array)->allocated = 0;
+    (*array)->used = 0;
+    (*array)->index = -1;
+    (*array)->num_used = 0;
+}
+
+void varray_push(varray *array, void *data)
+{
+    size_t toallocate;
+    size_t size = sizeof(void*);
+    if ((array->allocated - array->used) < size) {
+        toallocate = array->allocated == 0 ? size : (array->allocated * 2);
+        array->memory = realloc(array->memory, toallocate);
+        array->allocated = toallocate;
+    }
+    
+    array->memory[++array->index] = data;
+    array->used = array->used + size;
+    array->num_used += 1;
+}
+
+int varray_length(varray *array)
+{
+    return array->index + 1;
+}
+
+void varray_insert(varray *array, int index, void *data)
+{
+    if (index < 0 || index > array->index)
+        return;
+    
+    array->memory[index] = data;
+}
+
+void varray_free(varray *array)
+{
+    for(int i  = 0; i < array->num_used; i++){
+        if(array->memory[i] != NULL){
+            SDL_FreeSurface(array->memory[i]);
+        }
+    }
+    free(array->memory);
+    free(array);
+}
+
+void* varray_get(varray *array, int index)
+{
+    if (index < 0 || index > array->index)
+        return NULL;
+    
+    return array->memory[index];
+}
+
+void check_image_loaded(SDL_Surface *image){
+    if(!image)
+    {
+        abort_game("Failed to load image");
+    }
+}
+
+void check_texture_loaded(SDL_Texture * texture){
+    if(!texture)
+    {
+        abort_game("Failed to load texture");
+    }
+}
+
+void test_free_map_array(){
+    for(int i = 0; i < columns; i++)
+    {
+        for(int j = 0; j < rows; j++)
+        {
+            if(map[i][j].N != NULL)
+            {
+                SDL_FreeSurface(map[i][j].N);
+                map[i][j].N = NULL;
+            }
+            if(map[i][j].E != NULL)
+            {
+                SDL_FreeSurface(map[i][j].E);
+                map[i][j].E = NULL;
+            }
+            if(map[i][j].S != NULL)
+            {
+                SDL_FreeSurface(map[i][j].S);
+                map[i][j].S = NULL;
+            }
+            if(map[i][j].W != NULL)
+            {
+                SDL_FreeSurface(map[i][j].W);
+                map[i][j].W = NULL;
+            }
+            if(map[i][j].interact_image != NULL)
+            {
+                SDL_FreeSurface(map[i][j].interact_image);
+                map[i][j].interact_image = NULL;
+            }
+        }
+    }
+}
+
+player* player_constructor (int x, int y, char dir)
 {
     struct player* instance = malloc (sizeof(player));
     if(instance != NULL)
     {
-        instance->x = 7;
-        instance->y = 1;
-        instance->direction_facing = 'N';
+        instance->x = x;
+        instance->y = y;
+        instance->direction_facing = dir;
     }
     else
     {
@@ -111,7 +236,7 @@ void player_destruct (player* this)
 
 player* p;
 
-void game_shutdown(void)
+void gameshutdown(void)
 {
     
     if(p)
@@ -119,14 +244,29 @@ void game_shutdown(void)
         player_destruct(p);
     }
     
+    if(map_filename)
+    {
+        free(map_filename);
+    }
+    
+    if(border_texture)
+    {
+        SDL_DestroyTexture(border_texture);
+    }
+    
+    if(text_texture)
+    {
+        SDL_DestroyTexture(text_texture);
+    }
+    
     if(texture)
     {
         SDL_DestroyTexture(texture);
     }
     
-    if(loadImage)
+    if(border_surface)
     {
-        SDL_FreeSurface(loadImage);
+        SDL_FreeSurface(border_surface);
     }
     
     if(renderer)
@@ -139,8 +279,12 @@ void game_shutdown(void)
         SDL_DestroyWindow(window);
     }
     
+//    free_image_array(&a);
+    varray_free(garray);
+    
     SDL_Quit();
 }
+
 
 void get_user_input(SDL_Event event)
 {
@@ -149,101 +293,88 @@ void get_user_input(SDL_Event event)
         switch(event.key.keysym.sym)
         {
             case SDLK_UP:
-                if (first)
-                {
+                if(num_intro_screens > 0){
                     break;
+                }
+                else if (player_get_direction_facing(p) == 'N' && map[player_get_position_x(p) + 1][player_get_position_y(p)].passable_from_S && (player_get_position_x(p) + 1) < columns)
+                {
+                    player_set_position(p, p->x + 1, p->y);
+                    key[KEY_UP] = true;
+                    redraw = true;
+                }
+                else if (player_get_direction_facing(p) == 'S' && map[player_get_position_x(p) - 1][player_get_position_y(p)].passable_from_N && (player_get_position_x(p) - 1 ) >= 0)
+                {
+                    player_set_position(p, p->x - 1, p->y);
+                    key[KEY_UP] = true;
+                    redraw = true;
+                }
+                else if(player_get_direction_facing(p) == 'E' && map[player_get_position_x(p)][player_get_position_y(p) + 1].passable_from_W && (player_get_position_y(p) + 1) < rows)
+                {
+                    player_set_position(p, p->x, p->y+1);
+                    key[KEY_UP] = true;
+                    redraw = true;
+                }
+                else if(player_get_direction_facing(p) == 'W' && map[player_get_position_x(p)][player_get_position_y(p) - 1].passable_from_E &&(player_get_position_y(p) - 1) >= 0)
+                {
+                    player_set_position(p, p->x, p->y-1);
+                    key[KEY_UP] = true;
+                    redraw = true;
                 }
                 else
                 {
-                    if (player_get_direction_facing(p) == 'N' && map[player_get_position_x(p) + 1][player_get_position_y(p)].passable_from_S && (player_get_position_x(p) + 1) < columns)
-                    {
-                        player_set_position(p, p->x + 1, p->y);
-                        key[KEY_UP] = true;
-                        redraw = true;
-                    }
-                    else if (player_get_direction_facing(p) == 'S' && map[player_get_position_x(p) - 1][player_get_position_y(p)].passable_from_N && (player_get_position_x(p) - 1 ) >= 0)
-                    {
-                        player_set_position(p, p->x - 1, p->y);
-                        key[KEY_UP] = true;
-                        redraw = true;
-                    }
-                    else if(player_get_direction_facing(p) == 'E' && map[player_get_position_x(p)][player_get_position_y(p) + 1].passable_from_W && (player_get_position_y(p) + 1) < rows)
-                    {
-                        player_set_position(p, p->x, p->y+1);
-                        key[KEY_UP] = true;
-                        redraw = true;
-                    }
-                    else if(player_get_direction_facing(p) == 'W' && map[player_get_position_x(p)][player_get_position_y(p) - 1].passable_from_E && (player_get_position_y(p) - 1) >= 0)
-		    {
-                        player_set_position(p, p->x, p->y-1);
-                        key[KEY_UP] = true;
-                        redraw = true;
-                    }
-                    else
-                    {
-                        printf("Key up pressed, but can't advance..\n");
-                    }
-                    break;
+                    printf("Key up pressed, but can't advance..\n");
                 }
+                break;
                 
             case SDLK_LEFT:
-                if (first)
-                {
+                if(num_intro_screens > 0){
                     break;
                 }
-                else
+                else if (player_get_direction_facing(p) == 'N')
                 {
-                    if (player_get_direction_facing(p) == 'N')
-                    {
-                        player_set_direction(p, 'W');
-                    }
-                    else if (player_get_direction_facing(p) == 'E')
-                    {
-                        player_set_direction(p, 'N');
-                    }
-                    else if (player_get_direction_facing(p) == 'S')
-                    {
-                        player_set_direction(p, 'E');
-                    }
-                    else if (player_get_direction_facing(p) == 'W')
-                    {
-                        player_set_direction(p, 'S');
-                    }
-                    key[KEY_LEFT] = true;
-                    redraw = true;
-                    break;
+                    player_set_direction(p, 'W');
                 }
+                else if (player_get_direction_facing(p) == 'E')
+                {
+                    player_set_direction(p, 'N');
+                }
+                else if (player_get_direction_facing(p) == 'S')
+                {
+                    player_set_direction(p, 'E');
+                }
+                else if (player_get_direction_facing(p) == 'W')
+                {
+                    player_set_direction(p, 'S');
+                }
+                key[KEY_LEFT] = true;
+                redraw = true;
+                break;
                 
             case SDLK_RIGHT:
-                if (first)
-                {
+                if(num_intro_screens > 0){
                     break;
                 }
-                else
+                else if (player_get_direction_facing(p) == 'N')
                 {
-                    if (player_get_direction_facing(p) == 'N')
-                    {
-                        player_set_direction(p, 'E');
-                    }
-                    else if (player_get_direction_facing(p) == 'E')
-                    {
-                        player_set_direction(p, 'S');
-                    }
-                    else if (player_get_direction_facing(p) == 'S')
-                    {
-                        player_set_direction(p, 'W');
-                    }
-                    else if (player_get_direction_facing(p) == 'W')
-                    {
-                        player_set_direction(p, 'N');
-                    }
-                    key[KEY_RIGHT] = true;
-                    redraw = true;
-                    break;
+                    player_set_direction(p, 'E');
                 }
+                else if (player_get_direction_facing(p) == 'E')
+                {
+                    player_set_direction(p, 'S');
+                }
+                else if (player_get_direction_facing(p) == 'S')
+                {
+                    player_set_direction(p, 'W');
+                }
+                else if (player_get_direction_facing(p) == 'W')
+                {
+                    player_set_direction(p, 'N');
+                }
+                key[KEY_RIGHT] = true;
+                redraw = true;
+                break;
                 
             case SDLK_ESCAPE:
-                
                 break;
                 
             case SDLK_SPACE:
@@ -256,15 +387,8 @@ void get_user_input(SDL_Event event)
                 redraw = true;
                 break;
             default:
-                if (first)
-                {
-                    break;
-                }
-                else
-                {
-                    redraw = false;
-                    break;
-                }
+                redraw = false;
+                break;
         }
     }
 }
@@ -272,42 +396,89 @@ void get_user_input(SDL_Event event)
 void graphics_show_direction_facing(){
     if(player_get_direction_facing(p) == 'N')
     {
+        if(texture)
+        {
+            SDL_DestroyTexture(texture);
+        }
         texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].N);
     }
     else if(player_get_direction_facing(p) == 'E')
     {
+        if(texture)
+        {
+            SDL_DestroyTexture(texture);
+        }
         texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].E);
     }
     else if(player_get_direction_facing(p) == 'S')
     {
+        if(texture)
+        {
+            SDL_DestroyTexture(texture);
+        }
         texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].S);
     }
     else if(player_get_direction_facing(p) == 'W')
     {
+        if(texture)
+        {
+            SDL_DestroyTexture(texture);
+        }
         texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].W);
     }
+    check_texture_loaded(texture);
+}
+
+void graphics_render_multiple_texture()
+{
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, &view_rect);
+    SDL_RenderCopy(renderer, text_texture, NULL, &text_rect);
+    SDL_RenderCopy(renderer, border_texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
 }
 
 void update_graphics()
 {
-    if(first && key[KEY_SPACE])
-    {
-        first = false;
+    if(num_intro_screens > 1 && key[KEY_SPACE]){
         key[KEY_SPACE] = false;
-        SDL_Surface * second_image = SDL_LoadBMP("INTRO_TEXT.bmp");
-        texture = SDL_CreateTextureFromSurface(renderer, second_image);
+        
+        if(texture)
+        {
+            SDL_DestroyTexture(texture);
+        }
+        texture = SDL_CreateTextureFromSurface(renderer, varray_get(garray, array_pos));//&a.image[array_pos]
+        check_texture_loaded(texture);
+        
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, texture, NULL, NULL);
+        SDL_RenderPresent(renderer);
+        
+        num_intro_screens--;
+        array_pos++;
+        return;
     }
-    else if(second && key[KEY_SPACE])
+    else if(num_intro_screens > 0 && key[KEY_SPACE])
     {
-        second = false;
         key[KEY_SPACE] = false;
+        
         graphics_show_direction_facing();
+        
+        graphics_render_multiple_texture();
+        
+        num_intro_screens--;
+        
+        return;
     }
     else if(key[KEY_SPACE])
     {
         key[KEY_SPACE] = false;
         if(map[player_get_position_x(p)][player_get_position_y(p)].is_interactive && player_get_direction_facing(p) == map[player_get_position_x(p)][player_get_position_y(p)].dir_need_to_face)
         {
+            if(texture)
+            {
+                SDL_DestroyTexture(texture);
+            }
             texture = SDL_CreateTextureFromSurface(renderer, map[player_get_position_x(p)][player_get_position_y(p)].interact_image);
             map[player_get_position_x(p)][player_get_position_y(p)].is_interactive = false;
             switch(player_get_direction_facing(p)){
@@ -325,21 +496,29 @@ void update_graphics()
                     break;
                 default:break;
             }
+            graphics_render_multiple_texture();
+            return;
         }
         else
         {
             graphics_show_direction_facing();
+            
+            graphics_render_multiple_texture();
+            return;
         }
     }
     else if(key[KEY_RIGHT] || key[KEY_LEFT] || key[KEY_UP])
     {
-        key[KEY_RIGHT] = false;
-        key[KEY_LEFT] = false;
-        key[KEY_DOWN] = false;
+        if(num_intro_screens > 0){
+            key[KEY_RIGHT] = key[KEY_LEFT] = key[KEY_DOWN] = false;
+            return;
+        }
+        key[KEY_RIGHT] = key[KEY_LEFT] = key[KEY_DOWN] = false;
         graphics_show_direction_facing();
+        
+        graphics_render_multiple_texture();
+        return;
     }
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
 }
 
 void game_loop(void)
@@ -371,9 +550,10 @@ void game_loop(void)
     }
 }
 
-void init_player(void)
+void init_player(int x, int y, char dir)
+
 {
-    p = player_constructor();
+    p = player_constructor(x, y, dir);
 }
 
 bool check_true_or_false(char* ptr)
@@ -384,26 +564,38 @@ bool check_true_or_false(char* ptr)
         return false;
 }
 
+void check_image_null_or_load(SDL_Surface **image, char *ptr){
+    if(strcmp(ptr,"NULL") == 0 )
+    {
+        image = NULL;
+    }
+    else
+    {
+        *image = SDL_LoadBMP(ptr);
+        check_image_loaded(*image);
+    }
+}
+
 void read_line_to_map(char *s, int x, int y)
 {
     char delim[] = " ";
-
+    
     char *ptr = strtok(s, delim);
     int counter = 0;
     while(ptr != NULL)
     {
         switch(counter){
             case 0:
-                map[x][y].N = SDL_LoadBMP(ptr);
+                check_image_null_or_load(&map[x][y].N, ptr);
                 break;
             case 1:
-                map[x][y].E = SDL_LoadBMP(ptr);
+                check_image_null_or_load(&map[x][y].E, ptr);
                 break;
             case 2:
-                map[x][y].S = SDL_LoadBMP(ptr);
+                check_image_null_or_load(&map[x][y].S, ptr);
                 break;
             case 3:
-                map[x][y].W = SDL_LoadBMP(ptr);
+                check_image_null_or_load(&map[x][y].W, ptr);
                 break;
             case 4:
                 map[x][y].passable_from_N = check_true_or_false(ptr);
@@ -421,11 +613,7 @@ void read_line_to_map(char *s, int x, int y)
                 map[x][y].is_interactive = check_true_or_false(ptr);
                 break;
             case 9:
-                if(strcmp(ptr,"NULL") == 0){
-                    map[x][y].interact_image = NULL;
-                }else{
-                    map[x][y].interact_image = SDL_LoadBMP(ptr);
-                }
+                check_image_null_or_load(&map[x][y].interact_image, ptr);
                 break;
             case 10:
                 if(strcmp(ptr, "(char)0") == 0){
@@ -439,7 +627,7 @@ void read_line_to_map(char *s, int x, int y)
         ptr = strtok(NULL, delim);
         counter++;
     }
-
+    
 }
 
 void load_map_file(char *fname)
@@ -447,7 +635,7 @@ void load_map_file(char *fname)
     FILE* file = fopen(fname, "r");
     if(file == NULL)
     {
-        abort_game("Failed to load map .txt file");
+        abort_game("Failed to load map.txt file");
     }
     char line[256];
     int i, j;
@@ -466,11 +654,110 @@ void init_map(void)
 {
     columns = LEN(map);
     rows = LEN(map[0]);
-    load_map_file("BIG_LEVEL.txt");
+    load_map_file(map_filename);
+}
+
+void load_starting_images_from_line(char *line)
+{
+    if (line && !line[0]) {
+        return;
+    }
+    char delim[] = " ";
+    char *ptr = strtok(line, delim);
+    int line_counter = 0;
+    while(ptr != NULL)
+    {
+        SDL_Surface *image = SDL_LoadBMP(ptr);
+        varray_push(garray, image);
+        line_counter++;
+        ptr = strtok(NULL, delim);
+    }
+    num_intro_screens = line_counter;
+}
+
+void check_min_num_lines_file(FILE* file)
+{
+    int line_count = 0;
+    char line[256];
+    while(fgets(line, sizeof(line), file))
+    {
+        line_count++;
+    }
+    
+    if(line_count != 5)
+    {
+        abort_game("init.txt does not contain the correct number of lines");
+    }
+}
+
+void check_char_is_num_in_range(char *pos)
+{
+    if(*pos == '0')
+    {
+        return;
+    }
+    else if (atoi(pos) == 0){
+        abort_game("Invalid starting co-ordinate");
+    }
+}
+
+void load_starting_game_vars(int *x, int *y, char *dir)
+{
+    FILE* file = fopen("init.txt", "r");
+    if(file == NULL)
+    {
+        abort_game("Failed to load init.txt file");
+    }
+    
+    varray_init(&garray);
+    check_min_num_lines_file(file);
+    rewind(file);
+    
+    char line[256];
+    int line_number = 1;
+    while(fgets(line, sizeof(line), file))
+    {
+        char* pos = strrchr(line, '\n');
+        if (pos) *pos = 0;
+        switch(line_number)
+        {
+            case 1:
+                map_filename = (char *)calloc(1, strlen(line) + 1);
+                if(map_filename == NULL)
+                {
+                    abort_game("Failed to allocate memory to map filename");
+                }
+                strcpy(map_filename, line);
+                break;
+            case 2:
+                load_starting_images_from_line(line);
+                break;
+            case 3:
+                check_char_is_num_in_range(&line[0]);
+                *x = atoi(line);
+                break;
+            case 4:
+                check_char_is_num_in_range(&line[0]);
+                *y = atoi(line);
+                break;
+            case 5:
+                *dir = line[0];
+                break;
+            default: break;
+        }
+        line_number++;
+    }
+    fclose(file);
 }
 
 void init(void)
 {
+    int x, y;
+    char dir;
+    load_starting_game_vars(&x, &y, &dir);
+    init_map();
+    init_player(x, y, dir);
+    
     SDL_Init(SDL_INIT_VIDEO);
     
     window = SDL_CreateWindow("Escape the Clocktower", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
@@ -485,29 +772,49 @@ void init(void)
         abort_game("Failed to create renderer");
     }
     
-    loadImage = SDL_LoadBMP("BETA_TITLE.bmp");
-    if(!loadImage)
-    {
-        abort_game("Failed to load starting image");
+    border_surface = SDL_LoadBMP("FULL_FRAME_BORDER.bmp");
+    if(!border_surface){
+        abort_game("Failed to load FULL_FRAME_BORDER.bmp");
     }
     
-    texture = SDL_CreateTextureFromSurface(renderer, loadImage);
-    if(!texture)
-    {
-        abort_game("Failed to load texture");
+    text_surface = SDL_LoadBMP("TEXT_BOX_TEMPLATE.bmp");
+    if(!text_surface){
+        abort_game("Failed to load TEXT_BOX_TEMPLATE.bmp");
     }
     
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
+    border_texture = SDL_CreateTextureFromSurface(renderer, border_surface);
+    if(!border_texture){
+        abort_game("Failed to load border_texture");
+    }
+    
+    text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
+    if(!text_texture){
+        abort_game("Failed to load text_texture");
+    }
+    
+    if(varray_length(garray) == 0)
+    {
+        graphics_show_direction_facing();
+        graphics_render_multiple_texture();
+    }
+    else
+    {
+        texture = SDL_CreateTextureFromSurface(renderer, varray_get(garray, array_pos));
+        if(!texture)
+        {
+            abort_game("Failed to load texture");
+        }
+        array_pos++;
+        
+        SDL_RenderCopy(renderer, texture, NULL, NULL);
+        SDL_RenderPresent(renderer);
+    }
 }
 
 int main(int argc, char ** argv)
 {
     init();
-    init_map();
-    init_player();
     game_loop();
-    game_shutdown();
+    gameshutdown();
     exit(0);
 }
-

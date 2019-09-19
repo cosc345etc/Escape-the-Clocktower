@@ -3,7 +3,7 @@
 
 typedef struct player player;
 
-player* player_constructor (void);
+player* player_constructor (int x, int y, char dir);
 
 void     player_set_position (player* this, int x, int y);
 void     player_set_direction (player* this, char d);
