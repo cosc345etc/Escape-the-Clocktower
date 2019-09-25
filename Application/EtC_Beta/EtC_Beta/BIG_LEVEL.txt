@@ -15,7 +15,7 @@ ETC_BETA_L2/2x5_n.bmp ETC_BETA_L2/2x5_e.bmp ETC_BETA_L2/2x5_s.bmp ETC_BETA_L2/2x
 NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL
 ETC_BETA_L2/2x7_n.bmp ETC_BETA_L2/2x7_e.bmp ETC_BETA_L2/2x7_s.bmp ETC_BETA_L2/2x7_w.bmp false false false false false NULL char(0) NULL NULL
 ETC_BETA_L2/1x0_n.bmp ETC_BETA_L2/1x0_e.bmp ETC_BETA_L2/1x0_s.bmp ETC_BETA_L2/1x0_w.bmp false true false false true ETC_BETA_L2/1x0_n.bmp N NULL APPLEMACHINEBROKEN 
-ETC_BETA_L2/1x1_n.bmp ETC_BETA_L2/1x1_e.bmp ETC_BETA_L2/1x1_s.bmp ETC_BETA_L2/1x1_w.bmp true false true true false NULL char(0) NULL NULL
+ETC_BETA_L2/1x1_n.bmp ETC_BETA_L2/1x1_e.bmp ETC_BETA_L2/1x1_s.bmp ETC_BETA_L2/1x1_w.bmp true false true true false NULL char(0) NULL MOFFICER2 
 NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL
 ETC_BETA_L2/1x3_n.bmp ETC_BETA_L2/1x3_e.bmp ETC_BETA_L2/1x3_s.bmp ETC_BETA_L2/1x3_w.bmp true false false false false NULL char(0) NULL NULL
 NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL

@@ -187,6 +187,25 @@ void clear_text()
 
 }
 
+void clear_inv()
+{
+    if(inv_texture)
+    {
+        SDL_DestroyTexture(inv_texture);
+    }
+    inv_surface = SDL_LoadBMP("INVENTORY/INV_BOX_TEMPLATE.bmp");
+    inv_texture = SDL_CreateTextureFromSurface(renderer, inv_surface);
+    check_texture_loaded(inv_texture);
+}
+
+void set_inv(char *inv_file)
+{
+    clear_inv();
+    inv_surface = SDL_LoadBMP(inv_file);
+    inv_texture = SDL_CreateTextureFromSurface(renderer, inv_surface);
+    check_texture_loaded(inv_texture);
+}
+
 void set_text(char *text_file)
 {
     
@@ -250,34 +269,34 @@ void run_conversation(player *p)
         else if(strcmp(tile->speaker,"MOFFICER") == 0)
         {
             set_text("TEXT/MOFFICER/TEXT_MOFFICER_1.bmp");
+            
             tile->is_interactive = true;
             tile->interact_image = SDL_LoadBMP("ETC_BETA_L2/1x7_s.bmp");
             tile->speaker = "NULL";
+            
+            map[2][1].W = SDL_LoadBMP("ETC_BETA_L2/1x1_w_MOFFICER.bmp");
+            map[2][1].is_interactive = true;
+            map[2][1].interact_image = SDL_LoadBMP("ETC_BETA_L2/1x1_w.bmp");
+            map[2][1].dir_need_to_face = 'W';
+            map[2][0].passable_from_E = false;
+        }
+        else if(strcmp(tile->speaker,"MOFFICER2") == 0)
+        {
+            set_text("TEXT/MOFFICER/TEXT_MOFFICER_2.bmp");
+            set_inv("INVENTORY/INV_BOX_UNIFORM.bmp");
+            
+            p->pineapple = 0;
+            
+            map[2][0].N = SDL_LoadBMP("ETC_BETA_L2/1x0_n_2.bmp");
+            map[2][0].is_interactive = true;
+            map[2][0].passable_from_E = true;
+            map[2][0].speaker = "APPLEMACHINE";
         }
         else if (strcmp(tile->speaker,"NULL") == 0)
         {
             tile->is_interactive = false;
         }
     p->frozen = 0;
-}
-
-void clear_inv()
-{
-    if(inv_texture)
-    {
-        SDL_DestroyTexture(inv_texture);
-    }
-    inv_surface = SDL_LoadBMP("INVENTORY/INV_BOX_TEMPLATE.bmp");
-    inv_texture = SDL_CreateTextureFromSurface(renderer, inv_surface);
-    check_texture_loaded(inv_texture);
-}
-
-void set_inv(char *inv_file)
-{
-    clear_inv();
-    inv_surface = SDL_LoadBMP(inv_file);
-    inv_texture = SDL_CreateTextureFromSurface(renderer, inv_surface);
-    check_texture_loaded(inv_texture);
 }
 
 void get_item(player *p, char *item)
