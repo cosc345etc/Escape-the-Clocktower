@@ -181,7 +181,7 @@ void clear_text()
         SDL_DestroyTexture(text_texture);
     }
     
-    text_surface = SDL_LoadBMP("TEXT_BOX_TEMPLATE.bmp");
+    text_surface = SDL_LoadBMP("TEXT/TEXT_BOX_TEMPLATE.bmp");
     text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
     check_texture_loaded(text_texture);
 
@@ -201,44 +201,63 @@ void set_text(char *text_file)
     }
     text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
     check_texture_loaded(text_texture);
-
 }
-
-
 
 void run_conversation(player *p)
 {
     MapTile *tile = &map[player_get_position_x(p)][player_get_position_y(p)];
     p->frozen = 1;
-    
     if (strcmp(tile->speaker,"DOORGUARD1") == 0)
         {
             if(p->uniform == 0)
             {
-            
                 set_text("L1_DOOR_GUARD_1.bmp");
-                
-            map[player_get_position_x(p)][player_get_position_y(p)].is_interactive =
-            true;
-            
+                tile->is_interactive =true;
             }
             else if(p->uniform == 1)
             {
-
                 set_text("L1_DOOR_GUARD_2.bmp");
-                
-                map[player_get_position_x(p)][player_get_position_y(p)].is_interactive =
-                true;
-                
-                map[5][1].passable_from_W =
-                true;
-                
-                map[player_get_position_x(p)][player_get_position_y(p)].interact_image =
-                SDL_LoadBMP("ETC_BETA_L1/3x0_e_dooropen.bmp");
-
+                tile->is_interactive = true;
+                map[5][1].passable_from_W = true;
+                tile->interact_image = SDL_LoadBMP("ETC_BETA_L1/3x0_e_dooropen.bmp");
+                tile->speaker = "NULL";
             }
         }
-    
+        else if(strcmp(tile->speaker,"APPLEMACHINEBROKEN") == 0)
+        {
+            set_text("TEXT/TEXT_APPLE_MACHINE_1.bmp");
+            tile->is_interactive =true;
+        }
+        else if (strcmp(tile->speaker,"DOORGUARD2") == 0)
+        {
+            if(p->pineapple== 0)
+            {
+                set_text("TEXT/L2_DOOR_GUARD/L2_DOOR_GUARD_1.bmp");
+                tile->is_interactive =true;
+            }
+            else
+            {
+                set_text("TEXT/L2_DOOR_GUARD/L2_DOOR_GUARD_3.bmp");
+                tile->is_interactive = true;
+                map[4][2].passable_from_N = true;
+                tile->interact_image = SDL_LoadBMP("ETC_BETA_L1/3x2_s.bmp");
+                tile->speaker = "NULL";
+                map[6][2].S = SDL_LoadBMP("ETC_BETA_L1/2x2_s.bmp");
+                map[7][2].S = SDL_LoadBMP("ETC_BETA_L1/1x2_s.bmp");
+                map[8][2].S = SDL_LoadBMP("ETC_BETA_L1/0x2_s.bmp");
+            }
+        }
+        else if(strcmp(tile->speaker,"MOFFICER") == 0)
+        {
+            set_text("TEXT/MOFFICER/TEXT_MOFFICER_1.bmp");
+            tile->is_interactive = true;
+            tile->interact_image = SDL_LoadBMP("ETC_BETA_L2/1x7_s.bmp");
+            tile->speaker = "NULL";
+        }
+        else if (strcmp(tile->speaker,"NULL") == 0)
+        {
+            tile->is_interactive = false;
+        }
     p->frozen = 0;
 }
 
@@ -248,8 +267,7 @@ void clear_inv()
     {
         SDL_DestroyTexture(inv_texture);
     }
-    
-    inv_surface = SDL_LoadBMP("INV_BOX_TEMPLATE.bmp");
+    inv_surface = SDL_LoadBMP("INVENTORY/INV_BOX_TEMPLATE.bmp");
     inv_texture = SDL_CreateTextureFromSurface(renderer, inv_surface);
     check_texture_loaded(inv_texture);
 }
@@ -257,13 +275,10 @@ void clear_inv()
 void set_inv(char *inv_file)
 {
     clear_inv();
-    
     inv_surface = SDL_LoadBMP(inv_file);
     inv_texture = SDL_CreateTextureFromSurface(renderer, inv_surface);
     check_texture_loaded(inv_texture);
-    
 }
-
 
 void get_item(player *p, char *item)
 {
@@ -274,8 +289,17 @@ void get_item(player *p, char *item)
     else if(strcmp(item,"UNIFORM") == 0)
     {
         p->uniform = 1;
-        set_inv("INV_BOX_UNIFORM.bmp");
-        set_text("ITEM_UNIFORM.bmp");
+        set_inv("INVENTORY/INV_BOX_UNIFORM.bmp");
+        set_text("TEXT/TEXT_ITEM_UNIFORM.bmp");
+    }
+    else if(strcmp(item,"PINEAPPLE") == 0)
+    {
+        p->pineapple = 1;
+        set_inv("INVENTORY/INV_BOX_PINEAPPLE.bmp");
+        set_text("TEXT/TEXT_ITEM_PINEAPPLE.bmp");
+        map[8][2].passable_from_S = true;
+        map[6][2].N = SDL_LoadBMP("ETC_BETA_L1/2x2_n.bmp");
+        map[5][2].N = SDL_LoadBMP("ETC_BETA_L1/3x2_n.bmp");
     }
     else
     {
@@ -327,7 +351,6 @@ player* player_constructor (int x, int y, char dir)
         instance->y = y;
         instance->direction_facing = dir;
         
-        /*init inventory empty */
         instance->uniform = 0;
         instance->pineapple = 0;
         instance->apple = 0;
@@ -622,7 +645,7 @@ void update_graphics()
         if(map[player_get_position_x(p)][player_get_position_y(p)].is_interactive && player_get_direction_facing(p) == map[player_get_position_x(p)][player_get_position_y(p)].dir_need_to_face)
         {
 
-            get_item(p, map[player_get_position_x(p)][player_get_position_y(p)].map_item);
+
             
             if(texture)
             {
@@ -646,6 +669,7 @@ void update_graphics()
                 default:break;
             }
             
+            get_item(p, map[player_get_position_x(p)][player_get_position_y(p)].map_item);
             run_conversation(p);
             
             graphics_render_multiple_texture();
@@ -955,9 +979,8 @@ void init(void)
         abort_game("Failed to load FULL_FRAME_BORDER.bmp");
     }
     
-    set_text("TEXT_BOX_TEST.bmp");
-    
-    set_inv("INV_BOX_TEMPLATE.bmp");
+    set_text("TEXT/TEXT_BOX_TEST.bmp");
+    set_inv("INVENTORY/INV_BOX_TEMPLATE.bmp");
     
     border_texture = SDL_CreateTextureFromSurface(renderer, border_surface);
     if(!border_texture){
