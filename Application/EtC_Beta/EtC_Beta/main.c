@@ -290,7 +290,8 @@ void run_conversation(player *p)
             map[2][0].N = SDL_LoadBMP("ETC_BETA_L2/1x0_n_2.bmp");
             map[2][0].is_interactive = true;
             map[2][0].passable_from_E = true;
-            map[2][0].speaker = "APPLEMACHINE";
+            map[2][0].speaker = "NULL";
+            map[2][0].map_item = "APPLE";
         }
         else if (strcmp(tile->speaker,"NULL") == 0)
         {
@@ -320,7 +321,13 @@ void get_item(player *p, char *item)
         map[6][2].N = SDL_LoadBMP("ETC_BETA_L1/2x2_n.bmp");
         map[5][2].N = SDL_LoadBMP("ETC_BETA_L1/3x2_n.bmp");
     }
+    else if(strcmp(item,"APPLE") == 0)
+    {
+        set_inv("INVENTORY/INV_BOX_APPLE.bmp");
+        set_text("TEXT/TEXT_ITEM_APPLE.bmp");
+    }
     else
+        
     {
         printf("Unrecognised item error: %s", item);
     }
