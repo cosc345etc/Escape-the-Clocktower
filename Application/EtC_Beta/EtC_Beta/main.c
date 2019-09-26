@@ -22,7 +22,8 @@ struct player
     int uniform;
     int pineapple;
     int apple;
-    int frozen;
+    int endgame;
+
 };
 
 typedef struct
@@ -162,18 +163,6 @@ void check_texture_loaded(SDL_Texture * texture){
     }
 }
 
-bool player_frozen(player *p)
-{
-    if (p->frozen == 1)
-    {
-    return true;
-    }
-    else
-    {
-    return false;
-    }
-}
-
 void clear_text()
 {
     if(text_texture)
@@ -227,7 +216,7 @@ void set_text(char *text_file)
 void run_conversation(player *p)
 {
     MapTile *tile = &map[player_get_position_x(p)][player_get_position_y(p)];
-    p->frozen = 1;
+
     if (strcmp(tile->speaker,"DOORGUARD1") == 0)
         {
             if(p->uniform == 0)
@@ -287,12 +276,14 @@ void run_conversation(player *p)
             set_text("TEXT/MOFFICER/TEXT_MOFFICER_1.bmp");
             
             tile->is_interactive = true;
-                            SDL_FreeSurface(tile->interact_image);
+            SDL_FreeSurface(tile->interact_image);
             tile->interact_image = SDL_LoadBMP("ETC_BETA_L2/1x7_s.bmp");
             tile->speaker = "NULL";
             
             map[2][1].W = SDL_LoadBMP("ETC_BETA_L2/1x1_w_MOFFICER1.bmp");
             map[2][1].is_interactive = true;
+            
+            map[1][7].passable_from_N = true;
             
             map[2][1].interact_image = SDL_LoadBMP("ETC_BETA_L2/1x1_w_MOFFICER2.bmp");
             map[2][1].dir_need_to_face = 'W';
@@ -332,16 +323,34 @@ void run_conversation(player *p)
             if(p->apple == 1)
             {
                 set_text("TEXT/L3_DOOR_GUARD/L3_DOOR_GUARD_3.bmp");
-                SDL_FreeSurface(tile->interact_image);
-                tile->interact_image = SDL_LoadBMP("ETC_BETA_L1/3x3_s_2.bmp");
+                
+                p->apple = 0;
+                p->endgame = 1;
+                set_inv("INVENTORY/INV_BOX_UNIFORM.bmp");
+                tile->S = SDL_LoadBMP("ETC_BETA_L2/3x3_s_EYE.bmp");
                 tile->speaker = "NULL";
+            }
+        }
+        else if((strcmp(tile->speaker,"CLOCKTOWER")==0) | (strcmp(tile->speaker,"CLOCKTOWER_2") == 0))
+        {
+            if (strcmp(tile->speaker,"CLOCKTOWER_2") == 0)
+            {
+                player_set_position(p, 7, 0);
+                player_set_direction(p, 'S');
+                set_text("TEXT/TEXT_BOX_TEST.bmp");
+            }
+            if(strcmp(tile->speaker,"CLOCKTOWER")==0)
+            {
+            set_text("TEXT/TEXT_WAKE_UP.bmp");
+            tile->is_interactive =true;
+            tile->speaker = "CLOCKTOWER_2";
             }
         }
         else if (strcmp(tile->speaker,"NULL") == 0)
         {
             tile->is_interactive = false;
         }
-    p->frozen = 0;
+
 }
 
 void get_item(player *p, char *item)
@@ -425,6 +434,7 @@ player* player_constructor (int x, int y, char dir)
         instance->uniform = 0;
         instance->pineapple = 0;
         instance->apple = 0;
+        instance->endgame = 0;
     }
     else
     {
@@ -524,7 +534,7 @@ void get_user_input(SDL_Event event)
         switch(event.key.keysym.sym)
         {
             case SDLK_UP:
-                if(num_intro_screens > 0 || player_frozen(p)){
+                if(num_intro_screens > 0){
                     break;
                 }
                 else if (player_get_direction_facing(p) == 'N' && map[player_get_position_x(p) + 1][player_get_position_y(p)].passable_from_S && (player_get_position_x(p) + 1) < columns)
@@ -551,6 +561,12 @@ void get_user_input(SDL_Event event)
                     key[KEY_UP] = true;
                     redraw = true;
                 }
+                /*Special end game condition*/
+                else if(player_get_position_x(p) == 0 && player_get_position_y(p) == 3 && player_get_direction_facing(p) == 'S' && p->endgame == 1)
+                {
+                    player_set_position(p, 0, 0);
+                    redraw = true;
+                }
                 else
                 {
                     printf("Key up pressed, but can't advance..\n");
@@ -558,7 +574,7 @@ void get_user_input(SDL_Event event)
                 break;
                 
             case SDLK_LEFT:
-                if(num_intro_screens > 0 || player_frozen(p)){
+                if(num_intro_screens > 0){
                     break;
                 }
                 else if (player_get_direction_facing(p) == 'N')
@@ -582,7 +598,7 @@ void get_user_input(SDL_Event event)
                 break;
                 
             case SDLK_RIGHT:
-                if(num_intro_screens > 0 || player_frozen(p)){
+                if(num_intro_screens > 0){
                     break;
                 }
                 else if (player_get_direction_facing(p) == 'N')
@@ -614,6 +630,10 @@ void get_user_input(SDL_Event event)
                 {
                     player_set_position(p, 2, 3);
                     player_set_direction(p, 'N');
+                }
+                if(player_get_position_x(p) == 0 && player_get_position_y(p) == 0)
+                {
+                    set_text("TEXT/TEXT_WAKE_UP.bmp");
                 }
                 key[KEY_SPACE] = true;
                 redraw = true;
@@ -716,8 +736,6 @@ void update_graphics()
         if(map[player_get_position_x(p)][player_get_position_y(p)].is_interactive && player_get_direction_facing(p) == map[player_get_position_x(p)][player_get_position_y(p)].dir_need_to_face)
         {
 
-
-            
             if(texture)
             {
                 SDL_DestroyTexture(texture);
@@ -742,7 +760,7 @@ void update_graphics()
             
             get_item(p, map[player_get_position_x(p)][player_get_position_y(p)].map_item);
             run_conversation(p);
-            
+
             graphics_render_multiple_texture();
             
             return;
