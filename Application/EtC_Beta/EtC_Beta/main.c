@@ -231,7 +231,7 @@ void run_conversation(player *p)
                 set_text("L1_DOOR_GUARD_2.bmp");
                 tile->is_interactive = true;
                 map[5][1].passable_from_W = true;
-                tile->interact_image = SDL_LoadBMP("ETC_BETA_L1/3x0_e_dooropen.bmp");
+                tile->interact_image = SDL_LoadBMP("ETC_L1/3x0_e_dooropen.bmp");
                 tile->speaker = "NULL";
             }
         }
@@ -256,15 +256,15 @@ void run_conversation(player *p)
                 tile->is_interactive = true;
                 map[4][2].passable_from_N = true;
                 
-                tile->interact_image = SDL_LoadBMP("ETC_BETA_L1/3x2_s.bmp");
+                tile->interact_image = SDL_LoadBMP("ETC_L1/3x2_s.bmp");
                 tile->speaker = "NULL";
                 
                 SDL_FreeSurface(map[6][2].S);
-                map[6][2].S = SDL_LoadBMP("ETC_BETA_L1/2x2_s.bmp");
+                map[6][2].S = SDL_LoadBMP("ETC_L1/2x2_s.bmp");
                 SDL_FreeSurface(map[7][2].S);
-                map[7][2].S = SDL_LoadBMP("ETC_BETA_L1/1x2_s.bmp");
+                map[7][2].S = SDL_LoadBMP("ETC_L1/1x2_s.bmp");
                 SDL_FreeSurface(map[8][2].S);
-                map[8][2].S = SDL_LoadBMP("ETC_BETA_L1/0x2_s.bmp");
+                map[8][2].S = SDL_LoadBMP("ETC_L1/0x2_s.bmp");
             }
         }
         else if(strcmp(tile->speaker,"APPLEMACHINEBROKEN") == 0)
@@ -278,15 +278,15 @@ void run_conversation(player *p)
             
             tile->is_interactive = true;
             SDL_FreeSurface(tile->interact_image);
-            tile->interact_image = SDL_LoadBMP("ETC_BETA_L2/1x7_s.bmp");
+            tile->interact_image = SDL_LoadBMP("ETC_L2/1x7_s.bmp");
             tile->speaker = "NULL";
             
-            map[2][1].W = SDL_LoadBMP("ETC_BETA_L2/1x1_w_MOFFICER1.bmp");
+            map[2][1].W = SDL_LoadBMP("ETC_L2/1x1_w_MOFFICER1.bmp");
             map[2][1].is_interactive = true;
             
             map[1][7].passable_from_N = true;
             
-            map[2][1].interact_image = SDL_LoadBMP("ETC_BETA_L2/1x1_w_MOFFICER2.bmp");
+            map[2][1].interact_image = SDL_LoadBMP("ETC_L2/1x1_w_MOFFICER2.bmp");
             map[2][1].dir_need_to_face = 'W';
             map[2][0].passable_from_E = false;
         }
@@ -296,11 +296,11 @@ void run_conversation(player *p)
             set_inv("INVENTORY/INV_BOX_UNIFORM.bmp");
             
             map[2][1].is_interactive = false;
-            map[2][1].W = SDL_LoadBMP("ETC_BETA_L2/1x1_w.bmp");
+            map[2][1].W = SDL_LoadBMP("ETC_L2/1x1_w.bmp");
             
             p->pineapple = 0;
             
-            map[2][0].N = SDL_LoadBMP("ETC_BETA_L2/1x0_n_2.bmp");
+            map[2][0].N = SDL_LoadBMP("ETC_L2/1x0_n_2.bmp");
             map[2][0].is_interactive = true;
             map[2][0].passable_from_E = true;
             map[2][0].speaker = "NULL";
@@ -328,7 +328,7 @@ void run_conversation(player *p)
                 p->apple = 0;
                 p->endgame = 1;
                 set_inv("INVENTORY/INV_BOX_UNIFORM.bmp");
-                tile->S = SDL_LoadBMP("ETC_BETA_L2/3x3_s_EYE.bmp");
+                tile->S = SDL_LoadBMP("ETC_L2/3x3_s_EYE.bmp");
                 tile->speaker = "NULL";
             }
         }
@@ -351,7 +351,6 @@ void run_conversation(player *p)
         {
             tile->is_interactive = false;
         }
-
 }
 
 void get_item(player *p, char *item)
@@ -372,8 +371,8 @@ void get_item(player *p, char *item)
         set_inv("INVENTORY/INV_BOX_PINEAPPLE.bmp");
         set_text("TEXT/TEXT_ITEM_PINEAPPLE.bmp");
         map[8][2].passable_from_S = true;
-        map[6][2].N = SDL_LoadBMP("ETC_BETA_L1/2x2_n.bmp");
-        map[5][2].N = SDL_LoadBMP("ETC_BETA_L1/3x2_n.bmp");
+        map[6][2].N = SDL_LoadBMP("ETC_L1/2x2_n.bmp");
+        map[5][2].N = SDL_LoadBMP("ETC_L1/3x2_n.bmp");
     }
     else if(strcmp(item,"APPLE") == 0)
     {
