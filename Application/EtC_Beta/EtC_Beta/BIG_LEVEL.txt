@@ -1,7 +1,7 @@
 NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL
 NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL
 ETC_BETA_L2/3x2_n.bmp ETC_BETA_L2/3x2_e.bmp ETC_BETA_L2/3x2_s.bmp ETC_BETA_L2/3x2_w.bmp true true false false false NULL char(0) NULL NULL
-ETC_BETA_L2/3x3_n.bmp ETC_BETA_L2/3x3_e.bmp ETC_BETA_L2/3x3_s.bmp ETC_BETA_L2/3x3_w.bmp false true false true true ETC_BETA_L2/3x3_s_2.bmp S NULL NULL
+ETC_BETA_L2/3x3_n.bmp ETC_BETA_L2/3x3_e.bmp ETC_BETA_L2/3x3_s.bmp ETC_BETA_L2/3x3_w.bmp false true false true true ETC_BETA_L2/3x3_s.bmp S NULL DOORGUARD3 
 ETC_BETA_L2/3x4_n.bmp ETC_BETA_L2/3x4_e.bmp ETC_BETA_L2/3x4_s.bmp ETC_BETA_L2/3x4_w.bmp true false false true false NULL char(0) NULL NULL
 NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL
 NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL

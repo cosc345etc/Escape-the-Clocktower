@@ -244,11 +244,7 @@ void run_conversation(player *p)
                 tile->speaker = "NULL";
             }
         }
-        else if(strcmp(tile->speaker,"APPLEMACHINEBROKEN") == 0)
-        {
-            set_text("TEXT/TEXT_APPLE_MACHINE_1.bmp");
-            tile->is_interactive =true;
-        }
+
         else if ((strcmp(tile->speaker,"DOORGUARD2") == 0) | (strcmp(tile->speaker,"DOORGUARD2_2") == 0))
         {
             if(p->pineapple== 0 && (strcmp(tile->speaker,"DOORGUARD2_2") == 0))
@@ -280,6 +276,11 @@ void run_conversation(player *p)
                 SDL_FreeSurface(map[8][2].S);
                 map[8][2].S = SDL_LoadBMP("ETC_BETA_L1/0x2_s.bmp");
             }
+        }
+        else if(strcmp(tile->speaker,"APPLEMACHINEBROKEN") == 0)
+        {
+            set_text("TEXT/TEXT_APPLE_MACHINE_1.bmp");
+            tile->is_interactive =true;
         }
         else if(strcmp(tile->speaker,"MOFFICER") == 0)
         {
@@ -313,6 +314,29 @@ void run_conversation(player *p)
             map[2][0].speaker = "NULL";
             map[2][0].map_item = "APPLE";
         }
+        else if((strcmp(tile->speaker,"DOORGUARD3") == 0) | (strcmp(tile->speaker,"DOORGUARD3_2") == 0))
+        {
+            if(p->apple== 0 && (strcmp(tile->speaker,"DOORGUARD3_2") == 0))
+            {
+                set_text("TEXT/L3_DOOR_GUARD/L3_DOOR_GUARD_2.bmp");
+                tile->is_interactive = true;
+            }
+            
+            if(p->apple== 0 && (strcmp(tile->speaker,"DOORGUARD3") == 0))
+            {
+                set_text("TEXT/L3_DOOR_GUARD/L3_DOOR_GUARD_1.bmp");
+                tile->is_interactive = true;
+                tile->speaker = "DOORGUARD3_2";
+            }
+            
+            if(p->apple == 1)
+            {
+                set_text("TEXT/L3_DOOR_GUARD/L3_DOOR_GUARD_3.bmp");
+                SDL_FreeSurface(tile->interact_image);
+                tile->interact_image = SDL_LoadBMP("ETC_BETA_L1/3x3_s_2.bmp");
+                tile->speaker = "NULL";
+            }
+        }
         else if (strcmp(tile->speaker,"NULL") == 0)
         {
             tile->is_interactive = false;
@@ -343,6 +367,7 @@ void get_item(player *p, char *item)
     }
     else if(strcmp(item,"APPLE") == 0)
     {
+        p->apple = 1;
         set_inv("INVENTORY/INV_BOX_APPLE.bmp");
         set_text("TEXT/TEXT_ITEM_APPLE.bmp");
     }
