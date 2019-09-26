@@ -40,7 +40,7 @@ NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL
 NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL
 ETC_BETA_L1/3x0_n.bmp ETC_BETA_L1/3x0_e_doorguard.bmp ETC_BETA_L1/3x0_s.bmp ETC_BETA_L1/3x0_w.bmp true true false false true ETC_BETA_L1/3x0_e_doorguard.bmp E NULL DOORGUARD1 
 ETC_BETA_L1/3x1_n_dooropen.bmp ETC_BETA_L1/3x1_e_dooropen.bmp ETC_BETA_L1/3x1_s.bmp ETC_BETA_L1/3x1_w.bmp false true false false false NULL (char)0 NULL NULL
-ETC_BETA_L1/3x2_n_PINEAPPLE.bmp ETC_BETA_L1/3x2_e.bmp ETC_BETA_L1/3x2_s_guard.bmp ETC_BETA_L1/3x2_w.bmp true false false true true ETC_BETA_L1/3x2_s_guard.bmp S NULL DOORGUARD2  
+ETC_BETA_L1/3x2_n_PINEAPPLE.bmp ETC_BETA_L1/3x2_e.bmp ETC_BETA_L1/3x2_s_guard.bmp ETC_BETA_L1/3x2_w.bmp true false false true true ETC_BETA_L1/3x2_s_guard.bmp S NULL DOORGUARD2 
 NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL
 NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL
 NULL NULL NULL NULL false false false false false NULL (char)0 NULL NULL

@@ -181,10 +181,10 @@ void clear_text()
         SDL_DestroyTexture(text_texture);
     }
     
+    SDL_FreeSurface(text_surface);
     text_surface = SDL_LoadBMP("TEXT/TEXT_BOX_TEMPLATE.bmp");
     text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
     check_texture_loaded(text_texture);
-
 }
 
 void clear_inv()
@@ -193,6 +193,7 @@ void clear_inv()
     {
         SDL_DestroyTexture(inv_texture);
     }
+    SDL_FreeSurface(inv_surface);
     inv_surface = SDL_LoadBMP("INVENTORY/INV_BOX_TEMPLATE.bmp");
     inv_texture = SDL_CreateTextureFromSurface(renderer, inv_surface);
     check_texture_loaded(inv_texture);
@@ -201,6 +202,7 @@ void clear_inv()
 void set_inv(char *inv_file)
 {
     clear_inv();
+    SDL_FreeSurface(inv_surface);
     inv_surface = SDL_LoadBMP(inv_file);
     inv_texture = SDL_CreateTextureFromSurface(renderer, inv_surface);
     check_texture_loaded(inv_texture);
@@ -213,7 +215,7 @@ void set_text(char *text_file)
     {
         SDL_DestroyTexture(text_texture);
     }
-    
+    SDL_FreeSurface(text_surface);
     text_surface = SDL_LoadBMP(text_file);
     if(!text_surface){
         abort_game("Failed to load text image.");
@@ -247,22 +249,35 @@ void run_conversation(player *p)
             set_text("TEXT/TEXT_APPLE_MACHINE_1.bmp");
             tile->is_interactive =true;
         }
-        else if (strcmp(tile->speaker,"DOORGUARD2") == 0)
+        else if ((strcmp(tile->speaker,"DOORGUARD2") == 0) | (strcmp(tile->speaker,"DOORGUARD2_2") == 0))
         {
-            if(p->pineapple== 0)
+            if(p->pineapple== 0 && (strcmp(tile->speaker,"DOORGUARD2_2") == 0))
+            {
+                set_text("TEXT/L2_DOOR_GUARD/L2_DOOR_GUARD_2.bmp");
+                tile->is_interactive = true;
+            }
+            
+            if(p->pineapple== 0 && (strcmp(tile->speaker,"DOORGUARD2") == 0))
             {
                 set_text("TEXT/L2_DOOR_GUARD/L2_DOOR_GUARD_1.bmp");
-                tile->is_interactive =true;
+                tile->is_interactive = true;
+                tile->speaker = "DOORGUARD2_2";
             }
-            else
+            if(p->pineapple== 1)
             {
                 set_text("TEXT/L2_DOOR_GUARD/L2_DOOR_GUARD_3.bmp");
                 tile->is_interactive = true;
                 map[4][2].passable_from_N = true;
+                
+                SDL_FreeSurface(tile->interact_image);
                 tile->interact_image = SDL_LoadBMP("ETC_BETA_L1/3x2_s.bmp");
                 tile->speaker = "NULL";
+                
+                SDL_FreeSurface(map[6][2].S);
                 map[6][2].S = SDL_LoadBMP("ETC_BETA_L1/2x2_s.bmp");
+                SDL_FreeSurface(map[7][2].S);
                 map[7][2].S = SDL_LoadBMP("ETC_BETA_L1/1x2_s.bmp");
+                SDL_FreeSurface(map[8][2].S);
                 map[8][2].S = SDL_LoadBMP("ETC_BETA_L1/0x2_s.bmp");
             }
         }
@@ -271,12 +286,14 @@ void run_conversation(player *p)
             set_text("TEXT/MOFFICER/TEXT_MOFFICER_1.bmp");
             
             tile->is_interactive = true;
+                            SDL_FreeSurface(tile->interact_image);
             tile->interact_image = SDL_LoadBMP("ETC_BETA_L2/1x7_s.bmp");
             tile->speaker = "NULL";
             
-            map[2][1].W = SDL_LoadBMP("ETC_BETA_L2/1x1_w_MOFFICER.bmp");
+            map[2][1].W = SDL_LoadBMP("ETC_BETA_L2/1x1_w_MOFFICER1.bmp");
             map[2][1].is_interactive = true;
-            map[2][1].interact_image = SDL_LoadBMP("ETC_BETA_L2/1x1_w.bmp");
+            
+            map[2][1].interact_image = SDL_LoadBMP("ETC_BETA_L2/1x1_w_MOFFICER2.bmp");
             map[2][1].dir_need_to_face = 'W';
             map[2][0].passable_from_E = false;
         }
@@ -284,6 +301,9 @@ void run_conversation(player *p)
         {
             set_text("TEXT/MOFFICER/TEXT_MOFFICER_2.bmp");
             set_inv("INVENTORY/INV_BOX_UNIFORM.bmp");
+            
+            map[2][1].is_interactive = false;
+            map[2][1].W = SDL_LoadBMP("ETC_BETA_L2/1x1_w.bmp");
             
             p->pineapple = 0;
             
