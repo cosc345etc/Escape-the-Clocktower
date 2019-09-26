@@ -84,6 +84,8 @@ SDL_Texture * text_texture;
 SDL_Surface * inv_surface;
 SDL_Texture * inv_texture;
 
+SDL_Surface * free_image;
+
 void abort_game(const char* message)
 {
     printf("%s \n", message);
@@ -254,7 +256,6 @@ void run_conversation(player *p)
                 tile->is_interactive = true;
                 map[4][2].passable_from_N = true;
                 
-                SDL_FreeSurface(tile->interact_image);
                 tile->interact_image = SDL_LoadBMP("ETC_BETA_L1/3x2_s.bmp");
                 tile->speaker = "NULL";
                 
