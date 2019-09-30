@@ -32,11 +32,13 @@ Our coding standards are Allman layout, self-explanatory variable and method nam
 * Finshed level design
 * Updated title screen
 * Finshed storyline
-* Added ending 
+* Added endingto game
 * load game variables from .txt file
+* Added text and inventory systems
+* updated/new 50+ images
 
 
-# Bug Fixes
+# Bug Fixes 
 
 * Fixed Xcode “code signing” error
 * Map no longer generates upside-down (nor back-to-front)
@@ -56,9 +58,9 @@ Our coding standards are Allman layout, self-explanatory variable and method nam
 * **update_graphics** - No longer using Allegro
 
 ## Changed/Updated Methods Since Beta
-**abort game**
-**graphics_show_direction_facing**
-**player_constructor**
+* **abort game**
+* **graphics_show_direction_facing**
+* **player_constructor**
 
 ## New Methods Since Alpha
 
@@ -68,7 +70,8 @@ Our coding standards are Allman layout, self-explanatory variable and method nam
 *  ***read_line_to_map(char *s, int x, int y)*** - reads the .bmp files in and calls check_true_or_false
 *  ***load_map_file(char *fname)*** - loads a .bmp map file and then calls read_line_to_map
 
-## New Methods Since Beta 
+## New Methods Since Beta
+
 * **image_array_init**
 * **image_array_push**
 * **image_array_length**
@@ -95,11 +98,14 @@ Our coding standards are Allman layout, self-explanatory variable and method nam
 * **load_starting_images_from_line**
 * **load_starting_game_vars**
 
-## Futher Developmen/Future Maintaince 
+ *See Documentation for futher Details 
+
+## Futher Development/Future Maintaince
+
 * The map, which is a 2D array, is of fixed size. Would be nice to be able to create maps of dynamic size.
 * More comprehensive error checking, especially with SDL Surfaces and Textures, and checking that .txt files are in a correct format/contain correct variables.
-* A Library of generic map graphics that generates the view based on the map file
+* A Library of generic map graphics that generates the view based on the map file.
 * Fixing any potential memory leaks/bugs when looping through the game more than once.
-* An interactive menu  with either the Xcode interface builder or with further C code
-* Adding an About box
-* Adding an App icon
+* An interactive menu with either the Xcode interface builder or with further C code.
+* Adding an About box.
+* Adding an App icon.
