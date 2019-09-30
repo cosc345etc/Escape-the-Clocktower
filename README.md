@@ -25,6 +25,17 @@ Our coding standards are Allman layout, self-explanatory variable and method nam
 * Updated title screen
 * 100+ new image files
 
+# Changelog For Final Release
+
+* Finshed interactions with NPC
+* Added more images
+* Finshed level design
+* Updated title screen
+* Finshed storyline
+* Added ending 
+* load game variables from .txt file
+
+
 # Bug Fixes
 
 * Fixed Xcode “code signing” error
@@ -35,7 +46,7 @@ Our coding standards are Allman layout, self-explanatory variable and method nam
 
 # Methods
 
-## Changed/Updated Methods
+## Changed/Updated Methods Since Alpha
  
 * **init(void)** - No longer using Allegro 
 * **init_map(void)** - No longer hard coded
@@ -44,10 +55,51 @@ Our coding standards are Allman layout, self-explanatory variable and method nam
 * **get_user_input** - Down is fixed and moving east & west fixed
 * **update_graphics** - No longer using Allegro
 
-## New Methods
+## Changed/Updated Methods Since Beta
+**abort game**
+**graphics_show_direction_facing**
+**player_constructor**
+
+## New Methods Since Alpha
 
 *  **player_destruct** (player* this) - frees allocated memory 
 *  **graphics_show_direction_facing** - Shows players current direction and calls DL_CreateTextureFromSurface (SDL function to create a texture from an existing surface) and calls player_get_position
 *  ***check_true_or_false(char* ptr)*** - checks conditions of N,E,S,W and if passable, returns boolean value 
 *  ***read_line_to_map(char *s, int x, int y)*** - reads the .bmp files in and calls check_true_or_false
 *  ***load_map_file(char *fname)*** - loads a .bmp map file and then calls read_line_to_map
+
+## New Methods Since Beta 
+* **image_array_init**
+* **image_array_push**
+* **image_array_length**
+* **image_array_inset**
+* **image_array_free**
+* **image_array_get**
+* **free_map_speaker_and_item**
+* **free_map_array**
+* **check_image_loaded**
+* **check_texture_loaded**
+* **check_texture_and_destroy**
+* **check_image_null_or_load**
+* **check_item_null_or_load**
+* **check_min_num_lines_file**
+* **check_char_is_num_in_range**
+* **clear_text**
+* **set_text**
+* **clear_inv**
+* **set_inv**
+* **run_conversation**
+* **get_item**
+* **restart_game**
+* **graphics_render_multiple_texture**
+* **load_starting_images_from_line**
+* **load_starting_game_vars**
+
+## Futher Developmen/Future Maintaince 
+* The map, which is a 2D array, is of fixed size. Would be nice to be able to create maps of dynamic size.
+* More comprehensive error checking, especially with SDL Surfaces and Textures, and checking that .txt files are in a correct format/contain correct variables.
+* A Library of generic map graphics that generates the view based on the map file
+* Fixing any potential memory leaks/bugs when looping through the game more than once.
+* An interactive menu  with either the Xcode interface builder or with further C code
+* Adding an About box
+* Adding an App icon
