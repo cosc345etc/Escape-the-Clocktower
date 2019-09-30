@@ -1,5 +1,5 @@
 MAP.txt
-
+ETC_TITLE_1.bmp ETC_TITLE_2.bmp ETC_TITLE_3.bmp
 7
 0
 S

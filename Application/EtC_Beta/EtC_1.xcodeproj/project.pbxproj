@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9CD5DD7E2341FDDC005501D2 /* ICON.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5DD7D2341FDDC005501D2 /* ICON.png */; };
 		E1DD3B9322FFCCB600E5E323 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1DD3B9222FFCCB600E5E323 /* Assets.xcassets */; };
 		E1DD3B9922FFCCB600E5E323 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = E1DD3B9822FFCCB600E5E323 /* main.c */; };
 		E1DD3BA722FFD0D500E5E323 /* SDL2.framework in Copy Bundle Frameworks */ = {isa = PBXBuildFile; fileRef = E1DD3BA622FFD0D500E5E323 /* SDL2.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -28,6 +29,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9CD5DD7D2341FDDC005501D2 /* ICON.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ICON.png; sourceTree = "<group>"; };
 		E1DD3B8922FFCCB500E5E323 /* EtC_Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtC_Beta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1DD3B9222FFCCB600E5E323 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E1DD3B9722FFCCB600E5E323 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 			children = (
 				E1DD3B9222FFCCB600E5E323 /* Assets.xcassets */,
 				E1DD3B9722FFCCB600E5E323 /* Info.plist */,
+				9CD5DD7D2341FDDC005501D2 /* ICON.png */,
 				E1DD3B9822FFCCB600E5E323 /* main.c */,
 			);
 			path = EtC_Beta;
@@ -142,6 +145,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CD5DD7E2341FDDC005501D2 /* ICON.png in Resources */,
 				E1DD3B9322FFCCB600E5E323 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
