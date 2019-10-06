@@ -1,5 +1,14 @@
+<<<<<<< HEAD
 BIG_LEVEL.txt
 BETA_TITLE.bmp INTRO_TEXT.bmp
 7
 1
 N
+||||||| merged common ancestors
+=======
+MAP.txt
+ETC_TITLE_1.bmp ETC_TITLE_2.bmp ETC_TITLE_3.bmp
+7
+0
+S
+>>>>>>> d51be4f5ec23d48e4308dd3bf26e0b2bef48e809
